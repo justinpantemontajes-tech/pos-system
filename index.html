@@ -8,6 +8,8 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Supabase JS Client v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -107,19 +109,16 @@ label{font-size:12px;color:var(--text2);margin-bottom:4px;display:block;font-wei
 .shift-report-signature{margin-top:30px;display:flex;justify-content:space-between}
 .shift-report-signature-line{width:200px;border-top:1px solid #333;padding-top:4px;font-size:11px;text-align:center;color:#555}
 
-/* Printer compatibility - 58mm */
 @media print and (max-width: 58mm) {
   .receipt{width:58mm!important;max-width:58mm!important;padding:4mm!important;font-size:10px!important}
   .receipt-wrapper{width:58mm!important;max-width:58mm!important}
   .shift-report{width:58mm!important;max-width:58mm!important;padding:4mm!important;font-size:10px!important}
 }
-/* Printer compatibility - 80mm */
 @media print and (min-width: 59mm) and (max-width: 80mm) {
   .receipt{width:80mm!important;max-width:80mm!important;padding:6mm!important;font-size:11px!important}
   .receipt-wrapper{width:80mm!important;max-width:80mm!important}
   .shift-report{width:80mm!important;max-width:80mm!important;padding:6mm!important;font-size:11px!important}
 }
-/* A4 fallback */
 @media print and (min-width: 81mm) {
   .receipt{width:320px!important;max-width:320px!important}
   .receipt-wrapper{width:320px!important;max-width:320px!important}
@@ -137,19 +136,16 @@ label{font-size:12px;color:var(--text2);margin-bottom:4px;display:block;font-wei
   .modal-lg,.modal-xl{max-width:none!important}
 }
 
-/* Maintenance banner */
 .maintenance-banner{position:fixed;top:0;left:0;right:0;background:var(--yellow-dim);color:var(--yellow);border-bottom:1px solid #6a5500;padding:8px 16px;text-align:center;font-size:13px;font-weight:600;z-index:10000;animation:slideDown .3s ease}
 @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
 
-/* Offline indicator */
 .offline-indicator{position:fixed;top:0;right:0;background:var(--red-dim);color:var(--red);padding:6px 14px;font-size:12px;font-weight:600;border-radius:0 0 0 var(--radius);z-index:10001}
 
-/* Sync status */
 .sync-status{position:fixed;bottom:60px;right:24px;z-index:9998;padding:8px 14px;border-radius:var(--radius);font-size:12px;font-weight:500;opacity:0;transition:opacity .3s}
 .sync-status.visible{opacity:1}
 .sync-status.syncing{background:var(--accent-dim);color:var(--accent)}
 .sync-status.synced{background:var(--green-dim);color:var(--green)}
-/* Auto-print receipt overlay */
+
 .auto-print-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9997;display:flex;align-items:center;justify-content:center}
 .auto-print-spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 </style>
@@ -167,33 +163,130 @@ label{font-size:12px;color:var(--text2);margin-bottom:4px;display:block;font-wei
   </div>
 </div>
 <script>
-// Error handler for Babel compilation and runtime errors
 window.onerror = function(msg, url, line, col, error) {
   console.error('ERROR:', msg, 'at line', line, error);
   var loading = document.getElementById('loading');
   var errDiv = document.getElementById('loading-error');
   if (loading && errDiv) {
     errDiv.style.display = 'block';
-    errDiv.innerHTML = '<b>Error:</b> ' + msg + '<br><small>Line ' + line + '</small><br><br><button onclick="location.reload()" style="padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer">Reload Page</button>';
+    errDiv.innerHTML = '<b>Error:</b> ' + msg + '<br><small>Line ' + line + '</small><br><br><button onclick=\"location.reload()\" style=\"padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer\">Reload Page</button>';
   }
   return true;
 };
-// Hide loading when React renders
 window.hideLoading = function() {
   var loading = document.getElementById('loading');
   if (loading) { loading.style.opacity = '0'; setTimeout(function(){loading.style.display='none';}, 300); }
 };
 </script>
 <script type="text/babel" data-presets="react">
-// Fix React 18 UMD createRoot warning
 if (typeof ReactDOM !== 'undefined' && ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
   ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = true;
 }
 
 const {useState,useEffect,useRef,useCallback,useMemo,useReducer}=React;
 
+// TODO: Replace SUPABASE_URL and SUPABASE_ANON_KEY
+const SUPABASE_URL = 'SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'SUPABASE_ANON_KEY';
+
+// Initialize Supabase client with error handling
+let supabaseClient = null;
+try {
+  if (typeof supabase !== 'undefined' && supabase.createClient) {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Supabase client initialized');
+  } else {
+    console.warn('Supabase library not loaded - will use localStorage fallback only');
+  }
+} catch (e) {
+  console.error('Failed to initialize Supabase:', e);
+}
+
 /* ================================================================
-   SERVICE WORKER REGISTRATION (Offline Support)
+   SUPABASE HELPERS
+   ================================================================ */
+const SupabaseDB = {
+  async getProducts() {
+    if (!supabaseClient) return [];
+    try {
+      const { data, error } = await supabaseClient.from('products').select('*').order('id');
+      if (error) throw error;
+      return data || [];
+    } catch (e) {
+      console.error('Supabase getProducts error:', e);
+      return [];
+    }
+  },
+  async insertProduct(product) {
+    if (!supabaseClient) throw new Error('Supabase not connected');
+    try {
+      const { data, error } = await supabaseClient.from('products').insert(product).select();
+      if (error) throw error;
+      return data ? data[0] : null;
+    } catch (e) {
+      console.error('Supabase insertProduct error:', e);
+      throw e;
+    }
+  },
+  async updateProduct(id, updates) {
+    if (!supabaseClient) throw new Error('Supabase not connected');
+    try {
+      const { data, error } = await supabaseClient.from('products').update(updates).eq('id', id).select();
+      if (error) throw error;
+      return data ? data[0] : null;
+    } catch (e) {
+      console.error('Supabase updateProduct error:', e);
+      throw e;
+    }
+  },
+  async deleteProduct(id) {
+    if (!supabaseClient) throw new Error('Supabase not connected');
+    try {
+      const { error } = await supabaseClient.from('products').update({ active: false }).eq('id', id);
+      if (error) throw error;
+      return true;
+    } catch (e) {
+      console.error('Supabase deleteProduct error:', e);
+      throw e;
+    }
+  },
+  async getCategories() {
+    if (!supabaseClient) return [];
+    try {
+      const { data, error } = await supabaseClient.from('categories').select('*').order('id');
+      if (error) throw error;
+      return data || [];
+    } catch (e) {
+      console.error('Supabase getCategories error:', e);
+      return [];
+    }
+  },
+  async insertCategory(category) {
+    if (!supabaseClient) throw new Error('Supabase not connected');
+    try {
+      const { data, error } = await supabaseClient.from('categories').insert(category).select();
+      if (error) throw error;
+      return data ? data[0] : null;
+    } catch (e) {
+      console.error('Supabase insertCategory error:', e);
+      throw e;
+    }
+  },
+  async deleteCategory(id) {
+    if (!supabaseClient) throw new Error('Supabase not connected');
+    try {
+      const { error } = await supabaseClient.from('categories').delete().eq('id', id);
+      if (error) throw error;
+      return true;
+    } catch (e) {
+      console.error('Supabase deleteCategory error:', e);
+      throw e;
+    }
+  }
+};
+
+/* ================================================================
+   SERVICE WORKER REGISTRATION
    ================================================================ */
 const registerServiceWorker = () => {
   if ('serviceWorker' in navigator) {
@@ -251,7 +344,7 @@ const registerServiceWorker = () => {
 };
 
 /* ================================================================
-   INDEXEDDB ENGINE (Robust Offline Storage)
+   INDEXEDDB ENGINE
    ================================================================ */
 const IDB = {
   db: null, name: 'BranchPOS_DB', version: 1,
@@ -474,7 +567,6 @@ const useOfflineStatus = () => {
   return isOnline;
 };
 
-
 /* ================================================================
    CHECKSUM & DATA INTEGRITY HELPERS
    ================================================================ */
@@ -561,7 +653,7 @@ const AutoSave = {
 };
 
 /* ================================================================
-   PRINTING ENGINE (Auto-print with duplicate prevention)
+   PRINTING ENGINE
    ================================================================ */
 const PrintEngine = {
   _lastPrintId: null,
@@ -592,7 +684,6 @@ const PrintEngine = {
         try {
           iframe.contentWindow.focus();
           iframe.contentWindow.print();
-          // Auto-cleanup after print
           setTimeout(function() {
             try { iframe.contentWindow.document.body.innerHTML = ''; } catch(e) {}
             self._printing = false;
@@ -618,16 +709,16 @@ const PrintEngine = {
     var itemsHTML = '';
     txn.items.forEach(function(i) {
       itemsHTML += '<tr>' +
-        '<td style="padding:1px 0;font-size:10px;vertical-align:top;width:45%;">' + i.name + '</td>' +
-        '<td style="padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:30%;">' + i.qty + ' x ' + fmtCur(i.price) + '</td>' +
-        '<td style="padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:25%;">' + fmtCur(i.subtotal) + '</td>' +
+        '<td style=\"padding:1px 0;font-size:10px;vertical-align:top;width:45%;\">' + i.name + '</td>' +
+        '<td style=\"padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:30%;\">' + i.qty + ' x ' + fmtCur(i.price) + '</td>' +
+        '<td style=\"padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:25%;\">' + fmtCur(i.subtotal) + '</td>' +
         '</tr>';
     });
 
-    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Receipt</title><style>';
+    var html = '<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>Receipt</title><style>';
     html += '@page { size: 80mm auto; margin: 0; }';
     html += '*{margin:0;padding:0;box-sizing:border-box}';
-    html += 'html,body{background:#fff!important;color:#000!important;font-family:"Courier New","Consolas",monospace!important;font-size:10px!important;line-height:1.3}';
+    html += 'html,body{background:#fff!important;color:#000!important;font-family:\"Courier New\",\"Consolas\",monospace!important;font-size:10px!important;line-height:1.3}';
     html += 'body{width:76mm;padding:3mm;margin:0 auto}';
     html += '.center{text-align:center}';
     html += '.store-name{font-size:13px;font-weight:bold;margin-bottom:1px;letter-spacing:0.5px}';
@@ -643,36 +734,36 @@ const PrintEngine = {
     html += '  *{background:#fff!important;color:#000!important}';
     html += '}';
     html += '</style></head><body>';
-    html += '<div class="center store-name">' + storeName + '</div>';
-    html += '<div class="center store-info">' + storeAddr + '</div>';
-    html += '<div class="center store-info">' + storeTel + '</div>';
-    html += '<div class="center store-info" style="margin-top:3px;font-size:9px;">' + fmtDateTime(txn.createdAt) + '</div>';
-    html += '<hr class="dashed">';
-    html += '<div class="txn-info">';
+    html += '<div class=\"center store-name\">' + storeName + '</div>';
+    html += '<div class=\"center store-info\">' + storeAddr + '</div>';
+    html += '<div class=\"center store-info\">' + storeTel + '</div>';
+    html += '<div class=\"center store-info\" style=\"margin-top:3px;font-size:9px;\">' + fmtDateTime(txn.createdAt) + '</div>';
+    html += '<hr class=\"dashed\">';
+    html += '<div class=\"txn-info\">';
     html += '<div>TXN#: ' + txn.id + '</div>';
     html += '<div>Shift #' + txn.shiftNumber + ' | ' + txn.cashierName + '</div>';
     if (txn.customerName !== 'Walk-in') html += '<div>Customer: ' + txn.customerName + '</div>';
     html += '</div>';
-    html += '<hr class="dashed">';
+    html += '<hr class=\"dashed\">';
     html += '<table><tbody>' + itemsHTML + '</tbody></table>';
-    html += '<hr class="dashed">';
+    html += '<hr class=\"dashed\">';
     html += '<table>';
-    html += '<tr><td style="font-size:10px;">Subtotal</td><td style="text-align:right;font-size:10px;white-space:nowrap;">' + fmtCur(txn.subtotal) + '</td></tr>';
-    if (txn.discount > 0) html += '<tr><td style="font-size:10px;">Discount</td><td style="text-align:right;font-size:10px;white-space:nowrap;">-' + fmtCur(txn.discount) + '</td></tr>';
-    html += '<tr class="total-row"><td>TOTAL</td><td style="text-align:right;white-space:nowrap;">' + fmtCur(txn.total) + '</td></tr>';
-    html += '<tr><td style="font-size:9px;">Payment (' + txn.payMode.toUpperCase() + ')</td><td style="text-align:right;font-size:9px;white-space:nowrap;">' + fmtCur(txn.cashReceived) + '</td></tr>';
-    if (txn.change > 0) html += '<tr><td style="font-size:9px;">Change</td><td style="text-align:right;font-size:9px;white-space:nowrap;">' + fmtCur(txn.change) + '</td></tr>';
+    html += '<tr><td style=\"font-size:10px;\">Subtotal</td><td style=\"text-align:right;font-size:10px;white-space:nowrap;\">' + fmtCur(txn.subtotal) + '</td></tr>';
+    if (txn.discount > 0) html += '<tr><td style=\"font-size:10px;\">Discount</td><td style=\"text-align:right;font-size:10px;white-space:nowrap;\">-' + fmtCur(txn.discount) + '</td></tr>';
+    html += '<tr class=\"total-row\"><td>TOTAL</td><td style=\"text-align:right;white-space:nowrap;\">' + fmtCur(txn.total) + '</td></tr>';
+    html += '<tr><td style=\"font-size:9px;\">Payment (' + txn.payMode.toUpperCase() + ')</td><td style=\"text-align:right;font-size:9px;white-space:nowrap;\">' + fmtCur(txn.cashReceived) + '</td></tr>';
+    if (txn.change > 0) html += '<tr><td style=\"font-size:9px;\">Change</td><td style=\"text-align:right;font-size:9px;white-space:nowrap;\">' + fmtCur(txn.change) + '</td></tr>';
     html += '</table>';
-    html += '<hr class="dashed">';
-    html += '<div class="footer">' + footer + '</div>';
-    html += '<div class="footer" style="font-size:8px;margin-top:3px;">*** OFFICIAL RECEIPT ***</div>';
+    html += '<hr class=\"dashed\">';
+    html += '<div class=\"footer\">' + footer + '</div>';
+    html += '<div class=\"footer\" style=\"font-size:8px;margin-top:3px;\">*** OFFICIAL RECEIPT ***</div>';
     html += '</body></html>';
     return html;
   }
 };
 
 /* ================================================================
-   BARCODE SCANNER ENGINE (Fast detection & auto-add)
+   BARCODE SCANNER ENGINE
    ================================================================ */
 var BarcodeEngine = {
   _buffer: '',
@@ -757,8 +848,6 @@ const today=()=>new Date().toISOString().slice(0,10);
 
 const safeJSONParse=(str,def)=>{try{return JSON.parse(str);}catch(e){return def;}};
 const safeJSONStringify=(obj)=>{try{return JSON.stringify(obj);}catch(e){return '{}';}};
-const startOfDay=(d)=>new Date(d+'T00:00:00').toISOString();
-const endOfDay=(d)=>new Date(d+'T23:59:59').toISOString();
 
 /* ================================================================
    MAINTENANCE SYSTEM
@@ -787,15 +876,13 @@ const MaintenanceSystem = {
 };
 
 /* ================================================================
-   INITIAL DATA (with integrity checks)
+   INITIAL DATA (localStorage only - no products/categories seed)
    ================================================================ */
 const initDB=()=>{
   try {
     if(!DB.get('init')){
       DB.set('users',[ {id:'u1',name:'Admin User',username:'admin',password:'admin123',role:'admin',pin:'1234',active:true,createdAt:now()}, {id:'u2',name:'Justin',username:'cashier1',password:'cashier123',role:'cashier',pin:'5678',active:true,createdAt:now()} ]);
-      DB.set('categories',[ {id:'c1',name:'Food & Beverages',color:'#4f8ef7'},{id:'c2',name:'Snacks',color:'#22c87a'}, {id:'c3',name:'Beverages',color:'#f7884f'},{id:'c4',name:'Personal Care',color:'#9b72f7'}, {id:'c5',name:'Household',color:'#f5c842'} ]);
-      DB.set('products',[ {id:'p1',name:'Zippy Super Jumbo6',sku:'0679A',categoryId:'c1',price:285,cost:220,stock:50,lowStockAlert:10,barcode:'8850999123456',image:null,active:true,createdAt:now()}, {id:'p2',name:'Zippy CheeseDog',sku:'0688B',categoryId:'c3',price:75,cost:55,stock:80,lowStockAlert:20,barcode:'4902102113212',image:null,active:true,createdAt:now()}, {id:'p3',name:'Marlboro Red',sku:'CIG001',categoryId:'c1',price:150,cost:120,stock:5,lowStockAlert:10,barcode:'1234567890123',image:null,active:true,createdAt:now()}, {id:'p4',name:'Safeguard Bar Soap',sku:'SOA001',categoryId:'c4',price:65,cost:48,stock:30,lowStockAlert:8,barcode:'9999999000001',image:null,active:true,createdAt:now()}, {id:'p5',name:'Lucky Me Pancit Canton',sku:'LMC001',categoryId:'c2',price:18,cost:13,stock:120,lowStockAlert:30,barcode:'4800016010045',image:null,active:true,createdAt:now()}, {id:'p6',name:'Tide Powder 1kg',sku:'TID001',categoryId:'c5',price:89,cost:68,stock:25,lowStockAlert:8,barcode:'6281003002965',image:null,active:true,createdAt:now()} ]);
-      DB.set('transactions',[]); DB.set('expenses',[]); DB.set('restocks',[]); DB.set('shifts',[]); DB.set('adminSalesHistory',DB.get('adminSalesHistory',[])); DB.set('activeShifts',{});
+      DB.set('transactions',[]); DB.set('expenses',[]); DB.set('restocks',[]); DB.set('shifts',[]); DB.set('adminSalesHistory',[]); DB.set('activeShifts',{});
       DB.set('settings',{ storeName:'Branch',storeTagline:'Point of Sale System',storeAddress:'123 Main St, Calamba, Laguna', storeTel:'(049) 123-4567',receiptFooter:'Thank you for shopping with us!', currency:'₱',taxRate:0,theme:'dark',loginBg:'',primaryColor:'#4f8ef7' });
       DB.set('maintenanceLogs', []); DB.set('lastMaintenance', now()); DB.set('offlineQueue', []); DB.set('backups', []); DB.set('init',true);
       DB.createBackup();
@@ -1002,7 +1089,7 @@ const Sidebar=({page,setPage,user,onLogout,collapsed,setCollapsed})=>{
     <div style={{width:collapsed?64:220,background:'var(--bg2)',borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',height:'100vh',position:'sticky',top:0,flexShrink:0,transition:'width .2s',overflow:'hidden'}}>
       <div style={{padding:'16px 12px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:10,minHeight:64}}>
         <div style={{width:36,height:36,background:'var(--accent)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>🏪</div>
-        {!collapsed&&<div style={{overflow:'hidden'}}><div style={{fontWeight:700,fontSize:14,whiteSpace:'nowrap'}}>Branch POS</div><div style={{fontSize:11,color:'var(--text3)'}}>v2.1.0</div></div>}
+        {!collapsed&&<div style={{overflow:'hidden'}}><div style={{fontWeight:700,fontSize:14,whiteSpace:'nowrap'}}>Branch POS</div><div style={{fontSize:11,color:'var(--text3)'}}>v2.2.0</div></div>}
       </div>
       <div style={{flex:1,overflowY:'auto',padding:'10px 8px'}}>
         {nav.map(n=>(
@@ -1033,11 +1120,10 @@ const Sidebar=({page,setPage,user,onLogout,collapsed,setCollapsed})=>{
   );
 };
 
-
 /* ─── POS TERMINAL ─── */
 const POSTerminal=({user})=>{
-  const [products,setProducts]=useState(()=>DB.get('products',[]).filter(p=>p.active!==false));
-  const [categories]=useState(()=>DB.get('categories',[]));
+  const [products,setProducts]=useState([]);
+  const [categories,setCategories]=useState([]);
   const [cart,setCart]=useState([]);
   const [search,setSearch]=useState('');
   const [catFilter,setCatFilter]=useState('all');
@@ -1055,7 +1141,31 @@ const POSTerminal=({user})=>{
   const [updateTick,setUpdateTick]=useState(0);
   const isOnline = useOfflineStatus();
 
-  // Initialize barcode scanner engine
+  // Load products and categories from Supabase on mount
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [prodData, catData] = await Promise.all([
+          SupabaseDB.getProducts(),
+          SupabaseDB.getCategories()
+        ]);
+        const activeProds = prodData.filter(p => p.active !== false);
+        setProducts(activeProds);
+        setCategories(catData);
+        DB.set('products', prodData);
+        DB.set('categories', catData);
+      } catch (e) {
+        console.error('Failed to load from Supabase:', e);
+        const cachedProds = DB.get('products', []);
+        const cachedCats = DB.get('categories', []);
+        setProducts(cachedProds.filter(p => p.active !== false));
+        setCategories(cachedCats);
+        showToast('Using cached data (offline)', 'warn');
+      }
+    }
+    loadData();
+  }, []);
+
   useEffect(function() {
     BarcodeEngine.init(function(code) {
       checkBarcode(code);
@@ -1149,23 +1259,32 @@ const POSTerminal=({user})=>{
         change:payMode==='cash'?change:0, createdAt:now(), date:today(),
       };
 
-      // Save transaction - always works offline
       const txns=DB.get('transactions',[]);
-      // Duplicate check
       if(txns.find(t=>t.id===txn.id)){showToast('Transaction already exists','error');return;}
       txns.push(txn); DB.set('transactions',txns);
-      // Sync to IndexedDB immediately for persistence
       DB.setAsync('transactions',txns).catch(function(e){ console.warn('IDB sync failed:',e); });
 
-      // Queue for sync if offline
       if(!navigator.onLine){ DB.queueOffline('transaction', txn); }
 
-      // Deduct stock
+      // Deduct stock locally and sync to Supabase
       const prods=DB.get('products',[]);
       const updated=prods.map(p=>{ const ci=cart.find(i=>i.id===p.id); return ci?{...p,stock:p.stock-ci.qty}:p; });
-      DB.set('products',updated); setProducts(updated.filter(p=>p.active!==false));
+      DB.set('products',updated);
 
-      // Update shift totals
+      // Update stock in Supabase for each product in cart
+      cart.forEach(async function(item) {
+        try {
+          const updatedProduct = updated.find(p => p.id === item.id);
+          if (updatedProduct && supabaseClient) {
+            await SupabaseDB.updateProduct(item.id, { stock: updatedProduct.stock });
+          }
+        } catch (e) {
+          console.warn('Supabase stock update failed for', item.id, e);
+        }
+      });
+
+      setProducts(updated.filter(p=>p.active!==false));
+
       const shiftTxns = txns.filter(t=>t.shiftId===currentShift.shiftId);
       currentShift.totalSales = shiftTxns.reduce((s,t)=>s+t.total,0);
       currentShift.totalTransactions = shiftTxns.length;
@@ -1175,10 +1294,8 @@ const POSTerminal=({user})=>{
       activeShifts[user.id] = currentShift;
       DB.set('activeShifts',activeShifts);
 
-      // Auto backup after transaction
       DB.createBackup();
 
-      // AUTO-PRINT RECEIPT
       try {
         PrintEngine.printReceipt(txn, settings);
       } catch (e) { console.warn('Auto-print failed:', e); }
@@ -1373,8 +1490,8 @@ const POSTerminal=({user})=>{
 
 /* ─── PRODUCTS ─── */
 const ProductsPage=({user})=>{
-  const [products,setProducts]=useState(()=>DB.get('products',[]));
-  const [categories,setCategories]=useState(()=>DB.get('categories',[]));
+  const [products,setProducts]=useState([]);
+  const [categories,setCategories]=useState([]);
   const [search,setSearch]=useState('');
   const [catFilter,setCatFilter]=useState('all');
   const [showModal,setShowModal]=useState(false);
@@ -1385,32 +1502,81 @@ const ProductsPage=({user})=>{
   const empty={name:'',sku:'',categoryId:'',price:'',cost:'',stock:'',lowStockAlert:'10',barcode:'',image:null,active:true};
   const [form,setForm]=useState(empty);
 
-  const save=useCallback(function(){
+  // Load products and categories from Supabase on mount
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [prodData, catData] = await Promise.all([
+          SupabaseDB.getProducts(),
+          SupabaseDB.getCategories()
+        ]);
+        setProducts(prodData);
+        setCategories(catData);
+        DB.set('products', prodData);
+        DB.set('categories', catData);
+      } catch (e) {
+        console.error('Failed to load from Supabase:', e);
+        setProducts(DB.get('products', []));
+        setCategories(DB.get('categories', []));
+        showToast('Using cached data (offline)', 'warn');
+      }
+    }
+    loadData();
+  }, []);
+
+  const save=useCallback(async function(){
     if(!form.name||!form.price){showToast('Name and price required','error');return;}
     try {
-      var prods=DB.get('products',[]);
       var updated;
       if(editing){
-        updated=prods.map(function(p){ return p.id===editing?{...p,...form,price:Number(form.price),cost:Number(form.cost),stock:Number(form.stock),lowStockAlert:Number(form.lowStockAlert)||10,updatedAt:now()}:p; });
-        DB.set('products',updated);setProducts(updated);
-        AutoSave.schedule('products', updated);
-      }else{
-        var np={...form,id:uid(),sku:form.sku||'SKU'+Date.now(),price:Number(form.price),cost:Number(form.cost),stock:Number(form.stock),lowStockAlert:Number(form.lowStockAlert)||10,createdAt:now()};
-        updated=[...prods,np];DB.set('products',updated);setProducts(updated);
-        AutoSave.schedule('products', updated);
+        const updates = {
+          ...form,
+          price: Number(form.price),
+          cost: Number(form.cost),
+          stock: Number(form.stock),
+          lowStockAlert: Number(form.lowStockAlert) || 10,
+          updatedAt: now()
+        };
+        await SupabaseDB.updateProduct(editing, updates);
+        updated = products.map(function(p){ return p.id===editing?{...p,...updates}:p; });
+        setProducts(updated);
+        DB.set('products', updated);
+        showToast('Product updated','success');
+      } else {
+        var np = {
+          ...form,
+          id: uid(),
+          sku: form.sku || 'SKU'+Date.now(),
+          price: Number(form.price),
+          cost: Number(form.cost),
+          stock: Number(form.stock),
+          lowStockAlert: Number(form.lowStockAlert) || 10,
+          createdAt: now()
+        };
+        await SupabaseDB.insertProduct(np);
+        updated = [...products, np];
+        setProducts(updated);
+        DB.set('products', updated);
+        showToast('Product added','success');
       }
-      DB.createBackup();
-      showToast(editing?'Product updated':'Product added','success');
       setShowModal(false);setEditing(null);setForm(empty);
-    } catch (e) { showToast('Save failed','error'); console.error(e); }
-  },[form,editing,empty]);
+    } catch (e) {
+      console.error('Save error:', e);
+      showToast('Save failed: ' + (e.message || 'Unknown error'),'error');
+    }
+  },[form,editing,empty,products]);
 
-  const del=useCallback((id)=>{
+  const del=useCallback(async (id)=>{
     try {
-      const updated=products.map(p=>p.id===id?{...p,active:false}:p);
-      DB.set('products',updated);setProducts(updated);showToast('Product deactivated','info');
-      DB.createBackup();
-    } catch (e) { showToast('Delete failed','error'); }
+      await SupabaseDB.deleteProduct(id);
+      const updated = products.map(p=>p.id===id?{...p,active:false}:p);
+      setProducts(updated);
+      DB.set('products', updated);
+      showToast('Product deactivated','info');
+    } catch (e) {
+      console.error('Delete error:', e);
+      showToast('Delete failed: ' + (e.message || 'Unknown error'),'error');
+    }
   },[products]);
 
   const handleImg=useCallback((e)=>{
@@ -1431,15 +1597,32 @@ const ProductsPage=({user})=>{
   const openEdit=useCallback((p)=>{setForm({...p,price:String(p.price),cost:String(p.cost),stock:String(p.stock),lowStockAlert:String(p.lowStockAlert||10)});setEditing(p.id);setShowModal(true);},[]);
 
   const [catForm,setCatForm]=useState({name:'',color:'#4f8ef7'});
-  const saveCat=useCallback(()=>{
+  const saveCat=useCallback(async ()=>{
     if(!catForm.name)return;
     try {
-      const cats=[...categories,{id:uid(),...catForm}];
-      DB.set('categories',cats);setCategories(cats);setCatForm({name:'',color:'#4f8ef7'});showToast('Category added','success');
-      DB.createBackup();
-    } catch (e) { showToast('Failed to add category','error'); }
+      const newCat = {id: uid(), ...catForm};
+      await SupabaseDB.insertCategory(newCat);
+      const cats=[...categories,newCat];
+      setCategories(cats);
+      DB.set('categories',cats);
+      setCatForm({name:'',color:'#4f8ef7'});
+      showToast('Category added','success');
+    } catch (e) {
+      console.error('Category save error:', e);
+      showToast('Failed to add category: ' + (e.message || 'Unknown error'),'error');
+    }
   },[catForm,categories]);
-  const delCat=useCallback((id)=>{ const cats=categories.filter(c=>c.id!==id);DB.set('categories',cats);setCategories(cats); },[categories]);
+  const delCat=useCallback(async (id)=>{
+    try {
+      await SupabaseDB.deleteCategory(id);
+      const cats=categories.filter(c=>c.id!==id);
+      setCategories(cats);
+      DB.set('categories',cats);
+    } catch (e) {
+      console.error('Category delete error:', e);
+      showToast('Failed to delete category','error');
+    }
+  },[categories]);
 
   return(
     <div style={{padding:'20px',flex:1,overflow:'auto'}}>
@@ -1569,10 +1752,9 @@ const ProductsPage=({user})=>{
   );
 };
 
-
 /* ─── INVENTORY ─── */
 const InventoryPage=({user})=>{
-  const [products,setProducts]=useState(()=>DB.get('products',[]));
+  const [products,setProducts]=useState([]);
   const [restocks,setRestocks]=useState(()=>DB.get('restocks',[]));
   const [showModal,setShowModal]=useState(false);
   const [form,setForm]=useState({productId:'',qty:'',supplier:'',notes:'',cost:''});
@@ -1580,23 +1762,46 @@ const InventoryPage=({user})=>{
   const [search,setSearch]=useState('');
   const categories=DB.get('categories',[]);
 
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await SupabaseDB.getProducts();
+        setProducts(data);
+        DB.set('products', data);
+      } catch (e) {
+        console.error('Failed to load products from Supabase:', e);
+        setProducts(DB.get('products', []));
+        showToast('Using cached products (offline)', 'warn');
+      }
+    }
+    loadProducts();
+  }, []);
+
   const lowStock=products.filter(p=>p.active!==false&&Number(p.stock||0)<=Number(p.lowStockAlert||0));
 
-  const addRestock=useCallback(function(){
+  const addRestock=useCallback(async function(){
     if(!form.productId||!form.qty){showToast('Select product and quantity','error');return;}
     try {
       var rec={id:uid(),...form,qty:Number(form.qty),cost:Number(form.cost||0),addedBy:user.name,createdAt:now()};
       var updRest=[...restocks,rec];DB.set('restocks',updRest);setRestocks(updRest);
       AutoSave.schedule('restocks', updRest);
-      var prods=DB.get('products',[]);
-      var upd=prods.map(function(p){ return p.id===form.productId?{...p,stock:Number(p.stock||0)+Number(form.qty||0)}:p; });
-      DB.set('products',upd);setProducts(upd);
-      AutoSave.schedule('products', upd);
+
+      const product = products.find(p => p.id === form.productId);
+      const newStock = Number(product.stock || 0) + Number(form.qty || 0);
+      await SupabaseDB.updateProduct(form.productId, { stock: newStock });
+
+      var prods=products.map(function(p){ return p.id===form.productId?{...p,stock:newStock}:p; });
+      setProducts(prods);
+      DB.set('products',prods);
+
       setForm({productId:'',qty:'',supplier:'',notes:'',cost:''});
       setShowModal(false);showToast('Stock updated successfully','success');
       DB.createBackup();
-    } catch (e) { showToast('Restock failed','error'); }
-  },[form,user,restocks]);
+    } catch (e) {
+      console.error('Restock error:', e);
+      showToast('Restock failed: ' + (e.message || 'Unknown error'),'error');
+    }
+  },[form,user,restocks,products]);
 
   const filtered=products.filter(p=>p.active!==false&&(search?p.name.toLowerCase().includes(search.toLowerCase()):true));
 
@@ -1746,19 +1951,16 @@ const SalesPage=({user})=>{
         status:diff>0?'over':diff<0?'short':'exact', transactions: filtered, createdAt: endTime,
       };
       const shifts=DB.get('shifts',[]);
-      // Check for duplicate
       if(!shifts.find(s=>s.shiftId===shiftData.shiftId)){
         DB.set('shifts',[...shifts,shiftData]);
-      DB.setAsync('shifts',[...shifts,shiftData]).catch(function(e){ console.warn('IDB sync failed:',e); });
+        DB.setAsync('shifts',[...shifts,shiftData]).catch(function(e){ console.warn('IDB sync failed:',e); });
       }
       var adminHistory = DB.get('adminSalesHistory',[]);
       if(!adminHistory.find(function(a){ return a.shiftId===shiftData.shiftId; })){
         var newHistory = [...adminHistory,shiftData];
         DB.set('adminSalesHistory',newHistory);
-        // Also sync to IndexedDB for persistence
         DB.setAsync('adminSalesHistory',newHistory).catch(function(e){ console.warn('IDB sync failed:',e); });
       }
-      // Queue for sync if offline
       if(!navigator.onLine){ DB.queueOffline('shift', shiftData); }
       const activeShifts = DB.get('activeShifts',{});
       delete activeShifts[user.id];
@@ -2099,7 +2301,6 @@ const ExpensesPage=({user})=>{
   );
 };
 
-
 /* ─── REPORTS ─── */
 const ReportsPage=()=>{
   const [range,setRange]=useState('daily');
@@ -2260,7 +2461,6 @@ const AdminArchivePage=()=>{
   const [refreshTick,setRefreshTick]=useState(0);
   const settings=DB.get('settings',{});
 
-  // Re-fetch archive data on mount and when refreshTick changes
   useEffect(function(){
     var data = DB.get('adminSalesHistory',[]);
     setArchive(data);
@@ -2696,7 +2896,6 @@ const SettingsPage=()=>{
   );
 };
 
-
 /* ─── MAIN APP ─── */
 const App=()=>{
   const [user,setUser]=useState(()=>{
@@ -2706,9 +2905,7 @@ const App=()=>{
   const [page,setPage]=useState('pos');
   const [collapsed,setCollapsed]=useState(false);
   const {toast,showToast:_}=useToast();
-  const [systemReady, setSystemReady] = useState(false);
 
-  // Request persistent storage to prevent browser from clearing data
   useEffect(function(){
     if (navigator.storage && navigator.storage.persist) {
       navigator.storage.persist().then(function(granted) {
@@ -2718,10 +2915,8 @@ const App=()=>{
     }
   },[]);
 
-  // Register service worker on mount
   useEffect(function(){ registerServiceWorker(); },[]);
 
-  // System initialization and data integrity check
   useEffect(function(){
     var init = async function() {
       try {
@@ -2732,16 +2927,13 @@ const App=()=>{
           await DB.repairData();
         }
         await WAL.cleanup(86400000);
-        setSystemReady(true);
       } catch (e) {
         console.error('System initialization failed:', e);
-        setSystemReady(true);
       }
     };
     init();
   },[]);
 
-  // Auto-backup every 5 minutes + auto-save flush + WAL cleanup
   useEffect(function(){
     var backupInterval = setInterval(function(){
       if(user) { AutoSave.flush(); DB.createBackup(); WAL.cleanup(); }
@@ -2749,7 +2941,6 @@ const App=()=>{
     return function() { clearInterval(backupInterval); };
   },[user]);
 
-  // Data validation on mount
   useEffect(()=>{
     const issues = DB.validateData();
     if(issues.length > 0){
@@ -2764,7 +2955,6 @@ const App=()=>{
     sessionStorage.setItem('bpos_sid',sid);
     setPage(u.role==='admin'?'pos':'pos');
     DB.createBackup();
-    // Ensure all critical data is synced to IndexedDB
     var stores = ['products','categories','transactions','expenses','shifts','adminSalesHistory','users','settings'];
     stores.forEach(function(s) {
       var data = DB.get(s, null);
@@ -2778,7 +2968,6 @@ const App=()=>{
         const sessions=DB.get('sessions',[]);
         DB.set('sessions',sessions.map(s=>s.id===sessionId?{...s,logoutAt:now()}:s));
       }
-      // End active shift if any
       if(user){
         const activeShifts = DB.get('activeShifts',{});
         if(activeShifts[user.id]){
@@ -2791,7 +2980,6 @@ const App=()=>{
     sessionStorage.clear();
   },[sessionId,user]);
 
-  // Handle beforeunload to backup data + flush auto-save + visibility change
   useEffect(function(){
     var handleBeforeUnload = function() { AutoSave.flush(); DB.createBackup(); };
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -2846,7 +3034,6 @@ const App=()=>{
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-// Hide loading screen once React mounts
 setTimeout(function(){ if(window.hideLoading) window.hideLoading(); }, 500);
 </script>
 </body>
