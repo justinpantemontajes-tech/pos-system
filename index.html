@@ -1,14 +1,15 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Branch POS — Point of Sale System</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -28,7 +29,7 @@
 --shadow:0 4px 24px rgba(0,0,0,0.4);
 --font:'Sora',sans-serif;--mono:'DM Mono',monospace;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:16px}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
@@ -36,7 +37,7 @@ input,select,textarea{font-family:var(--font);background:var(--bg3);border:1px s
 input:focus,select:focus,textarea:focus{border-color:var(--accent)}
 input::placeholder{color:var(--text3)}
 button{font-family:var(--font);cursor:pointer;border:none;transition:all .18s}
-.btn{padding:9px 18px;border-radius:var(--radius);font-size:14px;font-weight:500}
+.btn{padding:9px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;min-height:48px}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent2)}
 .btn-success{background:var(--green);color:#fff}
@@ -45,7 +46,7 @@ button{font-family:var(--font);cursor:pointer;border:none;transition:all .18s}
 .btn-danger:hover{filter:brightness(1.1)}
 .btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--bg4);border-color:var(--border2)}
-.btn-sm{padding:6px 13px;font-size:13px}
+.btn-sm{padding:6px 13px;font-size:13px;min-height:40px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius2);padding:18px}
 .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.5px}
 .badge-green{background:var(--green-dim);color:var(--green)}
@@ -78,10 +79,10 @@ label{font-size:12px;color:var(--text2);margin-bottom:4px;display:block;font-wei
 .sidebar-link{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:var(--radius);font-size:14px;color:var(--text2);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
 .sidebar-link:hover,.sidebar-link.active{background:var(--accent-dim);color:var(--accent)}
 .sidebar-link svg{width:18px;height:18px;flex-shrink:0}
-.pos-key{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .15s;text-align:center;font-size:13px;font-weight:500;user-select:none}
+.pos-key{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .15s;text-align:center;font-size:13px;font-weight:500;user-select:none;min-height:48px;display:flex;flex-direction:column;justify-content:center}
 .pos-key:hover{background:var(--bg4);border-color:var(--border2)}
 .pos-key:active{transform:scale(.96)}
-.numpad-btn{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:15px;font-size:18px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.numpad-btn{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:15px;font-size:18px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none;min-height:48px}
 .numpad-btn:hover{background:var(--bg4)}
 .numpad-btn:active{transform:scale(.95)}
 .toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 20px;border-radius:var(--radius);font-size:14px;font-weight:500;box-shadow:var(--shadow);animation:slideUp .3s ease}
@@ -93,7 +94,7 @@ label{font-size:12px;color:var(--text2);margin-bottom:4px;display:block;font-wei
 .search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);width:16px;height:16px}
 .spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:12px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;min-height:48px}
 .chip.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 .receipt{background:#fff;color:#111;font-family:var(--mono);font-size:12px;padding:20px;border-radius:var(--radius);max-width:320px;margin:0 auto}
 .receipt hr{border:none;border-top:1px dashed #ccc;margin:8px 0}
@@ -139,8 +140,31 @@ body *{display:none!important}
 .sync-status.visible{opacity:1}
 .sync-status.syncing{background:var(--accent-dim);color:var(--accent)}
 .sync-status.synced{background:var(--green-dim);color:var(--green)}
+.sync-status.online{background:var(--green-dim);color:var(--green)}
+.sync-status.offline{background:var(--red-dim);color:var(--red)}
 .auto-print-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9997;display:flex;align-items:center;justify-content:center}
 .auto-print-spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: 1fr !important; }
+  .btn, .numpad-btn, .pos-key, .chip { min-height: 48px !important; }
+  body { font-size: 16px; }
+  .pos-layout { flex-direction: column; }
+  .pos-products { flex: 1; overflow-y: auto; padding-bottom: 50vh; }
+  .pos-cart { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-height: 45vh; overflow-y: auto; border-top: 2px solid var(--border); background: var(--bg2); }
+  .sidebar { display: none; }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  body { font-size: 18px; }
+}
+@media (min-width: 1025px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  body { font-size: 20px; }
+}
+@media (min-width: 1440px) {
+  .product-grid { grid-template-columns: repeat(4, 1fr) !important; }
+}
 </style>
 <base target="_blank">
 </head>
@@ -169,177 +193,111 @@ var loading = document.getElementById('loading');
 if (loading) { loading.style.opacity = '0'; setTimeout(function(){loading.style.display='none';}, 300); }
 };
 </script>
+
 <script type="text/babel" data-presets="react">
 if (typeof ReactDOM !== 'undefined' && ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
 ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = true;
 }
 const {useState,useEffect,useRef,useCallback,useMemo,useReducer}=React;
 
-// TODO: Replace SUPABASE_URL and SUPABASE_ANON_KEY with your actual credentials
-const SUPABASE_URL = 'SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://your-project.supabase.co';
+const SUPABASE_ANON_KEY = 'your-anon-key';
+const supabaseClient = typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-// Initialize Supabase client with proper error handling
-let supabaseClient = null;
-try {
-if (typeof supabase !== 'undefined' && supabase.createClient) {
-if (SUPABASE_URL !== 'SUPABASE_URL' && SUPABASE_ANON_KEY !== 'SUPABASE_ANON_KEY') {
-supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-console.log('Supabase client initialized');
-} else {
-console.warn('Supabase credentials not configured - using localStorage only');
-}
-}
-} catch (e) {
-console.error('Failed to initialize Supabase:', e);
-}
-
-/* ================================================================
-SUPABASE HELPERS
-================================================================ */
-const SupabaseDB = {
-async getProducts() {
-if (!supabaseClient) return [];
-try {
-const { data, error } = await supabaseClient.from('products').select('*').order('id');
-if (error) throw error;
-return data || [];
-} catch (e) {
-console.error('Supabase getProducts error:', e);
-return [];
-}
-},
-async insertProduct(product) {
-if (!supabaseClient) throw new Error('Supabase not connected');
-try {
-const { data, error } = await supabaseClient.from('products').insert(product).select();
-if (error) throw error;
-return data ? data[0] : null;
-} catch (e) {
-console.error('Supabase insertProduct error:', e);
-throw e;
-}
-},
-async updateProduct(id, updates) {
-if (!supabaseClient) throw new Error('Supabase not connected');
-try {
-const { data, error } = await supabaseClient.from('products').update(updates).eq('id', id).select();
-if (error) throw error;
-return data ? data[0] : null;
-} catch (e) {
-console.error('Supabase updateProduct error:', e);
-throw e;
-}
-},
-async deleteProduct(id) {
-if (!supabaseClient) throw new Error('Supabase not connected');
-try {
-const { error } = await supabaseClient.from('products').update({ active: false }).eq('id', id);
-if (error) throw error;
-return true;
-} catch (e) {
-console.error('Supabase deleteProduct error:', e);
-throw e;
-}
-},
-async getCategories() {
-if (!supabaseClient) return [];
-try {
-const { data, error } = await supabaseClient.from('categories').select('*').order('id');
-if (error) throw error;
-return data || [];
-} catch (e) {
-console.error('Supabase getCategories error:', e);
-return [];
-}
-},
-async insertCategory(category) {
-if (!supabaseClient) throw new Error('Supabase not connected');
-try {
-const { data, error } = await supabaseClient.from('categories').insert(category).select();
-if (error) throw error;
-return data ? data[0] : null;
-} catch (e) {
-console.error('Supabase insertCategory error:', e);
-throw e;
-}
-},
-async deleteCategory(id) {
-if (!supabaseClient) throw new Error('Supabase not connected');
-try {
-const { error } = await supabaseClient.from('categories').delete().eq('id', id);
-if (error) throw error;
-return true;
-} catch (e) {
-console.error('Supabase deleteCategory error:', e);
-throw e;
-}
-}
+const SyncEngine = {
+  isSyncing: false,
+  async syncToSupabase() {
+    if (!supabaseClient || !navigator.onLine || this.isSyncing) return;
+    this.isSyncing = true;
+    window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Syncing...' }));
+    
+    const queue = DB.get('offlineQueue', []);
+    const pending = queue.filter(q => !q.synced);
+    
+    for (const item of pending) {
+      try {
+        if (item.type === 'transaction') {
+          const { data: existing } = await supabaseClient.from('sales').select('id').eq('id', item.data.id).maybeSingle();
+          if (!existing) {
+            const saleData = {
+              id: item.data.id,
+              shift_id: item.data.shiftId,
+              shift_number: item.data.shiftNumber,
+              cashier_id: item.data.cashierId,
+              cashier_name: item.data.cashierName,
+              customer_name: item.data.customerName,
+              subtotal: item.data.subtotal,
+              discount: item.data.discount,
+              total: item.data.total,
+              pay_mode: item.data.payMode,
+              cash_received: item.data.cashReceived,
+              change: item.data.change,
+              created_at: item.data.createdAt,
+              sync_status: 'synced'
+            };
+            await supabaseClient.from('sales').insert(saleData);
+            
+            const itemsData = item.data.items.map(i => ({
+              id: uid(),
+              sale_id: item.data.id,
+              product_id: i.id,
+              name: i.name,
+              qty: i.qty,
+              weight_kg: i.weight_kg || null,
+              unit_price: i.unitPrice,
+              subtotal: i.subtotal
+            }));
+            if (itemsData.length > 0) {
+              await supabaseClient.from('sale_items').insert(itemsData);
+            }
+          }
+        } else if (item.type === 'product_update') {
+          await supabaseClient.from('products').upsert(item.data);
+        } else if (item.type === 'report') {
+          await supabaseClient.from('reports').upsert(item.data);
+        } else if (item.type === 'archive') {
+          await supabaseClient.from('archives').upsert(item.data);
+        }
+        item.synced = true;
+      } catch (e) {
+        console.error('Supabase sync error for', item.id, e);
+        item.sync_status = 'failed';
+      }
+    }
+    
+    DB.set('offlineQueue', queue);
+    this.isSyncing = false;
+    window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Synced' }));
+    setTimeout(() => window.dispatchEvent(new CustomEvent('sync-status', { detail: '' })), 3000);
+  },
+  setupRealtime(onProductsUpdate) {
+    if (!supabaseClient) return;
+    const channel = supabaseClient.channel('public:products')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, payload => {
+        const prods = DB.get('products', []);
+        if (payload.eventType === 'DELETE') {
+          const updated = prods.filter(p => p.id !== payload.old.id);
+          DB.set('products', updated);
+          if (onProductsUpdate) onProductsUpdate(updated);
+        } else {
+          const newProd = payload.new;
+          const existingIdx = prods.findIndex(p => p.id === newProd.id);
+          if (existingIdx >= 0) {
+            prods[existingIdx] = newProd;
+          } else {
+            prods.push(newProd);
+          }
+          DB.set('products', prods);
+          if (onProductsUpdate) onProductsUpdate(prods);
+        }
+      })
+      .subscribe();
+    return () => supabaseClient.removeChannel(channel);
+  }
 };
 
-/* ================================================================
-SERVICE WORKER REGISTRATION
-================================================================ */
-const registerServiceWorker = () => {
-if ('serviceWorker' in navigator) {
-const swCode = `
-const CACHE_NAME = 'branch-pos-v2';
-self.addEventListener('install', function(e) {
-e.waitUntil(
-caches.open(CACHE_NAME).then(function(cache) {
-return cache.addAll(['./']);
-}).catch(function() {}).then(function() {
-return self.skipWaiting();
-})
-);
-});
-self.addEventListener('activate', function(e) {
-e.waitUntil(
-caches.keys().then(function(cacheNames) {
-return Promise.all(
-cacheNames.filter(function(name) { return name !== CACHE_NAME; })
-.map(function(name) { return caches.delete(name); })
-);
-}).then(function() { return self.clients.claim(); })
-);
-});
-self.addEventListener('fetch', function(e) {
-if (e.request.method !== 'GET') return;
-e.respondWith(
-caches.match(e.request).then(function(cached) {
-if (cached) return cached;
-return fetch(e.request).then(function(response) {
-if (!response || response.status !== 200 || response.type !== 'basic') return response;
-var clone = response.clone();
-caches.open(CACHE_NAME).then(function(cache) { cache.put(e.request, clone); });
-return response;
-}).catch(function() {
-if (e.request.mode === 'navigate') return caches.match('./');
-return new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
-});
-})
-);
-});
-`;
-try {
-var blob = new Blob([swCode], {type: 'application/javascript'});
-var swUrl = URL.createObjectURL(blob);
-navigator.serviceWorker.register(swUrl).then(function(r) {
-console.log('Service Worker registered:', r.scope);
-}).catch(function(e) {
-console.warn('Service Worker registration failed:', e);
-});
-} catch(e) {
-console.warn('Service Worker setup failed:', e);
-}
-}
-};
-
-/* ================================================================
-INDEXEDDB ENGINE
-================================================================ */
 const IDB = {
-db: null, name: 'BranchPOS_DB', version: 1,
+db: null, name: 'BranchPOS_DB', version: 2,
 async init() {
 return new Promise((resolve, reject) => {
 if (this.db) { resolve(this.db); return; }
@@ -348,7 +306,7 @@ request.onerror = () => reject(request.error);
 request.onsuccess = () => { this.db = request.result; resolve(this.db); };
 request.onupgradeneeded = (event) => {
 const db = event.target.result;
-['products','categories','transactions','expenses','restocks','shifts','adminSalesHistory','activeShifts','users','settings','sessions','maintenance','offlineQueue','backups','checksums','walLog'].forEach(store => {
+['products','categories','transactions','expenses','restocks','shifts','adminSalesHistory','activeShifts','users','settings','sessions','maintenance','offlineQueue','backups','checksums','walLog','reports','archives'].forEach(store => {
 if (!db.objectStoreNames.contains(store)) db.createObjectStore(store, { keyPath: 'id' });
 });
 };
@@ -395,35 +353,18 @@ reject(req.error);
 }
 };
 });
-},
-async delete(store, id) {
-await this.init();
-return new Promise((resolve, reject) => {
-const req = this.db.transaction(store, 'readwrite').objectStore(store).delete(id);
-req.onsuccess = () => resolve(true);
-req.onerror = () => reject(req.error);
-});
 }
 };
 
-/* ================================================================
-HYBRID DB LAYER
-================================================================ */
 const DB = {
 offlineQueue: [], syncInProgress: false, lastSyncTime: null,
 _lsGet(k, def) {
 try { const v = localStorage.getItem('bpos_' + k); return v ? JSON.parse(v) : def; }
-catch (e) { console.warn('LS read error:', e); return def; }
+catch (e) { return def; }
 },
 _lsSet(k, v) {
 try { localStorage.setItem('bpos_' + k, JSON.stringify(v)); return true; }
-catch (e) {
-try {
-const backups = this._lsGet('backups', []);
-if (backups.length > 3) { backups.splice(0, backups.length - 3); localStorage.setItem('bpos_backups', JSON.stringify(backups)); }
-localStorage.setItem('bpos_' + k, JSON.stringify(v)); return true;
-} catch (e2) { console.error('LS write failed:', e2); return false; }
-}
+catch (e) { return false; }
 },
 async getAsync(k, def) {
 try {
@@ -433,8 +374,7 @@ if (Array.isArray(idbData)) return idbData;
 if (idbData._data !== undefined) return idbData._data;
 return idbData;
 }
-}
-catch (e) {}
+} catch (e) {}
 return this._lsGet(k, def);
 },
 async setAsync(k, v) {
@@ -449,52 +389,30 @@ await IDB.set(k, { id: k, _data: v });
 return true;
 },
 get(k, def) { return this._lsGet(k, def); },
-set(k, v) { return this._lsSet(k, v); },
+set(k, v) { 
+  this._lsSet(k, v); 
+  return true; 
+},
 queueOffline(type, data) {
 const queue = this._lsGet('offlineQueue', []);
-queue.push({ type, data, timestamp: Date.now(), id: uid(), synced: false });
+queue.push({ type, data, timestamp: Date.now(), id: uid(), synced: false, sync_status: 'pending' });
 this._lsSet('offlineQueue', queue);
 this.offlineQueue = queue;
+if (navigator.onLine) {
+  setTimeout(() => SyncEngine.syncToSupabase(), 1000);
+}
 },
 async processOfflineQueue() {
 if (this.syncInProgress || !navigator.onLine) return;
 this.syncInProgress = true;
-const queue = this._lsGet('offlineQueue', []);
-const unsynced = queue.filter(q => !q.synced);
-if (unsynced.length === 0) { this.syncInProgress = false; return; }
-let processed = 0;
-for (const item of unsynced) {
-try {
-if (item.type === 'transaction') {
-const txns = this._lsGet('transactions', []);
-if (!txns.find(t => t.id === item.data.id)) { txns.push(item.data); this._lsSet('transactions', txns); }
-} else if (item.type === 'expense') {
-const exps = this._lsGet('expenses', []);
-if (!exps.find(e => e.id === item.data.id)) { exps.push(item.data); this._lsSet('expenses', exps); }
-} else if (item.type === 'shift') {
-const shifts = this._lsGet('shifts', []);
-if (!shifts.find(s => s.shiftId === item.data.shiftId)) { shifts.push(item.data); this._lsSet('shifts', shifts); }
-const archive = this._lsGet('adminSalesHistory', []);
-if (!archive.find(a => a.shiftId === item.data.shiftId)) { archive.push(item.data); this._lsSet('adminSalesHistory', archive); }
-}
-item.synced = true; processed++;
-} catch (e) { console.warn('Sync failed:', item.id, e); }
-}
-const remaining = queue.filter(q => !q.synced);
-this._lsSet('offlineQueue', remaining);
-this.offlineQueue = remaining;
-this.lastSyncTime = Date.now(); this.syncInProgress = false;
-if (processed > 0) showToast(processed + ' offline items synced', 'success');
+await SyncEngine.syncToSupabase();
+this.lastSyncTime = Date.now(); 
+this.syncInProgress = false;
 },
 async createBackup() {
 const backup = { id: 'backup_' + Date.now(), timestamp: new Date().toISOString(),
-data: { products: this._lsGet('products', []), transactions: this._lsGet('transactions', []), expenses: this._lsGet('expenses', []), categories: this._lsGet('categories', []), shifts: this._lsGet('shifts', []), adminSalesHistory: this._lsGet('adminSalesHistory', []), users: this._lsGet('users', []), settings: this._lsGet('settings', {}) },
-checksums: {}
+data: { products: this._lsGet('products', []), transactions: this._lsGet('transactions', []), expenses: this._lsGet('expenses', []), categories: this._lsGet('categories', []), shifts: this._lsGet('shifts', []), adminSalesHistory: this._lsGet('adminSalesHistory', []), users: this._lsGet('users', []), settings: this._lsGet('settings', {}) }
 };
-const stores = ['products','categories','transactions','expenses','shifts','adminSalesHistory','users','settings'];
-for (var i = 0; i < stores.length; i++) {
-try { backup.checksums[stores[i]] = DataIntegrity.checksum(this._lsGet(stores[i], [])); } catch (e) {}
-}
 const backups = this._lsGet('backups', []); backups.push(backup);
 if (backups.length > 10) backups.splice(0, backups.length - 10);
 this._lsSet('backups', backups);
@@ -507,18 +425,13 @@ if (backups.length === 0) return false;
 const latest = backups[backups.length - 1];
 if (!latest || !latest.data) return false;
 Object.keys(latest.data).forEach(key => { if (latest.data[key] !== undefined) this._lsSet(key, latest.data[key]); });
-showToast('Data recovered from backup (' + fmtDate(latest.timestamp) + ')', 'info'); return true;
+showToast('Data recovered from backup', 'info'); return true;
 },
 validateData() {
 const issues = [];
 const txns = this._lsGet('transactions', []);
 const seenIds = new Set();
 txns.forEach(t => { if (seenIds.has(t.id)) issues.push('Dup txn:' + t.id); seenIds.add(t.id); });
-const activeShifts = this._lsGet('activeShifts', {});
-const activeShiftIds = Object.values(activeShifts).filter(s => s && s.status === 'active');
-if (activeShiftIds.length > 1) issues.push('Multiple active shifts');
-const products = this._lsGet('products', []);
-if (!Array.isArray(products)) issues.push('Products corrupted');
 return issues;
 },
 async repairData() {
@@ -526,118 +439,54 @@ const txns = this._lsGet('transactions', []);
 const uniqueTxns = []; const seen = new Set();
 txns.forEach(t => { if (!seen.has(t.id)) { seen.add(t.id); uniqueTxns.push(t); } });
 this._lsSet('transactions', uniqueTxns);
-const activeShifts = this._lsGet('activeShifts', {});
-const cleaned = {};
-Object.keys(activeShifts).forEach(userId => { if (activeShifts[userId] && activeShifts[userId].status === 'active') cleaned[userId] = activeShifts[userId]; });
-this._lsSet('activeShifts', cleaned);
 showToast('Data repaired', 'success'); return true;
 }
 };
 
-/* ================================================================
-OFFLINE DETECTION & SYNC
-================================================================ */
 const useOfflineStatus = () => {
 const [isOnline, setIsOnline] = useState(navigator.onLine);
+const [syncStatus, setSyncStatus] = useState(navigator.onLine ? 'Online' : 'Offline');
+
 useEffect(() => {
-const handleOnline = () => { setIsOnline(true); showToast('Connection restored. Syncing...', 'info'); DB.processOfflineQueue(); };
-const handleOffline = () => { setIsOnline(false); showToast('Working offline. Data will sync when connected.', 'warn'); };
+const handleOnline = () => { 
+  setIsOnline(true); 
+  setSyncStatus('Syncing...');
+  showToast('Connection restored. Syncing...', 'info'); 
+  DB.processOfflineQueue(); 
+};
+const handleOffline = () => { 
+  setIsOnline(false); 
+  setSyncStatus('Offline');
+  showToast('Working offline. Data will sync when connected.', 'warn'); 
+};
 window.addEventListener('online', handleOnline);
 window.addEventListener('offline', handleOffline);
+
+const handleSyncEvent = (e) => {
+  setSyncStatus(e.detail);
+};
+window.addEventListener('sync-status', handleSyncEvent);
+
 const syncInterval = setInterval(() => { if (navigator.onLine) DB.processOfflineQueue(); }, 30000);
-return () => { window.removeEventListener('online', handleOnline); window.removeEventListener('offline', handleOffline); clearInterval(syncInterval); };
+return () => { 
+  window.removeEventListener('online', handleOnline); 
+  window.removeEventListener('offline', handleOffline); 
+  window.removeEventListener('sync-status', handleSyncEvent);
+  clearInterval(syncInterval); 
+};
 }, []);
-return isOnline;
+return { isOnline, syncStatus };
 };
 
-/* ================================================================
-CHECKSUM & DATA INTEGRITY HELPERS
-================================================================ */
-const DataIntegrity = {
-_hash(str) {
-let h = 0;
-for (let i = 0; i < str.length; i++) {
-const c = str.charCodeAt(i);
-h = ((h << 5) - h) + c;
-h = h & h;
-}
-return Math.abs(h).toString(36);
-},
-checksum(data) {
-try { return this._hash(JSON.stringify(data)); } catch (e) { return '0'; }
-},
-async verify(store, id) {
-try {
-const data = await IDB.get(store, id);
-const stored = await IDB.get('checksums', store + '_' + id);
-if (!stored) return true;
-return stored.checksum === this.checksum(data);
-} catch (e) { return true; }
-},
-async save(store, id, data) {
-const cs = this.checksum(data);
-await IDB.set('checksums', { id: store + '_' + id, checksum: cs, timestamp: Date.now() });
-}
-};
+const fmt=(n,d=2)=>{try{return Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:d,maximumFractionDigits:d});}catch(e){return String(Number(n||0).toFixed(d));}};
+const fmtCur=(n)=>`₱${fmt(n)}`;
+const uid=()=>{try{return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);}catch(e){return 'id_'+Date.now()+'_'+Math.floor(Math.random()*10000);}};
+const now=()=>new Date().toISOString();
+const fmtDate=(iso)=>{try{return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'});}catch(e){return String(iso);}};
+const fmtTime=(iso)=>{try{return new Date(iso).toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});}catch(e){return String(iso);}};
+const fmtDateTime=(iso)=>fmtDate(iso)+' '+fmtTime(iso);
+const today=()=>new Date().toISOString().slice(0,10);
 
-/* ================================================================
-WRITE-AHEAD LOG (WAL) for crash recovery
-================================================================ */
-const WAL = {
-async log(operation, store, data) {
-try {
-const entry = { id: 'wal_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), operation, store, data, timestamp: Date.now(), committed: false };
-await IDB.add('walLog', entry);
-return entry.id;
-} catch (e) { return null; }
-},
-async commit(walId) {
-try {
-const logs = await IDB.get('walLog');
-const entry = logs.find(l => l.id === walId);
-if (entry) { entry.committed = true; await IDB.set('walLog', entry); }
-} catch (e) {}
-},
-async cleanup(maxAge) {
-try {
-const logs = await IDB.get('walLog');
-const cutoff = Date.now() - (maxAge || 86400000);
-const toKeep = logs.filter(l => !l.committed || l.timestamp > cutoff);
-if (toKeep.length !== logs.length) await IDB.set('walLog', toKeep);
-} catch (e) {}
-}
-};
-
-/* ================================================================
-AUTO-SAVE PROTECTION ENGINE
-================================================================ */
-const AutoSave = {
-_pending: {},
-_timers: {},
-schedule(key, data, delay) {
-delay = delay || 500;
-if (this._timers[key]) clearTimeout(this._timers[key]);
-this._pending[key] = data;
-this._timers[key] = setTimeout(() => {
-try {
-DB.set(key, this._pending[key]);
-delete this._pending[key];
-} catch (e) { console.warn('Auto-save failed for', key, e); }
-}, delay);
-},
-flush() {
-Object.keys(this._pending).forEach(key => {
-try { DB.set(key, this._pending[key]); } catch (e) {}
-});
-this._pending = {};
-Object.values(this._timers).forEach(t => clearTimeout(t));
-this._timers = {};
-}
-};
-
-/* ================================================================
-PRINTING ENGINE
-================================================================ */
 const PrintEngine = {
 _lastPrintId: null,
 _printing: false,
@@ -685,9 +534,10 @@ var storeTel = settings.storeTel || '';
 var footer = settings.receiptFooter || 'Thank you for shopping with us!';
 var itemsHTML = '';
 txn.items.forEach(function(i) {
+var qtyStr = i.weight_kg ? i.weight_kg + 'kg' : i.qty + ' x ' + fmtCur(i.price);
 itemsHTML += '<tr>' +
 '<td style="padding:1px 0;font-size:10px;vertical-align:top;width:45%;">' + i.name + '</td>' +
-'<td style="padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:30%;">' + i.qty + ' x ' + fmtCur(i.price) + '</td>' +
+'<td style="padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:30%;">' + qtyStr + '</td>' +
 '<td style="padding:1px 0;font-size:10px;text-align:right;white-space:nowrap;vertical-align:top;width:25%;">' + fmtCur(i.subtotal) + '</td>' +
 '</tr>';
 });
@@ -738,9 +588,33 @@ return html;
 }
 };
 
-/* ================================================================
-BARCODE SCANNER ENGINE
-================================================================ */
+const openCashDrawer = () => {
+try {
+const iframe = document.createElement('iframe');
+iframe.style.position = 'fixed';
+iframe.style.left = '-9999px';
+iframe.style.top = '-9999px';
+iframe.style.width = '1px';
+iframe.style.height = '1px';
+document.body.appendChild(iframe);
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+doc.open();
+doc.write('<html><body style="margin:0;"></body></html>');
+doc.close();
+iframe.contentWindow.focus();
+iframe.contentWindow.print();
+setTimeout(() => {
+if (document.body.contains(iframe)) {
+document.body.removeChild(iframe);
+}
+}, 1000);
+showToast('Cash drawer open command sent', 'success');
+} catch (e) {
+console.error('Drawer open failed:', e);
+showToast('Failed to open cash drawer', 'error');
+}
+};
+
 var BarcodeEngine = {
 _buffer: '',
 _lastScan: 0,
@@ -774,7 +648,6 @@ BarcodeEngine._buffer += e.key;
 clear: function() { this._buffer = ''; }
 };
 
-/* ─── ICONS ─── */
 const Icon={
 pos:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>,
 products:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>,
@@ -808,61 +681,6 @@ wifi:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 wifiOff:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
 };
 
-/* ─── UTILITIES ─── */
-const fmt=(n,d=2)=>{try{return Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:d,maximumFractionDigits:d});}catch(e){return String(Number(n||0).toFixed(d));}};
-const fmtCur=(n)=>`₱${fmt(n)}`;
-const uid=()=>{try{return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);}catch(e){return 'id_'+Date.now()+'_'+Math.floor(Math.random()*10000);}};
-const now=()=>new Date().toISOString();
-const fmtDate=(iso)=>{try{return new Date(iso).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'});}catch(e){return String(iso);}};
-const fmtTime=(iso)=>{try{return new Date(iso).toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});}catch(e){return String(iso);}};
-const fmtDateTime=(iso)=>fmtDate(iso)+' '+fmtTime(iso);
-const today=()=>new Date().toISOString().slice(0,10);
-const safeJSONParse=(str,def)=>{try{return JSON.parse(str);}catch(e){return def;}};
-const safeJSONStringify=(obj)=>{try{return JSON.stringify(obj);}catch(e){return '{}';}};
-
-/* ================================================================
-MAINTENANCE SYSTEM
-================================================================ */
-const MaintenanceSystem = {
-getLastMaintenance() { return DB.get('lastMaintenance', null); },
-getNextMaintenance() {
-const last = this.getLastMaintenance();
-if (!last) return null;
-const next = new Date(last); next.setMonth(next.getMonth() + 2); return next.toISOString();
-},
-needsMaintenance() {
-return false;
-},
-recordMaintenance(notes = '') {
-const log = { id: uid(), date: now(), notes, performedBy: 'System' };
-const logs = DB.get('maintenanceLogs', []); logs.push(log);
-DB.set('maintenanceLogs', logs); DB.set('lastMaintenance', now());
-return log;
-},
-getLogs() { return DB.get('maintenanceLogs', []); },
-setNextMaintenanceDate(date) {
-const nextDate = new Date(date); const lastDate = new Date(nextDate);
-lastDate.setMonth(lastDate.getMonth() - 1); DB.set('lastMaintenance', lastDate.toISOString());
-}
-};
-
-/* ================================================================
-INITIAL DATA
-================================================================ */
-const initDB=()=>{
-try {
-if(!DB.get('init')){
-DB.set('users',[ {id:'u1',name:'Admin User',username:'admin',password:'admin123',role:'admin',pin:'1234',active:true,createdAt:now()}, {id:'u2',name:'Justin',username:'cashier1',password:'cashier123',role:'cashier',pin:'5678',active:true,createdAt:now()} ]);
-DB.set('transactions',[]); DB.set('expenses',[]); DB.set('restocks',[]); DB.set('shifts',[]); DB.set('adminSalesHistory',[]); DB.set('activeShifts',{});
-DB.set('settings',{ storeName:'Branch',storeTagline:'Point of Sale System',storeAddress:'123 Main St, Calamba, Laguna', storeTel:'(049) 123-4567',receiptFooter:'Thank you for shopping with us!', currency:'₱',taxRate:0,theme:'dark',loginBg:'',primaryColor:'#4f8ef7' });
-DB.set('maintenanceLogs', []); DB.set('lastMaintenance', now()); DB.set('offlineQueue', []); DB.set('backups', []); DB.set('init',true);
-DB.createBackup();
-}
-} catch (e) { console.error('initDB error:', e); DB.recoverFromBackup(); }
-};
-initDB();
-
-/* ─── TOAST ─── */
 let toastCb=null;
 const Toast=({msg,type})=>{
 const colors={ success:'background:var(--green-dim);color:var(--green);border:1px solid #0a4d1e', error:'background:var(--red-dim);color:var(--red);border:1px solid #6a1515', warn:'background:var(--yellow-dim);color:var(--yellow);border:1px solid #6a5500', info:'background:var(--accent-dim);color:var(--accent2);border:1px solid var(--border2)' };
@@ -875,7 +693,6 @@ return {toast,showToast:toastCb};
 };
 const showToast=(msg,type='info')=>{if(toastCb)toastCb(msg,type);};
 
-/* ─── ERROR BOUNDARY ─── */
 class ErrorBoundary extends React.Component {
 constructor(props) { super(props); this.state = { hasError: false, error: null }; }
 static getDerivedStateFromError(error) { return { hasError: true, error }; }
@@ -892,7 +709,6 @@ return (
 <button className="btn btn-primary" onClick={()=>window.location.reload()}>Refresh Page</button>
 <button className="btn btn-ghost" onClick={()=>{DB.recoverFromBackup();window.location.reload();}}>Restore from Backup</button>
 </div>
-{this.state.error && <div style={{marginTop:20,padding:12,background:'var(--bg3)',borderRadius:'var(--radius)',fontSize:11,color:'var(--text3)',textAlign:'left',fontFamily:'var(--mono)'}}>{String(this.state.error)}</div>}
 </div>
 </div>
 );
@@ -901,7 +717,6 @@ return this.props.children;
 }
 }
 
-/* ─── CONFIRM MODAL ─── */
 const ConfirmModal=({msg,onYes,onNo})=>(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -918,78 +733,22 @@ const ConfirmModal=({msg,onYes,onNo})=>(
 </div>
 );
 
-/* ─── MAINTENANCE BANNER ── */
-const MaintenanceBanner = () => {
-const [show, setShow] = useState(MaintenanceSystem.needsMaintenance());
-const [showModal, setShowModal] = useState(false);
-const [nextDate, setNextDate] = useState('');
-const [notes, setNotes] = useState('');
-if (!show) return null;
-const handleMaintenance = () => { MaintenanceSystem.recordMaintenance(notes); setShow(false); setShowModal(false); showToast('Maintenance recorded', 'success'); };
-const handleSetDate = () => { if (nextDate) { MaintenanceSystem.setNextMaintenanceDate(nextDate); setShow(false); setShowModal(false); showToast('Schedule updated', 'success'); } };
-return (
-<>
-<div className="maintenance-banner">
-<span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
-{Icon.maintenance} <strong>Maintenance Needed</strong> — System maintenance is overdue.
-<button className="btn btn-sm" style={{background:'var(--yellow)',color:'#000',marginLeft:10}} onClick={()=>setShowModal(true)}>Resolve</button>
-</span>
-</div>
-{showModal && (
-<div className="modal-overlay">
-<div className="modal" style={{maxWidth:420}}>
-<h3 style={{marginBottom:16,display:'flex',alignItems:'center',gap:8}}>{Icon.maintenance} Maintenance</h3>
-<div style={{marginBottom:16}}>
-<p style={{color:'var(--text2)',fontSize:14,marginBottom:12}}>The system requires maintenance. Choose an option:</p>
-<div style={{background:'var(--bg3)',borderRadius:'var(--radius)',padding:14,marginBottom:14}}>
-<label>Record Maintenance</label>
-<textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Maintenance notes..." style={{width:'100%',height:60,marginTop:6,marginBottom:10,resize:'vertical'}}/>
-<button className="btn btn-success btn-sm" style={{width:'100%'}} onClick={handleMaintenance}>Record Maintenance Done</button>
-</div>
-<div style={{background:'var(--bg3)',borderRadius:'var(--radius)',padding:14}}>
-<label>Or Set Next Maintenance Date</label>
-<input type="date" value={nextDate} onChange={e=>setNextDate(e.target.value)} style={{width:'100%',marginTop:6,marginBottom:10}}/>
-<button className="btn btn-primary btn-sm" style={{width:'100%'}} onClick={handleSetDate}>Update Schedule</button>
-</div>
-</div>
-<button className="btn btn-ghost btn-sm" style={{width:'100%'}} onClick={()=>setShowModal(false)}>Cancel</button>
-</div>
-</div>
-)}
-</>
-);
-};
-
-/* ─── OFFLINE INDICATOR ─── */
 const OfflineIndicator = () => {
-const isOnline = useOfflineStatus();
-if (isOnline) return null;
+const { isOnline, syncStatus } = useOfflineStatus();
+if (!isOnline) {
 return (
 <div className="offline-indicator">
 <span style={{display:'flex',alignItems:'center',gap:6}}>{Icon.wifiOff} Offline Mode</span>
 </div>
 );
+}
+return (
+<div className={`sync-status visible ${syncStatus === 'Syncing...' ? 'syncing' : syncStatus === 'Synced' ? 'synced' : 'online'}`}>
+{syncStatus || 'Online'}
+</div>
+);
 };
 
-/* ─── SYNC STATUS ─── */
-const SyncStatus = () => {
-const [status, setStatus] = useState({ visible: false, text: '', type: '' });
-useEffect(() => {
-const checkSync = () => {
-const queue = DB.get('offlineQueue', []);
-const unsynced = queue.filter(q => !q.synced).length;
-if (DB.syncInProgress) { setStatus({ visible: true, text: 'Syncing...', type: 'syncing' }); }
-else if (unsynced > 0) { setStatus({ visible: true, text: unsynced + ' pending', type: 'syncing' }); }
-else if (DB.lastSyncTime && Date.now() - DB.lastSyncTime < 5000) { setStatus({ visible: true, text: 'Synced', type: 'synced' }); setTimeout(() => setStatus(s => ({...s, visible: false})), 2000); }
-else { setStatus(s => ({...s, visible: false})); }
-};
-const interval = setInterval(checkSync, 1000);
-return () => clearInterval(interval);
-}, []);
-return <div className={`sync-status ${status.visible ? 'visible' : ''} ${status.type}`}>{status.text}</div>;
-};
-
-/* ─── LOGIN PAGE ─── */
 const LoginPage=({onLogin})=>{
 const [username,setUsername]=useState('');
 const [password,setPassword]=useState('');
@@ -1032,16 +791,12 @@ return(
 <button className="btn btn-primary" style={{width:'100%',padding:'11px'}} onClick={login} disabled={loading}>
 {loading?<span className="spinner"/>:'Login'}
 </button>
-<div style={{marginTop:16,padding:'12px',background:'var(--bg3)',borderRadius:'var(--radius)',fontSize:12,color:'var(--text3)'}}>
-<b style={{color:'var(--text2)'}}>Default Login:</b> admin / admin123
-</div>
 </div>
 </div>
 </div>
 );
 };
 
-/* ─── SIDEBAR ─── */
 const Sidebar=({page,setPage,user,onLogout,collapsed,setCollapsed})=>{
 const nav=[
 {id:'pos',label:'POS Terminal',icon:Icon.pos,roles:['admin','cashier']},
@@ -1055,9 +810,9 @@ const nav=[
 {id:'settings',label:'Settings',icon:Icon.settings,roles:['admin']},
 ].filter(n=>n.roles.includes(user.role));
 const products=DB.get('products',[]);
-const lowStock=products.filter(p=>Number(p.stock||0)<=Number(p.lowStockAlert||0)&&p.active).length;
+const lowStock=products.filter(p=>Number(p.unit==='kg'?(p.stock_kg||0):(p.stock||0))<=Number(p.lowStockAlert||0)&&p.active).length;
 return(
-<div style={{width:collapsed?64:220,background:'var(--bg2)',borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',height:'100vh',position:'sticky',top:0,flexShrink:0,transition:'width .2s',overflow:'hidden'}}>
+<div className="sidebar" style={{width:collapsed?64:220,background:'var(--bg2)',borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',height:'100vh',position:'sticky',top:0,flexShrink:0,transition:'width .2s',overflow:'hidden'}}>
 <div style={{padding:'16px 12px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:10,minHeight:64}}>
 <div style={{width:36,height:36,background:'var(--accent)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>🏪</div>
 {!collapsed&&<div style={{overflow:'hidden'}}><div style={{fontWeight:700,fontSize:14,whiteSpace:'nowrap'}}>Branch POS</div><div style={{fontSize:11,color:'var(--text3)'}}>v2.2.0</div></div>}
@@ -1091,10 +846,9 @@ return(
 );
 };
 
-/* ─── POS TERMINAL ─── */
 const POSTerminal=({user})=>{
-const [products,setProducts]=useState([]);
-const [categories,setCategories]=useState([]);
+const [products,setProducts]=useState(()=>DB.get('products',[]).filter(p=>p.active!==false));
+const [categories]=useState(()=>DB.get('categories',[]));
 const [cart,setCart]=useState([]);
 const [search,setSearch]=useState('');
 const [catFilter,setCatFilter]=useState('all');
@@ -1105,36 +859,14 @@ const [discountType,setDiscountType]=useState('percent');
 const [customerName,setCustomerName]=useState('');
 const [showReceipt,setShowReceipt]=useState(null);
 const [showPayModal,setShowPayModal]=useState(false);
+const [showWeightModal,setShowWeightModal]=useState(null);
+const [weightInput,setWeightInput]=useState('');
 const [barcodeInput,setBarcodeInput]=useState('');
+const [isProcessing,setIsProcessing]=useState(false);
 const [shiftInfo,setShiftInfo]=useState(()=>getOrCreateShift(user));
 const barcodeRef=useRef();
 const settings=DB.get('settings',{});
-const [updateTick,setUpdateTick]=useState(0);
-const isOnline = useOfflineStatus();
-
-useEffect(() => {
-async function loadData() {
-try {
-const [prodData, catData] = await Promise.all([
-SupabaseDB.getProducts(),
-SupabaseDB.getCategories()
-]);
-const activeProds = prodData.filter(p => p.active !== false);
-setProducts(activeProds);
-setCategories(catData);
-DB.set('products', prodData);
-DB.set('categories', catData);
-} catch (e) {
-console.error('Failed to load from Supabase:', e);
-const cachedProds = DB.get('products', []);
-const cachedCats = DB.get('categories', []);
-setProducts(cachedProds.filter(p => p.active !== false));
-setCategories(cachedCats);
-showToast('Using cached data (offline)', 'warn');
-}
-}
-loadData();
-}, []);
+const { isOnline } = useOfflineStatus();
 
 useEffect(function() {
 BarcodeEngine.init(function(code) {
@@ -1142,6 +874,39 @@ checkBarcode(code);
 });
 return function() { BarcodeEngine.clear(); };
 }, [products]);
+
+useEffect(() => {
+  if (barcodeRef.current) {
+    barcodeRef.current.focus();
+  }
+  const handleKeyDown = (e) => {
+    if (e.key === 'F2') {
+      e.preventDefault();
+      barcodeRef.current?.focus();
+    } else if (e.key === 'F4') {
+      e.preventDefault();
+      if (cart.length > 0 && !isProcessing) setShowPayModal(true);
+    } else if (e.key === 'F8') {
+      e.preventDefault();
+      openCashDrawer();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      if (showPayModal) setShowPayModal(false);
+      else if (showWeightModal) { setShowWeightModal(null); setWeightInput(''); }
+      else if (showReceipt) setShowReceipt(null);
+      else if (cart.length > 0) setCart([]);
+    }
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, [cart.length, isProcessing, showPayModal, showWeightModal, showReceipt]);
+
+useEffect(() => {
+  const cleanup = SyncEngine.setupRealtime((updatedProds) => {
+    setProducts(updatedProds.filter(p => p.active !== false));
+  });
+  return cleanup;
+}, []);
 
 function getOrCreateShift(user){
 try {
@@ -1165,7 +930,7 @@ return { shiftId: 'SHIFT-'+Date.now(), shiftNumber: 1, cashierId: user.id, cashi
 }
 }
 
-const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
+const subtotal=cart.reduce((s,i)=>s+i.subtotal,0);
 const discAmt=discountType==='percent'?subtotal*(Number(discount)||0)/100:Number(discount)||0;
 const total=Math.max(0,subtotal-discAmt);
 const change=Number(cashInput||0)-total;
@@ -1180,72 +945,137 @@ p=p.filter(function(pr){ return pr.name.toLowerCase().includes(q)||(pr.sku||'').
 return p;
 },[products,catFilter,search]);
 
+const handleAddKgProduct = (product, weight) => {
+  const weightNum = Number(weight);
+  if (weightNum <= 0) return;
+  if (weightNum > (product.stock_kg || 0)) {
+    showToast('Insufficient stock!', 'error');
+    return;
+  }
+  const subtotal = weightNum * product.price_per_kg;
+  setCart(prev => {
+    const ex = prev.find(i => i.id === product.id);
+    if (ex) {
+      const newWeight = ex.weight_kg + weightNum;
+      return prev.map(i => i.id === product.id ? { ...i, weight_kg: newWeight, qty: 1, subtotal: newWeight * i.price_per_kg } : i);
+    }
+    return [...prev, { ...product, weight_kg: weightNum, qty: 1, unitPrice: product.price_per_kg, price: product.price_per_kg, subtotal }];
+  });
+  setShowWeightModal(null);
+  setWeightInput('');
+  showToast(`Added ${weightNum}kg of ${product.name}`, 'success');
+};
+
 const addToCart=useCallback((product)=>{
-if(!product || product.stock<=0){showToast('Out of stock!','error');return;}
+if(!product || (product.unit !== 'kg' && product.stock <= 0)){showToast('Out of stock!','error');return;}
+if(product.unit === 'kg') {
+  setShowWeightModal(product);
+  return;
+}
 setCart(prev=>{
 const ex=prev.find(i=>i.id===product.id);
 if(ex){
 if(ex.qty>=product.stock){showToast('Insufficient stock','error');return prev;}
-return prev.map(i=>i.id===product.id?{...i,qty:i.qty+1}:i);
+return prev.map(i=>i.id===product.id?{...i,qty:i.qty+1,subtotal:(i.qty+1)*i.price}:i);
 }
-return [...prev,{...product,qty:1,unitPrice:product.price}];
+return [...prev,{...product,qty:1,unitPrice:product.price,subtotal:product.price}];
 });
 },[]);
 
 const updateQty=useCallback((id,qty)=>{
 if(qty<=0){setCart(prev=>prev.filter(i=>i.id!==id));return;}
 const p=products.find(pr=>pr.id===id);
-if(p&&qty>p.stock){showToast('Insufficient stock','error');return;}
-setCart(prev=>prev.map(i=>i.id===id?{...i,qty}:i));
+if(p && p.unit !== 'kg' && qty>p.stock){showToast('Insufficient stock','error');return;}
+setCart(prev=>prev.map(i=>i.id===id?{...i,qty,subtotal:qty*i.price}:i));
 },[products]);
-
-const updatePrice=useCallback((id,price)=>{
-setCart(prev=>prev.map(i=>i.id===id?{...i,price:Number(price)||0}:i));
-},[]);
 
 const checkBarcode=useCallback((code)=>{
 if(!code) return;
 var cleanCode = code.trim().replace(/[^\u0020-\u007E]/g, '');
 if(!cleanCode) return;
 var p=products.find(function(pr){ return pr.barcode===cleanCode||pr.sku===cleanCode||(pr.barcode&&pr.barcode.includes(cleanCode))||(pr.sku&&pr.sku.includes(cleanCode)); });
-if(p){addToCart(p);setBarcodeInput('');showToast('Scanned: '+p.name,'success');}
-else{showToast('Product not found: '+cleanCode,'error');setBarcodeInput('');}
+if(p){
+  if (p.unit === 'kg') {
+    setShowWeightModal(p);
+    setBarcodeInput('');
+  } else {
+    addToCart(p);
+    setBarcodeInput('');
+    showToast('Scanned: '+p.name,'success');
+  }
+}
+else{
+  showToast('Product not found: '+cleanCode,'error');
+  setBarcodeInput('');
+  setTimeout(() => {
+    if (barcodeRef.current) barcodeRef.current.focus();
+  }, 500);
+}
 },[products,addToCart]);
 
-const checkout=useCallback(()=>{
-if(!cart.length){showToast('Cart is empty','error');return;}
+const checkout=useCallback(async ()=>{
+if(!cart.length || isProcessing){showToast('Cart is empty or processing','error');return;}
 if(payMode==='cash'&&Number(cashInput)<total){showToast('Insufficient cash','error');return;}
+setIsProcessing(true);
 try {
 const activeShifts = DB.get('activeShifts',{});
 const currentShift = activeShifts[user.id];
-if(!currentShift){showToast('No active shift found. Please login again.','error');return;}
+if(!currentShift){showToast('No active shift found. Please login again.','error');setIsProcessing(false);return;}
+
+const txnId = 'TXN' + Date.now() + '_' + uid();
 const txn={
-id:'TXN'+Date.now(), shiftId: currentShift.shiftId, shiftNumber: currentShift.shiftNumber,
+id: txnId, shiftId: currentShift.shiftId, shiftNumber: currentShift.shiftNumber,
 cashierId:user.id, cashierName:user.name, customerName:customerName||'Walk-in',
-items:cart.map(i=>({id:i.id,name:i.name,qty:i.qty,unitPrice:i.unitPrice,price:i.price,subtotal:i.price*i.qty})),
+items:cart.map(i=>({id:i.id,name:i.name,qty:i.qty,weight_kg:i.weight_kg||null,unitPrice:i.unitPrice,price:i.price,subtotal:i.subtotal})),
 subtotal, discount:discAmt, discountInput:discount, discountType,
 total, payMode, cashReceived:payMode==='cash'?Number(cashInput):total,
-change:payMode==='cash'?change:0, createdAt:now(), date:today(),
+change:payMode==='cash'?change:0, createdAt:now(), date:today(), sync_status: 'pending'
 };
+
 const txns=DB.get('transactions',[]);
-if(txns.find(t=>t.id===txn.id)){showToast('Transaction already exists','error');return;}
+if(txns.find(t=>t.id===txn.id)){showToast('Transaction already exists','error');setIsProcessing(false);return;}
 txns.push(txn); DB.set('transactions',txns);
 DB.setAsync('transactions',txns).catch(function(e){ console.warn('IDB sync failed:',e); });
-if(!navigator.onLine){ DB.queueOffline('transaction', txn); }
+
 const prods=DB.get('products',[]);
-const updated=prods.map(p=>{ const ci=cart.find(i=>i.id===p.id); return ci?{...p,stock:p.stock-ci.qty}:p; });
-DB.set('products',updated);
-cart.forEach(async function(item) {
-try {
-const updatedProduct = updated.find(p => p.id === item.id);
-if (updatedProduct && supabaseClient) {
-await SupabaseDB.updateProduct(item.id, { stock: updatedProduct.stock });
-}
-} catch (e) {
-console.warn('Supabase stock update failed for', item.id, e);
-}
+const updatedProds = prods.map(p => {
+  const ci = cart.find(i => i.id === p.id);
+  if (ci) {
+    let newStock = p.stock;
+    let newStockKg = p.stock_kg;
+    if (p.unit === 'kg') {
+      newStockKg = Math.max(0, (p.stock_kg || 0) - ci.weight_kg);
+    } else {
+      newStock = Math.max(0, (p.stock || 0) - ci.qty);
+    }
+    return { ...p, stock: newStock, stock_kg: newStockKg };
+  }
+  return p;
 });
-setProducts(updated.filter(p=>p.active!==false));
+
+const sharedStockMap = {};
+cart.forEach(ci => {
+  const p = updatedProds.find(prod => prod.id === ci.id);
+  if (p && p.unit === 'kg' && p.shared_stock_id) {
+    sharedStockMap[p.shared_stock_id] = p.stock_kg;
+  }
+});
+
+const finalProds = updatedProds.map(p => {
+  if (p.shared_stock_id && sharedStockMap[p.shared_stock_id] !== undefined) {
+    return { ...p, stock_kg: sharedStockMap[p.shared_stock_id] };
+  }
+  return p;
+});
+
+DB.set('products', finalProds);
+setProducts(finalProds.filter(p => p.active !== false));
+DB.setAsync('products', finalProds).catch(function(e){ console.warn('IDB sync failed:',e); });
+
+if (navigator.onLine && supabaseClient) {
+  DB.queueOffline('transaction', txn);
+}
+
 const shiftTxns = txns.filter(t=>t.shiftId===currentShift.shiftId);
 currentShift.totalSales = shiftTxns.reduce((s,t)=>s+t.total,0);
 currentShift.totalTransactions = shiftTxns.length;
@@ -1254,25 +1084,33 @@ currentShift.gcashSales = shiftTxns.filter(t=>t.payMode==='gcash').reduce((s,t)=
 currentShift.cardSales = shiftTxns.filter(t=>t.payMode==='card').reduce((s,t)=>s+t.total,0);
 activeShifts[user.id] = currentShift;
 DB.set('activeShifts',activeShifts);
+
 DB.createBackup();
+
+if (payMode === 'cash') {
+  openCashDrawer();
+}
+
 try {
-PrintEngine.printReceipt(txn, settings);
+  PrintEngine.printReceipt(txn, settings);
 } catch (e) { console.warn('Auto-print failed:', e); }
+
 setShowReceipt(txn);
 setCart([]);setCashInput('');setDiscount('');setCustomerName('');setPayMode('cash');
 showToast('Transaction complete!','success');
 setShowPayModal(false);
-setUpdateTick(t=>t+1);
 } catch (e) {
 console.error('Checkout error:', e);
 showToast('Checkout failed. Please try again.','error');
+} finally {
+setIsProcessing(false);
 }
-},[cart,payMode,cashInput,total,change,user,discAmt,discount,discountType,customerName]);
+},[cart,payMode,cashInput,total,change,user,discAmt,discount,discountType,customerName,isProcessing]);
 
 const cats=[{id:'all',name:'All',color:'#4f8ef7'},...categories];
 return(
-<div style={{display:'flex',height:'calc(100vh - 0px)',overflow:'hidden'}}>
-<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',padding:'16px',gap:12}}>
+<div style={{display:'flex',height:'calc(100vh - 0px)',overflow:'hidden'}} className="pos-layout">
+<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',padding:'16px',gap:12}} className="pos-products">
 <div style={{display:'flex',gap:10,alignItems:'center'}}>
 <div className="search-box" style={{flex:1}}>
 {Icon.search}
@@ -1281,7 +1119,7 @@ return(
 <div style={{position:'relative'}}>
 <input ref={barcodeRef} value={barcodeInput} onChange={e=>setBarcodeInput(e.target.value)}
 onKeyDown={e=>e.key==='Enter'&&checkBarcode(barcodeInput)}
-placeholder="Scan barcode..." style={{width:180}}/>
+placeholder="Scan barcode (F2)..." style={{width:180}}/>
 </div>
 </div>
 <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
@@ -1289,24 +1127,33 @@ placeholder="Scan barcode..." style={{width:180}}/>
 <button key={c.id} className={`chip${catFilter===c.id?' active':''}`} onClick={()=>setCatFilter(c.id)}>{c.name}</button>
 ))}
 </div>
-<div style={{flex:1,overflowY:'auto',display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(150px,1fr))',gap:10,alignContent:'start'}}>
+<div className="product-grid" style={{flex:1,overflowY:'auto',display:'grid',gap:10,alignContent:'start'}}>
 {filteredProducts.map(p=>(
 <div key={p.id} className="pos-key" onClick={()=>addToCart(p)} style={{position:'relative',textAlign:'left',padding:12}}>
-{Number(p.stock||0)<=Number(p.lowStockAlert||0)&&<span className="badge badge-yellow" style={{position:'absolute',top:6,right:6,fontSize:9}}>LOW</span>}
-{p.stock<=0&&<span className="badge badge-red" style={{position:'absolute',top:6,right:6,fontSize:9}}>OUT</span>}
-<div style={{fontSize:11,color:'var(--text3)',marginBottom:2}}>{categories.find(c=>c.id===p.categoryId)?.name||''}</div>
+{(p.unit !== 'kg' && Number(p.stock||0)<=Number(p.lowStockAlert||0)) && <span className="badge badge-yellow" style={{position:'absolute',top:6,right:6,fontSize:9}}>LOW</span>}
+{(p.unit !== 'kg' && p.stock<=0) && <span className="badge badge-red" style={{position:'absolute',top:6,right:6,fontSize:9}}>OUT</span>}
+{(p.unit === 'kg' && Number(p.stock_kg||0)<=Number(p.lowStockAlert||0)) && <span className="badge badge-yellow" style={{position:'absolute',top:6,right:6,fontSize:9}}>LOW</span>}
+{(p.unit === 'kg' && Number(p.stock_kg||0)<=0) && <span className="badge badge-red" style={{position:'absolute',top:6,right:6,fontSize:9}}>OUT</span>}
+<div style={{fontSize:11,color:'var(--text3)',marginBottom:2}}>{categories.find(c=>c.id===p.categoryId)?.name||''} {p.variant?`(${p.variant})`:''}</div>
 <div style={{fontSize:13,fontWeight:600,lineHeight:1.3,marginBottom:6}}>{p.name}</div>
-<div style={{fontSize:15,fontWeight:700,color:'var(--accent)',fontFamily:'var(--mono)'}}>{fmtCur(p.price)}</div>
-<div style={{fontSize:11,color:'var(--text3)',marginTop:2}}>Stock: {p.stock}</div>
+<div style={{fontSize:15,fontWeight:700,color:'var(--accent)',fontFamily:'var(--mono)'}}>
+  {p.unit === 'kg' ? `${fmtCur(p.price_per_kg)}/kg` : fmtCur(p.price)}
+</div>
+<div style={{fontSize:11,color:'var(--text3)',marginTop:2}}>
+  {p.unit === 'kg' ? `Stock: ${p.stock_kg}kg` : `Stock: ${p.stock}`}
+</div>
 </div>
 ))}
 {filteredProducts.length===0&&<div style={{gridColumn:'1/-1',textAlign:'center',padding:'40px 20px',color:'var(--text3)'}}>No products found</div>}
 </div>
 </div>
-<div style={{width:340,background:'var(--bg2)',borderLeft:'1px solid var(--border)',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+<div className="pos-cart" style={{width:340,background:'var(--bg2)',borderLeft:'1px solid var(--border)',display:'flex',flexDirection:'column',overflow:'hidden'}}>
 <div style={{padding:'14px 16px',borderBottom:'1px solid var(--border)',fontWeight:600,fontSize:15,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 <span>Order Cart</span>
-{cart.length>0&&<button className="btn btn-ghost btn-sm" onClick={()=>setCart([])}>Clear</button>}
+<div style={{display:'flex',gap:8}}>
+  <button className="btn btn-ghost btn-sm" onClick={openCashDrawer} title="Open Cash Drawer (F8)">{Icon.cash}</button>
+  {cart.length>0&&<button className="btn btn-ghost btn-sm" onClick={()=>setCart([])}>Clear</button>}
+</div>
 </div>
 <div style={{flex:1,overflowY:'auto',padding:'8px 12px'}}>
 {cart.length===0?<div style={{textAlign:'center',padding:'40px 20px',color:'var(--text3)',fontSize:13}}>Cart is empty.<br/>Click products to add.</div>:
@@ -1314,15 +1161,21 @@ cart.map(item=>(
 <div key={item.id} style={{padding:'10px 8px',borderBottom:'1px solid var(--border)',display:'flex',gap:8,alignItems:'center'}}>
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontSize:13,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</div>
-<input type="number" value={item.price} onChange={e=>updatePrice(item.id,e.target.value)} style={{width:'100%',marginTop:4,padding:'3px 7px',fontSize:12}}/>
+{item.unit !== 'kg' && <input type="number" value={item.price} onChange={e=>{
+  const newPrice = Number(e.target.value)||0;
+  setCart(prev=>prev.map(i=>i.id===item.id?{...i,price:newPrice,unitPrice:newPrice,subtotal:newPrice*i.qty}:i));
+}} style={{width:'100%',marginTop:4,padding:'3px 7px',fontSize:12}}/>}
 </div>
 <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+{item.unit !== 'kg' && <>
 <button className="btn btn-ghost btn-sm" style={{padding:'2px 7px',fontSize:14}} onClick={()=>updateQty(item.id,item.qty+1)}>+</button>
 <span style={{fontFamily:'var(--mono)',fontSize:14,fontWeight:600,minWidth:24,textAlign:'center'}}>{item.qty}</span>
 <button className="btn btn-ghost btn-sm" style={{padding:'2px 7px',fontSize:14}} onClick={()=>updateQty(item.id,item.qty-1)}>-</button>
+</>}
+{item.unit === 'kg' && <span style={{fontFamily:'var(--mono)',fontSize:14,fontWeight:600}}>{item.weight_kg}kg</span>}
 </div>
 <div style={{textAlign:'right',minWidth:70}}>
-<div style={{fontFamily:'var(--mono)',fontSize:13,fontWeight:600}}>{fmtCur(item.price*item.qty)}</div>
+<div style={{fontFamily:'var(--mono)',fontSize:13,fontWeight:600}}>{fmtCur(item.subtotal)}</div>
 <button style={{background:'none',border:'none',color:'var(--red)',cursor:'pointer',fontSize:11}} onClick={()=>setCart(prev=>prev.filter(i=>i.id!==item.id))}>remove</button>
 </div>
 </div>
@@ -1368,18 +1221,68 @@ cart.map(item=>(
 {cashInput&&<div style={{fontSize:12,marginTop:4,color:change>=0?'var(--green)':'var(--red)'}}>Change: {fmtCur(change)}</div>}
 </div>
 )}
-<button className="btn btn-success" style={{width:'100%',padding:'13px',fontSize:15,fontWeight:700}} onClick={()=>cart.length&&setShowPayModal(true)} disabled={!cart.length}>
-✓ Checkout {cart.length>0&&`(${fmtCur(total)})`}
+<button className="btn btn-success" style={{width:'100%',padding:'13px',fontSize:15,fontWeight:700}} onClick={()=>cart.length&&setShowPayModal(true)} disabled={!cart.length || isProcessing}>
+{isProcessing ? <span className="spinner"/> : `✓ Checkout ${cart.length>0?`(${fmtCur(total)})`:''}`}
 </button>
 </div>
 </div>
+
+{showWeightModal && (
+  <div className="modal-overlay">
+    <div className="modal" style={{maxWidth: 400}}>
+      <h3 style={{marginBottom: 16}}>{showWeightModal.name} {showWeightModal.variant ? `(${showWeightModal.variant})` : ''}</h3>
+      <div style={{textAlign: 'center', fontSize: 28, fontWeight: 700, color: 'var(--accent)', marginBottom: 20, fontFamily: 'var(--mono)'}}>
+        {fmtCur((Number(weightInput) || 0) * showWeightModal.price_per_kg)}
+      </div>
+      <input 
+        type="number" 
+        step="0.01"
+        value={weightInput} 
+        onChange={e => setWeightInput(e.target.value)} 
+        placeholder="Weight in kg" 
+        style={{width: '100%', fontSize: 24, textAlign: 'center', padding: 12, marginBottom: 20}}
+        autoFocus
+      />
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
+        {[0.25, 0.5, 1, 2].map(w => (
+          <button key={w} className="btn btn-primary" style={{height: 48, fontSize: 18}} onClick={() => setWeightInput(w)}>{w} kg</button>
+        ))}
+      </div>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
+        {['7','8','9','⌫','4','5','6','Clear','1','2','3','.','0','00',''].map((key, idx) => {
+          if (key === '') return <div key={idx}></div>;
+          return (
+            <button key={key} className="numpad-btn" onClick={() => {
+              if (key === '⌫') setWeightInput(prev => prev.slice(0, -1));
+              else if (key === 'Clear') setWeightInput('');
+              else setWeightInput(prev => prev + key);
+            }}>{key}</button>
+          );
+        })}
+      </div>
+      <div style={{display: 'flex', gap: 10}}>
+        <button className="btn btn-ghost" style={{flex: 1, height: 48}} onClick={() => { setShowWeightModal(null); setWeightInput(''); }}>Cancel (ESC)</button>
+        <button className="btn btn-success" style={{flex: 1, height: 48}} onClick={() => {
+          const w = Number(weightInput);
+          if (w > 0) {
+            handleAddKgProduct(showWeightModal, w);
+          } else {
+            showToast('Please enter a valid weight', 'error');
+            setTimeout(() => { if(barcodeRef.current) barcodeRef.current.focus(); }, 500);
+          }
+        }}>Add to Cart</button>
+      </div>
+    </div>
+  </div>
+)}
+
 {showPayModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
 <h3 style={{marginBottom:16}}>Confirm Payment</h3>
 <div style={{background:'var(--bg3)',borderRadius:'var(--radius)',padding:14,marginBottom:16}}>
 {cart.map(i=><div key={i.id} style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:4}}>
-<span>{i.name} x{i.qty}</span><span style={{fontFamily:'var(--mono)'}}>{fmtCur(i.price*i.qty)}</span>
+<span>{i.name} {i.weight_kg ? `(${i.weight_kg}kg)` : `x${i.qty}`}</span><span style={{fontFamily:'var(--mono)'}}>{fmtCur(i.subtotal)}</span>
 </div>)}
 <div className="divider"/>
 <div style={{display:'flex',justifyContent:'space-between',fontWeight:700}}>
@@ -1396,6 +1299,7 @@ cart.map(item=>(
 </div>
 </div>
 )}
+
 {showReceipt&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -1422,7 +1326,7 @@ cart.map(item=>(
 <hr/>
 {showReceipt.items.map((i,x)=>(
 <div key={x} style={{display:'flex',justifyContent:'space-between',fontSize:11,marginBottom:2}}>
-<span>{i.name}<br/>&nbsp;{i.qty} x {fmtCur(i.price)}</span>
+<span>{i.name}<br/>&nbsp;{i.weight_kg ? i.weight_kg+'kg' : i.qty+' x '+fmtCur(i.price)}</span>
 <span>{fmtCur(i.subtotal)}</span>
 </div>
 ))}
@@ -1442,10 +1346,9 @@ cart.map(item=>(
 );
 };
 
-/* ─── PRODUCTS ─── */
 const ProductsPage=({user})=>{
-const [products,setProducts]=useState([]);
-const [categories,setCategories]=useState([]);
+const [products,setProducts]=useState(()=>DB.get('products',[]));
+const [categories,setCategories]=useState(()=>DB.get('categories',[]));
 const [search,setSearch]=useState('');
 const [catFilter,setCatFilter]=useState('all');
 const [showModal,setShowModal]=useState(false);
@@ -1453,90 +1356,45 @@ const [editing,setEditing]=useState(null);
 const [showCatModal,setShowCatModal]=useState(false);
 const [confirm,setConfirm]=useState(null);
 const imgRef=useRef();
-const empty={name:'',sku:'',categoryId:'',price:'',cost:'',stock:'',lowStockAlert:'10',barcode:'',image:null,active:true};
+const empty={name:'',sku:'',categoryId:'',unit:'pcs',price:'',price_per_kg:'',cost:'',stock:'',stock_kg:'',variant:'',shared_stock_id:'',lowStockAlert:'10',barcode:'',image:null,active:true};
 const [form,setForm]=useState(empty);
 
-useEffect(() => {
-async function loadData() {
-try {
-const [prodData, catData] = await Promise.all([
-SupabaseDB.getProducts(),
-SupabaseDB.getCategories()
-]);
-setProducts(prodData);
-setCategories(catData);
-DB.set('products', prodData);
-DB.set('categories', catData);
-} catch (e) {
-console.error('Failed to load from Supabase:', e);
-setProducts(DB.get('products', []));
-setCategories(DB.get('categories', []));
-showToast('Using cached data (offline)', 'warn');
-}
-}
-loadData();
-}, []);
-
-const save=useCallback(async function(){
+const save=useCallback(function(){
 if(!form.name||!form.price){showToast('Name and price required','error');return;}
 try {
+var prods=DB.get('products',[]);
 var updated;
 if(editing){
-const updates = {
-...form,
-price: Number(form.price),
-cost: Number(form.cost),
-stock: Number(form.stock),
-lowStockAlert: Number(form.lowStockAlert) || 10,
-updatedAt: now()
-};
-await SupabaseDB.updateProduct(editing, updates);
-updated = products.map(function(p){ return p.id===editing?{...p,...updates}:p; });
-setProducts(updated);
-DB.set('products', updated);
-showToast('Product updated','success');
-} else {
-var np = {
-...form,
-id: uid(),
-sku: form.sku || 'SKU'+Date.now(),
-price: Number(form.price),
-cost: Number(form.cost),
-stock: Number(form.stock),
-lowStockAlert: Number(form.lowStockAlert) || 10,
-createdAt: now()
-};
-await SupabaseDB.insertProduct(np);
-updated = [...products, np];
-setProducts(updated);
-DB.set('products', updated);
-showToast('Product added','success');
+updated=prods.map(function(p){ return p.id===editing?{...p,...form,price:Number(form.price),price_per_kg:Number(form.price_per_kg)||0,cost:Number(form.cost),stock:Number(form.stock),stock_kg:Number(form.stock_kg)||0,lowStockAlert:Number(form.lowStockAlert)||10,updatedAt:now()}:p; });
+DB.set('products',updated);setProducts(updated);
+if(navigator.onLine && supabaseClient) {
+  DB.queueOffline('product_update', updated.find(p=>p.id===editing));
 }
+}else{
+var np={...form,id:uid(),sku:form.sku||'SKU'+Date.now(),price:Number(form.price),price_per_kg:Number(form.price_per_kg)||0,cost:Number(form.cost),stock:Number(form.stock),stock_kg:Number(form.stock_kg)||0,lowStockAlert:Number(form.lowStockAlert)||10,createdAt:now()};
+updated=[...prods,np];DB.set('products',updated);setProducts(updated);
+if(navigator.onLine && supabaseClient) {
+  DB.queueOffline('product_update', np);
+}
+}
+DB.createBackup();
+showToast(editing?'Product updated':'Product added','success');
 setShowModal(false);setEditing(null);setForm(empty);
-} catch (e) {
-console.error('Save error:', e);
-showToast('Save failed: ' + (e.message || 'Unknown error'),'error');
-}
-},[form,editing,empty,products]);
+} catch (e) { showToast('Save failed','error'); console.error(e); }
+},[form,editing,empty]);
 
-const del=useCallback(async (id)=>{
+const del=useCallback((id)=>{
 try {
-await SupabaseDB.deleteProduct(id);
-const updated = products.map(p=>p.id===id?{...p,active:false}:p);
-setProducts(updated);
-DB.set('products', updated);
-showToast('Product deactivated','info');
-} catch (e) {
-console.error('Delete error:', e);
-showToast('Delete failed: ' + (e.message || 'Unknown error'),'error');
-}
+const updated=products.map(p=>p.id===id?{...p,active:false}:p);
+DB.set('products',updated);setProducts(updated);showToast('Product deactivated','info');
+DB.createBackup();
+} catch (e) { showToast('Delete failed','error'); }
 },[products]);
 
 const handleImg=useCallback((e)=>{
 const f=e.target.files[0];if(!f)return;
 const r=new FileReader();
 r.onload=ev=>setForm(pr=>({...pr,image:ev.target.result}));
-r.onerror=()=>showToast('Failed to read image','error');
 r.readAsDataURL(f);
 },[]);
 
@@ -1547,36 +1405,19 @@ if(search)p=p.filter(pr=>pr.name.toLowerCase().includes(search.toLowerCase())||p
 return p;
 },[products,catFilter,search]);
 
-const openEdit=useCallback((p)=>{setForm({...p,price:String(p.price),cost:String(p.cost),stock:String(p.stock),lowStockAlert:String(p.lowStockAlert||10)});setEditing(p.id);setShowModal(true);},[]);
+const openEdit=useCallback((p)=>{setForm({...p,price:String(p.price),price_per_kg:String(p.price_per_kg||''),cost:String(p.cost),stock:String(p.stock),stock_kg:String(p.stock_kg||''),lowStockAlert:String(p.lowStockAlert||10)});setEditing(p.id);setShowModal(true);},[]);
 
 const [catForm,setCatForm]=useState({name:'',color:'#4f8ef7'});
-const saveCat=useCallback(async ()=>{
+const saveCat=useCallback(()=>{
 if(!catForm.name)return;
 try {
-const newCat = {id: uid(), ...catForm};
-await SupabaseDB.insertCategory(newCat);
-const cats=[...categories,newCat];
-setCategories(cats);
-DB.set('categories',cats);
-setCatForm({name:'',color:'#4f8ef7'});
-showToast('Category added','success');
-} catch (e) {
-console.error('Category save error:', e);
-showToast('Failed to add category: ' + (e.message || 'Unknown error'),'error');
-}
+const cats=[...categories,{id:uid(),...catForm}];
+DB.set('categories',cats);setCategories(cats);setCatForm({name:'',color:'#4f8ef7'});showToast('Category added','success');
+DB.createBackup();
+} catch (e) { showToast('Failed to add category','error'); }
 },[catForm,categories]);
 
-const delCat=useCallback(async (id)=>{
-try {
-await SupabaseDB.deleteCategory(id);
-const cats=categories.filter(c=>c.id!==id);
-setCategories(cats);
-DB.set('categories',cats);
-} catch (e) {
-console.error('Category delete error:', e);
-showToast('Failed to delete category','error');
-}
-},[categories]);
+const delCat=useCallback((id)=>{ const cats=categories.filter(c=>c.id!==id);DB.set('categories',cats);setCategories(cats); },[categories]);
 
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
@@ -1598,23 +1439,25 @@ return(
 </div>
 <div className="card" style={{padding:0,overflow:'hidden'}}>
 <table>
-<thead><tr><th>Product</th><th>SKU / Barcode</th><th>Category</th><th>Price</th><th>Cost</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+<thead><tr><th>Product</th><th>SKU / Barcode</th><th>Category</th><th>Unit</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
 <tbody>
 {filtered.map(p=>(
 <tr key={p.id}>
 <td><div style={{display:'flex',alignItems:'center',gap:10}}>
 {p.image?<img src={p.image} alt="" className="product-img"/>:<div className="img-placeholder">{Icon.img}</div>}
-<div><div style={{fontWeight:500}}>{p.name}</div></div>
+<div><div style={{fontWeight:500}}>{p.name} {p.variant?`(${p.variant})`:''}</div></div>
 </div></td>
 <td><div style={{fontFamily:'var(--mono)',fontSize:12}}>{p.sku}</div><div style={{fontSize:11,color:'var(--text3)'}}>{p.barcode||'—'}</div></td>
 <td>{categories.find(c=>c.id===p.categoryId)?.name||'—'}</td>
-<td style={{fontFamily:'var(--mono)',fontWeight:600,color:'var(--accent)'}}>{fmtCur(p.price)}</td>
-<td style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--text2)'}}>{fmtCur(p.cost)}</td>
-<td><span className={`badge ${Number(p.stock||0)<=0?'badge-red':Number(p.stock||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green'}`}>{Number(p.stock||0)}</span></td>
+<td><span className="badge badge-blue">{p.unit}</span></td>
+<td style={{fontFamily:'var(--mono)',fontWeight:600,color:'var(--accent)'}}>{p.unit==='kg'?fmtCur(p.price_per_kg)+'/kg':fmtCur(p.price)}</td>
+<td><span className={`badge ${p.unit==='kg'?(Number(p.stock_kg||0)<=0?'badge-red':Number(p.stock_kg||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green'):(Number(p.stock||0)<=0?'badge-red':Number(p.stock||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green')}`}>
+  {p.unit==='kg'?p.stock_kg+'kg':p.stock}
+</span></td>
 <td><span className="badge badge-green">Active</span></td>
 <td><div style={{display:'flex',gap:6}}>
 <button className="btn btn-ghost btn-sm" style={{padding:'5px 8px'}} onClick={()=>openEdit(p)}>{Icon.edit}</button>
-{user.role==='admin'&&<button className="btn btn-ghost btn-sm" style={{padding:'5px 8px',color:'var(--red)'}} onClick={()=>setConfirm({msg:`Delete "${p.name}"?`,cb:()=>del(p.id)})}>{Icon.trash}</button>}
+{user.role==='admin'&&<button className="btn btn-ghost btn-sm" style={{padding:'5px 8px',color:'var(--red)'}} onClick={()=>setConfirm({msg:`Deactivate "${p.name}"?`,cb:()=>del(p.id)})}>{Icon.trash}</button>}
 </div></td>
 </tr>
 ))}
@@ -1622,6 +1465,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal modal-lg">
@@ -1634,20 +1478,39 @@ return(
 <div className="form-row"><label>Product Name *</label><input value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))} style={{width:'100%'}}/></div>
 <div className="form-row cols2"><div><label>SKU</label><input value={form.sku} onChange={e=>setForm(p=>({...p,sku:e.target.value}))} style={{width:'100%'}}/></div>
 <div><label>Barcode</label><input value={form.barcode} onChange={e=>setForm(p=>({...p,barcode:e.target.value}))} style={{width:'100%'}}/></div></div>
-<div className="form-row"><label>Category</label>
+<div className="form-row cols2">
+<div><label>Category</label>
 <select value={form.categoryId} onChange={e=>setForm(p=>({...p,categoryId:e.target.value}))} style={{width:'100%'}}>
 <option value="">Select category</option>
 {categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
 </select>
 </div>
+<div><label>Unit</label>
+<select value={form.unit} onChange={e=>setForm(p=>({...p,unit:e.target.value}))} style={{width:'100%'}}>
+<option value="pcs">Pieces (pcs)</option>
+<option value="kg">Kilogram (kg)</option>
+</select>
+</div>
+</div>
+{form.unit === 'kg' && (
+<>
+<div className="form-row cols2">
+<div><label>Price per Kg *</label><input type="number" value={form.price_per_kg} onChange={e=>setForm(p=>({...p,price_per_kg:e.target.value}))} style={{width:'100%'}}/></div>
+<div><label>Variant (e.g., Whole, Cut)</label><input value={form.variant} onChange={e=>setForm(p=>({...p,variant:e.target.value}))} style={{width:'100%'}}/></div>
+</div>
+<div className="form-row cols2">
+<div><label>Stock (Kg)</label><input type="number" step="0.01" value={form.stock_kg} onChange={e=>setForm(p=>({...p,stock_kg:e.target.value}))} style={{width:'100%'}}/></div>
+<div><label>Shared Stock ID (Optional)</label><input value={form.shared_stock_id} onChange={e=>setForm(p=>({...p,shared_stock_id:e.target.value}))} placeholder="Link variants" style={{width:'100%'}}/></div>
+</div>
+</>
+)}
+{form.unit === 'pcs' && (
 <div className="form-row cols2">
 <div><label>Selling Price *</label><input type="number" value={form.price} onChange={e=>setForm(p=>({...p,price:e.target.value}))} style={{width:'100%'}}/></div>
 <div><label>Cost Price</label><input type="number" value={form.cost} onChange={e=>setForm(p=>({...p,cost:e.target.value}))} style={{width:'100%'}}/></div>
 </div>
-<div className="form-row cols2">
-<div><label>Stock Quantity</label><input type="number" value={form.stock} onChange={e=>setForm(p=>({...p,stock:e.target.value}))} style={{width:'100%'}}/></div>
-<div><label>Low Stock Alert</label><input type="number" value={form.lowStockAlert} onChange={e=>setForm(p=>({...p,lowStockAlert:e.target.value}))} style={{width:'100%'}}/></div>
-</div>
+)}
+<div className="form-row"><label>Low Stock Alert</label><input type="number" value={form.lowStockAlert} onChange={e=>setForm(p=>({...p,lowStockAlert:e.target.value}))} style={{width:'100%'}}/></div>
 </div>
 <div style={{display:'flex',flexDirection:'column',gap:14}}>
 <div>
@@ -1675,6 +1538,7 @@ return(
 </div>
 </div>
 )}
+
 {showCatModal&&(
 <div className="modal-overlay">
 <div className="modal">
@@ -1704,53 +1568,42 @@ return(
 );
 };
 
-/* ── INVENTORY ─── */
 const InventoryPage=({user})=>{
-const [products,setProducts]=useState([]);
+const [products,setProducts]=useState(()=>DB.get('products',[]));
 const [restocks,setRestocks]=useState(()=>DB.get('restocks',[]));
 const [showModal,setShowModal]=useState(false);
 const [form,setForm]=useState({productId:'',qty:'',supplier:'',notes:'',cost:''});
 const [tab,setTab]=useState('stock');
 const [search,setSearch]=useState('');
 const categories=DB.get('categories',[]);
+const lowStock=products.filter(p=>p.active!==false&&Number(p.unit==='kg'?(p.stock_kg||0):(p.stock||0))<=Number(p.lowStockAlert||0));
 
-useEffect(() => {
-async function loadProducts() {
-try {
-const data = await SupabaseDB.getProducts();
-setProducts(data);
-DB.set('products', data);
-} catch (e) {
-console.error('Failed to load products from Supabase:', e);
-setProducts(DB.get('products', []));
-showToast('Using cached products (offline)', 'warn');
-}
-}
-loadProducts();
-}, []);
-
-const lowStock=products.filter(p=>p.active!==false&&Number(p.stock||0)<=Number(p.lowStockAlert||0));
-
-const addRestock=useCallback(async function(){
+const addRestock=useCallback(function(){
 if(!form.productId||!form.qty){showToast('Select product and quantity','error');return;}
 try {
 var rec={id:uid(),...form,qty:Number(form.qty),cost:Number(form.cost||0),addedBy:user.name,createdAt:now()};
 var updRest=[...restocks,rec];DB.set('restocks',updRest);setRestocks(updRest);
-AutoSave.schedule('restocks', updRest);
-const product = products.find(p => p.id === form.productId);
-const newStock = Number(product.stock || 0) + Number(form.qty || 0);
-await SupabaseDB.updateProduct(form.productId, { stock: newStock });
-var prods=products.map(function(p){ return p.id===form.productId?{...p,stock:newStock}:p; });
-setProducts(prods);
-DB.set('products',prods);
+
+var prods=DB.get('products',[]);
+var target = prods.find(p => p.id === form.productId);
+var upd;
+if (target && target.unit === 'kg') {
+  const newStockKg = Number(target.stock_kg || 0) + Number(form.qty || 0);
+  if (target.shared_stock_id) {
+    upd = prods.map(p => p.shared_stock_id === target.shared_stock_id ? {...p, stock_kg: newStockKg} : p);
+  } else {
+    upd = prods.map(p => p.id === form.productId ? {...p, stock_kg: newStockKg} : p);
+  }
+} else {
+  upd = prods.map(p => p.id === form.productId ? {...p, stock: Number(p.stock || 0) + Number(form.qty || 0)} : p);
+}
+
+DB.set('products',upd);setProducts(upd);
 setForm({productId:'',qty:'',supplier:'',notes:'',cost:''});
 setShowModal(false);showToast('Stock updated successfully','success');
 DB.createBackup();
-} catch (e) {
-console.error('Restock error:', e);
-showToast('Restock failed: ' + (e.message || 'Unknown error'),'error');
-}
-},[form,user,restocks,products]);
+} catch (e) { showToast('Restock failed','error'); }
+},[form,user,restocks]);
 
 const filtered=products.filter(p=>p.active!==false&&(search?p.name.toLowerCase().includes(search.toLowerCase()):true));
 
@@ -1778,8 +1631,8 @@ return(
 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12,marginBottom:16}}>
 <div className="stat-card"><div className="stat-val">{products.filter(p=>p.active!==false).length}</div><div className="stat-label">Total Products</div></div>
 <div className="stat-card"><div className="stat-val" style={{color:'var(--red)'}}>{lowStock.length}</div><div className="stat-label">Low Stock</div></div>
-<div className="stat-card"><div className="stat-val">{products.filter(p=>p.stock<=0&&p.active!==false).length}</div><div className="stat-label">Out of Stock</div></div>
-<div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{products.filter(p=>Number(p.stock||0)>Number(p.lowStockAlert||0)&&p.active!==false).length}</div><div className="stat-label">Well Stocked</div></div>
+<div className="stat-card"><div className="stat-val">{products.filter(p=>(p.unit==='kg'?p.stock_kg:p.stock)<=0&&p.active!==false).length}</div><div className="stat-label">Out of Stock</div></div>
+<div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{products.filter(p=>Number(p.unit==='kg'?(p.stock_kg||0):(p.stock||0))>Number(p.lowStockAlert||0)&&p.active!==false).length}</div><div className="stat-label">Well Stocked</div></div>
 </div>
 <div className="search-box" style={{marginBottom:12,width:260}}>{Icon.search}<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search product..."/></div>
 <div className="card" style={{padding:0,overflow:'hidden'}}>
@@ -1787,12 +1640,12 @@ return(
 <thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Low Alert</th><th>Status</th></tr></thead>
 <tbody>{filtered.map(p=>(
 <tr key={p.id}>
-<td><div style={{fontWeight:500}}>{p.name}</div><div style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--mono)'}}>{p.sku}</div></td>
+<td><div style={{fontWeight:500}}>{p.name} {p.variant?`(${p.variant})`:''}</div><div style={{fontSize:11,color:'var(--text3)',fontFamily:'var(--mono)'}}>{p.sku}</div></td>
 <td>{categories.find(c=>c.id===p.categoryId)?.name||'—'}</td>
-<td><span style={{fontFamily:'var(--mono)',fontWeight:700,fontSize:16}}>{p.stock}</span></td>
-<td style={{color:'var(--text2)',fontFamily:'var(--mono)'}}>{p.lowStockAlert}</td>
-<td><span className={`badge ${Number(p.stock||0)<=0?'badge-red':Number(p.stock||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green'}`}>
-{Number(p.stock||0)<=0?'Out of Stock':Number(p.stock||0)<=Number(p.lowStockAlert||0)?'Low Stock':'In Stock'}
+<td><span style={{fontFamily:'var(--mono)',fontWeight:700,fontSize:16}}>{p.unit==='kg'?p.stock_kg+'kg':p.stock}</span></td>
+<td style={{color:'var(--text2)',fontFamily:'var(--mono)'}}>{p.lowStockAlert}{p.unit==='kg'?'kg':''}</td>
+<td><span className={`badge ${(p.unit==='kg'?Number(p.stock_kg||0):Number(p.stock||0))<=0?'badge-red':(p.unit==='kg'?Number(p.stock_kg||0):Number(p.stock||0))<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green'}`}>
+{(p.unit==='kg'?Number(p.stock_kg||0):Number(p.stock||0))<=0?'Out of Stock':(p.unit==='kg'?Number(p.stock_kg||0):Number(p.stock||0))<=Number(p.lowStockAlert||0)?'Low Stock':'In Stock'}
 </span></td>
 </tr>
 ))}</tbody>
@@ -1809,7 +1662,7 @@ return(
 <tr key={r.id}>
 <td style={{fontSize:12}}>{fmtDateTime(r.createdAt)}</td>
 <td>{products.find(p=>p.id===r.productId)?.name||'Unknown'}</td>
-<td><span className="badge badge-green">+{r.qty}</span></td>
+<td><span className="badge badge-green">+{r.qty}{products.find(p=>p.id===r.productId)?.unit==='kg'?'kg':''}</span></td>
 <td style={{color:'var(--text2)',fontSize:13}}>{r.supplier||'—'}</td>
 <td style={{fontFamily:'var(--mono)',fontSize:12}}>{r.cost?fmtCur(r.cost):'—'}</td>
 <td style={{color:'var(--text2)',fontSize:12}}>{r.notes||'—'}</td>
@@ -1831,11 +1684,11 @@ return(
 <div className="form-row"><label>Product *</label>
 <select value={form.productId} onChange={e=>setForm(p=>({...p,productId:e.target.value}))} style={{width:'100%'}}>
 <option value="">Select product</option>
-{products.filter(p=>p.active!==false).map(p=><option key={p.id} value={p.id}>{p.name} (Stock: {p.stock})</option>)}
+{products.filter(p=>p.active!==false).map(p=><option key={p.id} value={p.id}>{p.name} (Stock: {p.unit==='kg'?p.stock_kg+'kg':p.stock})</option>)}
 </select>
 </div>
 <div className="form-row cols2">
-<div><label>Quantity to Add *</label><input type="number" value={form.qty} onChange={e=>setForm(p=>({...p,qty:e.target.value}))} style={{width:'100%'}}/></div>
+<div><label>Quantity to Add *</label><input type="number" step={form.productId&&products.find(x=>x.id===form.productId)?.unit==='kg'?"0.01":"1"} value={form.qty} onChange={e=>setForm(p=>({...p,qty:e.target.value}))} style={{width:'100%'}}/></div>
 <div><label>Unit Cost</label><input type="number" value={form.cost} onChange={e=>setForm(p=>({...p,cost:e.target.value}))} style={{width:'100%'}}/></div>
 </div>
 <div className="form-row"><label>Supplier</label><input value={form.supplier} onChange={e=>setForm(p=>({...p,supplier:e.target.value}))} style={{width:'100%'}}/></div>
@@ -1851,7 +1704,6 @@ return(
 );
 };
 
-/* ─── SALES HISTORY ─── */
 const SalesPage=({user})=>{
 const [,forceUpdate]=useReducer(x=>x+1,0);
 const transactions = DB.get('transactions',[]);
@@ -1897,7 +1749,7 @@ shiftId: activeShift.shiftId, shiftNumber: activeShift.shiftNumber, cashierId:us
 date:dateFilter, startTime: activeShift.startTime, endTime: endTime, totalSales, totalTransactions,
 cashSales, gcashSales, cardSales, otherSales: gcashSales + cardSales, expenses, net,
 cashOnHand:coh, cashFund:cf, expectedCash:expected, difference:diff,
-status:diff>0?'over':diff<0?'short':'exact', transactions: filtered, createdAt: endTime,
+status:diff>0?'over':diff<0?'short':'exact', transactions: filtered, createdAt: endTime, sync_status: 'pending'
 };
 const shifts=DB.get('shifts',[]);
 if(!shifts.find(s=>s.shiftId===shiftData.shiftId)){
@@ -1911,6 +1763,7 @@ DB.set('adminSalesHistory',newHistory);
 DB.setAsync('adminSalesHistory',newHistory).catch(function(e){ console.warn('IDB sync failed:',e); });
 }
 if(!navigator.onLine){ DB.queueOffline('shift', shiftData); }
+
 const activeShifts = DB.get('activeShifts',{});
 delete activeShifts[user.id];
 DB.set('activeShifts',activeShifts);
@@ -1919,9 +1772,6 @@ setShowPrintReport(true);
 DB.createBackup();
 showToast('Shift #' + shiftData.shiftNumber + ' ended. ' + (diff>=0?'Over':'Short') + ': ' + fmtCur(Math.abs(diff)),'info');
 setShowShiftModal(false);setCashOnHand('');setCashFund('');
-if (shiftData.transactions && shiftData.transactions.length > 100) {
-shiftData.transactions = shiftData.transactions.slice(-100);
-}
 forceUpdate();
 } catch (e) { showToast('End shift failed','error'); console.error(e); }
 },[activeShift,user,cashOnHand,cashFund,cashSales,expenses,totalSales,totalTransactions,net,filtered]);
@@ -1982,6 +1832,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showShiftModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2018,6 +1869,7 @@ return(
 </div>
 </div>
 )}
+
 {selectedTxn&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2034,7 +1886,7 @@ return(
 </div>
 {selectedTxn.items.map((i,x)=>(
 <div key={x} style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:6,padding:'6px 0',borderBottom:'1px solid var(--border)'}}>
-<span>{i.name} × {i.qty}</span><span style={{fontFamily:'var(--mono)'}}>{fmtCur(i.subtotal)}</span>
+<span>{i.name} {i.weight_kg ? `(${i.weight_kg}kg)` : `× ${i.qty}`}</span><span style={{fontFamily:'var(--mono)'}}>{fmtCur(i.subtotal)}</span>
 </div>
 ))}
 <div className="divider"/>
@@ -2044,6 +1896,7 @@ return(
 </div>
 </div>
 )}
+
 {reprintTxn && (
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -2070,7 +1923,7 @@ return(
 <hr/>
 {reprintTxn.items.map((i,x)=>(
 <div key={x} style={{display:'flex',justifyContent:'space-between',fontSize:11,marginBottom:2}}>
-<span>{i.name}<br/>&nbsp;{i.qty} x {fmtCur(i.price)}</span>
+<span>{i.name}<br/>&nbsp;{i.weight_kg ? i.weight_kg+'kg' : i.qty+' x '+fmtCur(i.price)}</span>
 <span>{fmtCur(i.subtotal)}</span>
 </div>
 ))}
@@ -2086,6 +1939,7 @@ return(
 </div>
 </div>
 )}
+
 {showPrintReport && endedShiftData && (
 <div className="modal-overlay">
 <div className="modal modal-lg">
@@ -2152,7 +2006,6 @@ Report generated on {fmtDateTime(endedShiftData.endTime)}
 );
 };
 
-/* ─── EXPENSES ─── */
 const ExpensesPage=({user})=>{
 const [expenses,setExpenses]=useState(()=>DB.get('expenses',[]));
 const [showModal,setShowModal]=useState(false);
@@ -2164,9 +2017,8 @@ const expCats=['Supplies','Utilities','Salary/Wages','Maintenance','Food/Snacks'
 const add=useCallback(function(){
 if(!form.amount||!form.category){showToast('Amount and category required','error');return;}
 try {
-var exp={id:uid(),...form,amount:Number(form.amount),encodedBy:user.name,date:today(),createdAt:now()};
+var exp={id:uid(),...form,amount:Number(form.amount),encodedBy:user.name,date:today(),createdAt:now(),sync_status:'pending'};
 var updated=[...expenses,exp];DB.set('expenses',updated);setExpenses(updated);
-AutoSave.schedule('expenses', updated);
 DB.setAsync('expenses',updated).catch(function(e){ console.warn('IDB sync failed:',e); });
 setForm({amount:'',category:'',notes:'',receivedBy:''});setShowModal(false);
 showToast('Expense recorded','success');
@@ -2218,6 +2070,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2246,7 +2099,6 @@ return(
 );
 };
 
-/* ─── REPORTS ─── */
 const ReportsPage=()=>{
 const [range,setRange]=useState('daily');
 const [dateFrom,setDateFrom]=useState(today());
@@ -2273,12 +2125,14 @@ const totalSales=txns.reduce((s,t)=>s+t.total,0);
 const totalExp=exps.reduce((s,e)=>s+e.amount,0);
 const netProfit=totalSales-totalExp;
 const totalTransactions=txns.length;
+
 const productSales={};
 txns.forEach(t=>t.items.forEach(i=>{
 if(!productSales[i.id])productSales[i.id]={name:i.name,qty:0,revenue:0};
 productSales[i.id].qty+=i.qty;productSales[i.id].revenue+=i.subtotal;
 }));
 const topProducts=Object.values(productSales).sort((a,b)=>b.revenue-a.revenue).slice(0,8);
+
 const dayMap={}; txns.forEach(t=>{dayMap[t.date]=(dayMap[t.date]||0)+t.total;});
 const expDayMap={}; exps.forEach(e=>{expDayMap[e.date]=(expDayMap[e.date]||0)+e.amount;});
 const allDates=[...new Set([...Object.keys(dayMap),...Object.keys(expDayMap)])].sort();
@@ -2316,6 +2170,30 @@ chartInst.current.push(inst);
 return()=>{chartInst.current.forEach(c=>c.destroy());chartInst.current=[];};
 },[range,dateFrom,dateTo,txns.length]);
 
+const saveReport = useCallback(async () => {
+  try {
+    const reportData = {
+      id: 'RPT_' + uid(),
+      type: range,
+      date_from: from,
+      date_to: to,
+      total_sales: totalSales,
+      total_expenses: totalExp,
+      net_profit: netProfit,
+      total_transactions: totalTransactions,
+      created_at: now(),
+      sync_status: 'pending'
+    };
+    const reports = DB.get('reports', []);
+    reports.push(reportData);
+    DB.set('reports', reports);
+    DB.queueOffline('report', reportData);
+    showToast('Report saved to Archive', 'success');
+  } catch (e) {
+    showToast('Failed to save report', 'error');
+  }
+}, [range, from, to, totalSales, totalExp, netProfit, totalTransactions]);
+
 const exportCSV=useCallback(()=>{
 try {
 const rows=[['Date','TXN#','Customer','Total','Payment','Cashier'],...txns.map(t=>[t.date,t.id,t.customerName,t.total,t.payMode,t.cashierName])];
@@ -2334,6 +2212,7 @@ return(
 <button key={r} className={`chip${range===r?' active':''}`} style={{textTransform:'capitalize'}} onClick={()=>setRange(r)}>{r}</button>
 ))}
 {range==='daily'&&<input type="date" value={dateTo} onChange={e=>setDateTo(e.target.value)} style={{width:150}}/>}
+<button className="btn btn-ghost btn-sm" onClick={saveReport}>{Icon.archive} Save to Archive</button>
 <button className="btn btn-ghost btn-sm" onClick={exportCSV}>{Icon.download} CSV</button>
 </div>
 </div>
@@ -2391,231 +2270,88 @@ return (
 );
 };
 
-/* ─── ADMIN ARCHIVE ── */
 const AdminArchivePage=()=>{
-const [archive,setArchive]=useState(()=>DB.get('adminSalesHistory',[]));
+const [archive,setArchive]=useState(()=>DB.get('archives',[]));
 const [searchDate,setSearchDate]=useState('');
-const [searchCashier,setSearchCashier]=useState('');
-const [searchShift,setSearchShift]=useState('');
-const [searchTxn,setSearchTxn]=useState('');
-const [selectedShift,setSelectedShift]=useState(null);
-const [selectedTxn,setSelectedTxn]=useState(null);
-const [showPrintReport,setShowPrintReport]=useState(false);
+const [searchType,setSearchType]=useState('');
+const [confirm,setConfirm]=useState(null);
 const [refreshTick,setRefreshTick]=useState(0);
-const settings=DB.get('settings',{});
 
 useEffect(function(){
-var data = DB.get('adminSalesHistory',[]);
+var data = DB.get('archives',[]);
 setArchive(data);
 },[refreshTick]);
 
 const filtered = useMemo(()=>{
 let data = [...archive].reverse();
-if(searchDate) data = data.filter(s=>s.date === searchDate);
-if(searchCashier) data = data.filter(s=>s.cashierName.toLowerCase().includes(searchCashier.toLowerCase()));
-if(searchShift) data = data.filter(s=>String(s.shiftNumber).includes(searchShift));
-if(searchTxn) data = data.filter(s=>s.transactions && s.transactions.some(t=>t.id.toLowerCase().includes(searchTxn.toLowerCase())));
+if(searchDate) data = data.filter(s=>s.date === searchDate || (s.date_from && s.date_from <= searchDate && s.date_to >= searchDate));
+if(searchType) data = data.filter(s=>s.type === searchType);
 return data;
-},[archive,searchDate,searchCashier,searchShift,searchTxn]);
+},[archive,searchDate,searchType]);
 
-const printShiftReport = useCallback(() => { setTimeout(() => window.print(), 100); },[]);
+const deleteArchive = useCallback((id) => {
+  try {
+    const updated = archive.filter(a => a.id !== id);
+    DB.set('archives', updated);
+    setArchive(updated);
+    showToast('Archive deleted', 'success');
+  } catch (e) {
+    showToast('Delete failed', 'error');
+  }
+}, [archive]);
 
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
 <div>
-<h2 style={{fontSize:20,fontWeight:700}}>Admin Sales Archive</h2>
-<p style={{color:'var(--text3)',fontSize:13}}>{archive.length} archived shifts • Permanent records</p>
+<h2 style={{fontSize:20,fontWeight:700}}>Admin Archive</h2>
+<p style={{color:'var(--text3)',fontSize:13}}>{archive.length} archived records • Permanent records</p>
 </div>
 <button className="btn btn-ghost btn-sm" onClick={function(){setRefreshTick(function(t){return t+1;});showToast('Archive refreshed','success');}}>
 ↻ Refresh
 </button>
 </div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:20}}>
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>
 <div className="search-box">{Icon.search}<input type="date" value={searchDate} onChange={e=>setSearchDate(e.target.value)} placeholder="Search by date" style={{width:'100%'}}/></div>
-<div className="search-box">{Icon.search}<input value={searchCashier} onChange={e=>setSearchCashier(e.target.value)} placeholder="Search cashier..." style={{width:'100%'}}/></div>
-<div className="search-box">{Icon.search}<input value={searchShift} onChange={e=>setSearchShift(e.target.value)} placeholder="Shift #..." style={{width:'100%'}}/></div>
-<div className="search-box">{Icon.search}<input value={searchTxn} onChange={e=>setSearchTxn(e.target.value)} placeholder="Transaction #..." style={{width:'100%'}}/></div>
+<div className="search-box">{Icon.search}<select value={searchType} onChange={e=>setSearchType(e.target.value)} style={{width:'100%'}}>
+  <option value="">All Types</option>
+  <option value="daily">Daily</option>
+  <option value="weekly">Weekly</option>
+  <option value="monthly">Monthly</option>
+  <option value="shift">Shift</option>
+</select></div>
 </div>
 <div className="card" style={{padding:0,overflow:'hidden'}}>
 <table>
-<thead><tr><th>Shift #</th><th>Date</th><th>Cashier</th><th>Start Time</th><th>End Time</th><th>Transactions</th><th>Total Sales</th><th>Status</th><th>Actions</th></tr></thead>
+<thead><tr><th>ID</th><th>Type</th><th>Date Range</th><th>Total Sales</th><th>Net Profit</th><th>Transactions</th><th>Actions</th></tr></thead>
 <tbody>
 {filtered.map(s=>{
-const sid = s.shiftId || s.id || uid();
+const sid = s.id || uid();
 return (
 <tr key={sid}>
-<td style={{fontFamily:'var(--mono)',fontWeight:600}}>#{s.shiftNumber}</td>
-<td style={{fontSize:12}}>{s.date}</td>
-<td style={{fontSize:13,fontWeight:500}}>{s.cashierName}</td>
-<td style={{fontSize:12}}>{fmtTime(s.startTime)}</td>
-<td style={{fontSize:12}}>{fmtTime(s.endTime)}</td>
-<td style={{fontFamily:'var(--mono)'}}>{s.totalTransactions}</td>
-<td style={{fontFamily:'var(--mono)',fontWeight:600,color:'var(--accent)'}}>{fmtCur(s.totalSales)}</td>
-<td><span className={`badge ${s.status==='over'?'badge-green':s.status==='short'?'badge-red':'badge-blue'}`}>{(s.status||'exact').toUpperCase()}</span></td>
+<td style={{fontFamily:'var(--mono)',fontSize:11}}>{sid}</td>
+<td><span className="badge badge-blue">{s.type}</span></td>
+<td style={{fontSize:12}}>{s.date || (s.date_from + ' to ' + s.date_to)}</td>
+<td style={{fontFamily:'var(--mono)',fontWeight:600,color:'var(--accent)'}}>{fmtCur(s.total_sales)}</td>
+<td style={{fontFamily:'var(--mono)',color:s.net_profit>=0?'var(--green)':'var(--red)'}}>{fmtCur(s.net_profit)}</td>
+<td style={{fontFamily:'var(--mono)'}}>{s.total_transactions}</td>
 <td>
 <div style={{display:'flex',gap:4}}>
-<button className="btn btn-ghost btn-sm" style={{padding:'4px 8px',fontSize:11}} onClick={()=>setSelectedShift(s)}>View</button>
-<button className="btn btn-ghost btn-sm" style={{padding:'4px 8px',fontSize:11}} onClick={()=>{setSelectedShift(s);setShowPrintReport(true);}}>{Icon.print}</button>
+<button className="btn btn-ghost btn-sm" style={{padding:'4px 8px',fontSize:11,color:'var(--red)'}} onClick={()=>setConfirm({msg:'Delete this archived report?',cb:()=>deleteArchive(sid)})}>{Icon.trash}</button>
 </div>
 </td>
 </tr>
 );
 })}
-{filtered.length===0&&<tr><td colSpan={9} style={{textAlign:'center',padding:'30px',color:'var(--text3)'}}>No archived shifts found</td></tr>}
+{filtered.length===0&&<tr><td colSpan={7} style={{textAlign:'center',padding:'30px',color:'var(--text3)'}}>No archived records found</td></tr>}
 </tbody>
 </table>
 </div>
-{selectedShift&&!showPrintReport&&(
-<div className="modal-overlay">
-<div className="modal modal-xl">
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-<h3>Shift #{selectedShift.shiftNumber} - {selectedShift.cashierName}</h3>
-<div style={{display:'flex',gap:8}}>
-<button className="btn btn-ghost btn-sm" onClick={()=>{setShowPrintReport(true);}}>{Icon.print} Print</button>
-<button className="btn btn-ghost btn-sm" onClick={()=>setSelectedShift(null)}>✕</button>
-</div>
-</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12,marginBottom:20}}>
-<div className="stat-card"><div className="stat-val" style={{color:'var(--accent)'}}>{fmtCur(selectedShift.totalSales)}</div><div className="stat-label">Total Sales</div></div>
-<div className="stat-card"><div className="stat-val" style={{color:'var(--green)'}}>{fmtCur(selectedShift.cashSales)}</div><div className="stat-label">Cash</div></div>
-<div className="stat-card"><div className="stat-val" style={{color:'var(--accent2)'}}>{fmtCur(selectedShift.gcashSales)}</div><div className="stat-label">GCash</div></div>
-<div className="stat-card"><div className="stat-val" style={{color:'var(--purple)'}}>{fmtCur(selectedShift.cardSales)}</div><div className="stat-label">Card</div></div>
-</div>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-<div>
-<div style={{fontWeight:600,marginBottom:10,fontSize:14}}>Shift Details</div>
-<div style={{background:'var(--bg3)',borderRadius:'var(--radius)',padding:12,fontSize:13}}>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Date</span><span>{selectedShift.date}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Start</span><span>{fmtTime(selectedShift.startTime)}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>End</span><span>{fmtTime(selectedShift.endTime)}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Transactions</span><span>{selectedShift.totalTransactions}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Expenses</span><span>{fmtCur(selectedShift.expenses)}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Net Sales</span><span style={{fontWeight:600}}>{fmtCur(selectedShift.net)}</span></div>
-<div className="divider" style={{margin:'10px 0'}}/>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Expected Cash</span><span>{fmtCur(selectedShift.expectedCash)}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{color:'var(--text2)'}}>Actual Cash</span><span>{fmtCur(selectedShift.cashOnHand)}</span></div>
-<div style={{display:'flex',justifyContent:'space-between',fontWeight:700,color:selectedShift.difference>=0?'var(--green)':'var(--red)'}}>
-<span>{selectedShift.difference>=0?'OVER':'SHORT'}</span>
-<span>{fmtCur(Math.abs(selectedShift.difference))}</span>
-</div>
-</div>
-</div>
-<div>
-<div style={{fontWeight:600,marginBottom:10,fontSize:14}}>Transactions ({(selectedShift.transactions||[]).length})</div>
-<div style={{maxHeight:300,overflow:'auto',background:'var(--bg3)',borderRadius:'var(--radius)',padding:8}}>
-{(selectedShift.transactions||[]).map(t=>(
-<div key={t.id} style={{padding:'8px 10px',borderBottom:'1px solid var(--border)',cursor:'pointer'}} onClick={()=>setSelectedTxn(t)}>
-<div style={{display:'flex',justifyContent:'space-between',fontSize:12}}>
-<span style={{fontFamily:'var(--mono)'}}>{t.id}</span>
-<span style={{color:'var(--accent)',fontWeight:600}}>{fmtCur(t.total)}</span>
-</div>
-<div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--text2)',marginTop:2}}>
-<span>{fmtTime(t.createdAt)} • {t.payMode.toUpperCase()}</span>
-<span>{t.items.length} items</span>
-</div>
-</div>
-))}
-</div>
-</div>
-</div>
-</div>
-</div>
-)}
-{selectedTxn&&(
-<div className="modal-overlay">
-<div className="modal" style={{maxWidth:420}}>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:16}}>
-<h3>Transaction Detail</h3>
-<button className="btn btn-ghost btn-sm" onClick={()=>setSelectedTxn(null)}>✕</button>
-</div>
-<div style={{fontSize:12,color:'var(--text2)',marginBottom:12}}>
-<div>{selectedTxn.id} • {fmtDateTime(selectedTxn.createdAt)}</div>
-<div>Cashier: {selectedTxn.cashierName} • Customer: {selectedTxn.customerName}</div>
-</div>
-{selectedTxn.items.map((i,x)=>{
-const subtotal = i.qty * i.price;
-return (
-<div key={x} style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:6,padding:'6px 0',borderBottom:'1px solid var(--border)'}}>
-<span>{i.name} × {i.qty}</span><span style={{fontFamily:'var(--mono)'}}>{fmtCur(subtotal)}</span>
-</div>
-);
-})}
-<div className="divider"/>
-<div style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:4}}><span style={{color:'var(--text2)'}}>Subtotal</span><span>{fmtCur(selectedTxn.subtotal)}</span></div>
-{selectedTxn.discount>0&&<div style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:4,color:'var(--green)'}}><span>Discount</span><span>-{fmtCur(selectedTxn.discount)}</span></div>}
-<div style={{display:'flex',justifyContent:'space-between',fontWeight:700,fontSize:15}}><span>Total</span><span style={{fontFamily:'var(--mono)',color:'var(--accent)'}}>{fmtCur(selectedTxn.total)}</span></div>
-</div>
-</div>
-)}
-{showPrintReport && selectedShift && (
-<div className="modal-overlay">
-<div className="modal modal-lg">
-<div className="no-print" style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-<h3>Shift Report - #{selectedShift.shiftNumber}</h3>
-<div style={{display:'flex',gap:8}}>
-<button className="btn btn-primary btn-sm" onClick={printShiftReport}>{Icon.print} Print Report</button>
-<button className="btn btn-ghost btn-sm" onClick={()=>{setShowPrintReport(false);setSelectedShift(null);}}>Close</button>
-</div>
-</div>
-<div className="print-only shift-report">
-<div className="shift-report-header">
-<h2>{settings.storeName || 'Branch'} POS</h2>
-<h3>{settings.storeAddress}</h3>
-<h3>{settings.storeTel}</h3>
-<div style={{marginTop:12,fontSize:16,fontWeight:700}}>SHIFT END REPORT</div>
-<div style={{fontSize:12,color:'#666',marginTop:4}}>ARCHIVED RECORD</div>
-</div>
-<div className="shift-report-section">
-<div className="shift-report-section-title">Shift Information</div>
-<div className="shift-report-row"><span>Shift Number</span><span>#{selectedShift.shiftNumber}</span></div>
-<div className="shift-report-row"><span>Cashier Name</span><span>{selectedShift.cashierName}</span></div>
-<div className="shift-report-row"><span>Date</span><span>{fmtDate(selectedShift.date)}</span></div>
-<div className="shift-report-row"><span>Start Time</span><span>{fmtTime(selectedShift.startTime)}</span></div>
-<div className="shift-report-row"><span>End Time</span><span>{fmtTime(selectedShift.endTime)}</span></div>
-</div>
-<div className="shift-report-section">
-<div className="shift-report-section-title">Transaction Summary</div>
-<div className="shift-report-row"><span>Total Transactions</span><span>{selectedShift.totalTransactions}</span></div>
-<div className="shift-report-row"><span>Gross Sales</span><span>{fmtCur(selectedShift.totalSales)}</span></div>
-<div className="shift-report-row"><span>Expenses</span><span>{fmtCur(selectedShift.expenses)}</span></div>
-<div className="shift-report-row total"><span>Net Sales</span><span>{fmtCur(selectedShift.net)}</span></div>
-</div>
-<div className="shift-report-section">
-<div className="shift-report-section-title">Payment Breakdown</div>
-<div className="shift-report-row"><span>Cash Sales</span><span>{fmtCur(selectedShift.cashSales)}</span></div>
-<div className="shift-report-row"><span>GCash Sales</span><span>{fmtCur(selectedShift.gcashSales)}</span></div>
-<div className="shift-report-row"><span>Card Sales</span><span>{fmtCur(selectedShift.cardSales)}</span></div>
-<div className="shift-report-row total"><span>Total Sales</span><span>{fmtCur(selectedShift.totalSales)}</span></div>
-</div>
-<div className="shift-report-section">
-<div className="shift-report-section-title">Cash Reconciliation</div>
-<div className="shift-report-row"><span>Cash Fund</span><span>{fmtCur(selectedShift.cashFund)}</span></div>
-<div className="shift-report-row"><span>Cash Sales</span><span>{fmtCur(selectedShift.cashSales)}</span></div>
-<div className="shift-report-row"><span>Expenses</span><span>-{fmtCur(selectedShift.expenses)}</span></div>
-<div className="shift-report-row"><span>Expected Cash</span><span>{fmtCur(selectedShift.expectedCash)}</span></div>
-<div className="shift-report-row"><span>Actual Cash</span><span>{fmtCur(selectedShift.cashOnHand)}</span></div>
-<div className="shift-report-row total" style={{color: selectedShift.difference >= 0 ? '#22c87a' : '#f05050'}}>
-<span>{selectedShift.difference >= 0 ? 'OVER' : 'SHORT'}</span>
-<span>{fmtCur(Math.abs(selectedShift.difference))}</span>
-</div>
-</div>
-<div className="shift-report-signature">
-<div className="shift-report-signature-line">Cashier Signature</div>
-<div className="shift-report-signature-line">Manager Signature</div>
-</div>
-<div style={{textAlign:'center',marginTop:20,fontSize:11,color:'#666'}}>
-Archived on {fmtDateTime(selectedShift.endTime)} • Shift ID: {selectedShift.shiftId}
-</div>
-</div>
-</div>
-</div>
-)}
+{confirm&&<ConfirmModal msg={confirm.msg} onYes={()=>{confirm.cb();setConfirm(null);}} onNo={()=>setConfirm(null)}/>}
 </div>
 );
 };
 
-/* ─── USERS ─── */
 const UsersPage=({currentUser})=>{
 const [users,setUsers]=useState(()=>DB.get('users',[]));
 const [showModal,setShowModal]=useState(false);
@@ -2679,6 +2415,7 @@ return(
 ))}</tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2709,7 +2446,6 @@ return(
 );
 };
 
-/* ─── SETTINGS ─── */
 const SettingsPage=()=>{
 const [settings,setSettings]=useState(()=>DB.get('settings',{}));
 const [maintenanceLogs,setMaintenanceLogs]=useState(()=>DB.get('maintenanceLogs',[]));
@@ -2725,11 +2461,14 @@ const r=new FileReader();r.onload=ev=>setSettings(p=>({...p,loginBg:ev.target.re
 },[]);
 
 const recordMaint=useCallback(()=>{
-MaintenanceSystem.recordMaintenance(maintNotes);
-setMaintenanceLogs(DB.get('maintenanceLogs',[]));
+const log = { id: uid(), date: now(), notes: maintNotes, performedBy: 'System' };
+const logs = [...maintenanceLogs, log];
+DB.set('maintenanceLogs', logs);
+DB.set('lastMaintenance', now());
+setMaintenanceLogs(logs);
 setShowMaintModal(false);setMaintNotes('');
 showToast('Maintenance recorded','success');
-},[maintNotes]);
+},[maintNotes,maintenanceLogs]);
 
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
@@ -2766,6 +2505,7 @@ return(
 </div>
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>Data Management</div>
 <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
@@ -2787,6 +2527,7 @@ showToast('Data cleared','info');
 <button className="btn btn-ghost btn-sm" onClick={()=>{DB.recoverFromBackup();window.location.reload();}}>↩️ Recover from Backup</button>
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>Maintenance History</div>
 <div style={{maxHeight:200,overflow:'auto'}}>
@@ -2803,6 +2544,7 @@ return (
 }
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>About Branch POS</div>
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
@@ -2817,6 +2559,7 @@ return (
 })}
 </div>
 </div>
+
 {showMaintModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2833,7 +2576,6 @@ return (
 );
 };
 
-/* ─── MAIN APP ─── */
 const App=()=>{
 const [user,setUser]=useState(()=>{
 try{var u=sessionStorage.getItem('bpos_user');return u?JSON.parse(u):null;}catch(e){return null;}
@@ -2842,6 +2584,7 @@ const [sessionId,setSessionId]=useState(()=>sessionStorage.getItem('bpos_sid')||
 const [page,setPage]=useState('pos');
 const [collapsed,setCollapsed]=useState(false);
 const {toast,showToast:_}=useToast();
+const [systemReady, setSystemReady] = useState(false);
 
 useEffect(function(){
 if (navigator.storage && navigator.storage.persist) {
@@ -2852,8 +2595,6 @@ else console.warn('Persistent storage denied - data may be cleared by browser');
 }
 },[]);
 
-useEffect(function(){ registerServiceWorker(); },[]);
-
 useEffect(function(){
 var init = async function() {
 try {
@@ -2863,9 +2604,10 @@ if (issues.length > 0) {
 console.warn('Data issues found on startup:', issues);
 await DB.repairData();
 }
-await WAL.cleanup(86400000);
+setSystemReady(true);
 } catch (e) {
 console.error('System initialization failed:', e);
+setSystemReady(true);
 }
 };
 init();
@@ -2873,18 +2615,10 @@ init();
 
 useEffect(function(){
 var backupInterval = setInterval(function(){
-if(user) { AutoSave.flush(); DB.createBackup(); WAL.cleanup(); }
+if(user) { DB.createBackup(); }
 }, 300000);
 return function() { clearInterval(backupInterval); };
 },[user]);
-
-useEffect(()=>{
-const issues = DB.validateData();
-if(issues.length > 0){
-console.warn('Data issues found:', issues);
-DB.repairData();
-}
-},[]);
 
 const login=useCallback(function(u,sid){
 setUser(u);setSessionId(sid);
@@ -2918,10 +2652,10 @@ sessionStorage.clear();
 },[sessionId,user]);
 
 useEffect(function(){
-var handleBeforeUnload = function() { AutoSave.flush(); DB.createBackup(); };
+var handleBeforeUnload = function() { DB.createBackup(); };
 window.addEventListener('beforeunload', handleBeforeUnload);
 var handleVisibility = function() {
-if (document.visibilityState === 'hidden') { AutoSave.flush(); DB.createBackup(); }
+if (document.visibilityState === 'hidden') { DB.createBackup(); }
 };
 document.addEventListener('visibilitychange', handleVisibility);
 return function() {
@@ -2962,9 +2696,7 @@ return(
 {pages[page]||pages.pos}
 </div>
 {toast&&<Toast msg={toast.msg} type={toast.type}/>}
-<MaintenanceBanner/>
 <OfflineIndicator/>
-<SyncStatus/>
 </div>
 </ErrorBoundary>
 );
@@ -2975,3 +2707,4 @@ setTimeout(function(){ if(window.hideLoading) window.hideLoading(); }, 500);
 </script>
 </body>
 </html>
+```
