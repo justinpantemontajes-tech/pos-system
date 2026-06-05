@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Branch POS — Point of Sale System</title>
@@ -9,10 +11,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script>
-  const SUPABASE_URL = 'https://kzkoubqcfqomjqlzsaqv.supabase.co'
-const SUPABASE_KEY = 'sb_publishable_iRhyAMadJkLnOpQrStUvWxYz1234567890AbCdEfGhIjKlMnOpQrStUvWxYz'
- window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -189,6 +188,14 @@ body *{display:none!important}
 <base target="_blank">
 </head>
 <body>
+    <script type="text/babel">
+  const { createClient } = supabase
+  
+  const supabaseClient = createClient(
+    'https://kzkoubqcfqomjqlzsaqv.supabase.co',
+    'sb_publishable_iRNyAWAd_6s3OojzS_Ubyg_fu91mF90'
+  )
+</script>
 <div id="root"></div>
 <div id="loading" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .3s">
 <div style="text-align:center">
