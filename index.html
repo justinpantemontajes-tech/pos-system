@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Branch POS — Point of Sale System</title>
@@ -11,8 +9,6 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -188,14 +184,6 @@ body *{display:none!important}
 <base target="_blank">
 </head>
 <body>
-    <script type="text/babel">
-  const { createClient } = supabase
-  
-  const supabaseClient = createClient(
-    'https://kzkoubqcfqomjqlzsaqv.supabase.co',
-    'sb_publishable_iRNyAWAd_6s3OojzS_Ubyg_fu91mF90'
-  )
-</script>
 <div id="root"></div>
 <div id="loading" style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .3s">
 <div style="text-align:center">
@@ -226,6 +214,10 @@ if (typeof ReactDOM !== 'undefined' && ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR
 ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = true;
 }
 const {useState,useEffect,useRef,useCallback,useMemo,useReducer}=React;
+
+const SUPABASE_URL = 'https://your-project.supabase.co';
+const SUPABASE_ANON_KEY = 'your-anon-key';
+const supabaseClient = typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const SyncEngine = {
   isSyncing: false,
@@ -437,39 +429,19 @@ req.onerror = () => reject(req.error);
 });
 },
 async set(store, data) {
-  await this.init();
-  return new Promise((resolve, reject) => {
-    const tx = this.db.transaction(store, 'readwrite');
-    const obj = tx.objectStore(store);
-    if (Array.isArray(data)) {
-      obj.clear();
-      data.forEach(item => { if(item && item.id) obj.put(item); });
-    } else if (data && data.id) {
-      obj.put(data);
-    }
-    tx.oncomplete = () => resolve(true);
-    tx.onerror = () => reject(tx.error);
-  });
-},
-  await new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve(true);
-    tx.onerror = () => reject(tx.error);
-  });
-
-  // 2. DAGDAG NATIN: Save din sa Supabase Cloud
-  try {
-    if(store === 'products') {
-      const { error } = await supabaseClient
-        .from('products')
-        .upsert(data) // upsert = insert or update
-      if(error) console.error('Supabase error:', error)
-    }
-  } catch(err) {
-    console.error('Sync error:', err)
-  }
-  
-  return true;
+await this.init();
+return new Promise((resolve, reject) => {
+const tx = this.db.transaction(store, 'readwrite');
+const obj = tx.objectStore(store);
+if (Array.isArray(data)) {
+obj.clear();
+data.forEach(item => { if(item && item.id) obj.put(item); });
+} else if (data && data.id) {
+obj.put(data);
 }
+tx.oncomplete = () => resolve(true);
+tx.onerror = () => reject(tx.error);
+});
 },
 async add(store, item) {
 await this.init();
@@ -1665,10 +1637,16 @@ return(
 </>
 )}
 {form.unit === 'pcs' && (
+<>
 <div className="form-row cols2">
 <div><label>Selling Price *</label><input type="number" value={form.price} onChange={e=>setForm(p=>({...p,price:e.target.value}))} style={{width:'100%'}}/></div>
 <div><label>Cost Price</label><input type="number" value={form.cost} onChange={e=>setForm(p=>({...p,cost:e.target.value}))} style={{width:'100%'}}/></div>
 </div>
+<div className="form-row cols2">
+<div><label>Stock (Qty)</label><input type="number" value={form.stock} onChange={e=>setForm(p=>({...p,stock:e.target.value}))} style={{width:'100%'}}/></div>
+<div><label>Variant (Optional)</label><input value={form.variant} onChange={e=>setForm(p=>({...p,variant:e.target.value}))} placeholder="e.g., Small, Large" style={{width:'100%'}}/></div>
+</div>
+</>
 )}
 <div className="form-row"><label>Low Stock Alert</label><input type="number" value={form.lowStockAlert} onChange={e=>setForm(p=>({...p,lowStockAlert:e.target.value}))} style={{width:'100%'}}/></div>
 </div>
