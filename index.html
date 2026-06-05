@@ -220,10 +220,6 @@ ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoin
 }
 const {useState,useEffect,useRef,useCallback,useMemo,useReducer}=React;
 
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
-const supabaseClient = typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
 const SyncEngine = {
   isSyncing: false,
   syncChannels: [],
