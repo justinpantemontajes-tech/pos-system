@@ -9,47 +9,11 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
---bg:#0f1117;--bg2:#161920;--bg3:#1e2130;--bg4:#252a3a;
---card:#1a1e2e;--card2:#1f2438;
---border:#2e3348;--border2:#3a4060;
---accent:#4f8ef7;--accent2:#6fa3fa;--accent-dim:#1e3a6e;
---green:#22c87a;--green-dim:#0d3d25;
---red:#f05050;--red-dim:#3d1515;
---yellow:#f5c842;--yellow-dim:#3d3010;
---purple:#9b72f7;--purple-dim:#2a1d4a;
---orange:#f7884f;--orange-dim:#3d2010;
---text:#e8eaf2;--text2:#9aa3be;--text3:#5a6380;
---radius:10px;--radius2:14px;--radius3:20px;
---shadow:0 4px 24px rgba(0,0,0,0.4);
---font:'Sora',sans-serif;--mono:'DM Mono',monospace;
-}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:16px}
-::-webkit-scrollbar{width:5px;height:5px}
-::-<think>
-I need to output the full HTML file. I will generate it now.
-</think>
-
-Narito ang **BUONG `index.html` file** na may mga kinakailangang pag-aayos. Sinunod ko ang lahat ng rules: hindi galawin ang gumagana, isang buong file lang ang ibinigay, at na-test sa isip ang logic bago i-output.
-
-### 1. BUONG `index.html` File (Copy-Paste Ready)
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-<title>Branch POS — Point of Sale System</title>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script>
+  const SUPABASE_URL = 'https://kzkoubqcfqomjqlzsaqv.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_iRhyAMadJkLnOpQrStUvWxYz1234567890AbCdEfGhIjKlMnOpQrStUvWxYz'
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -185,43 +149,43 @@ body *{display:none!important}
 .auto-print-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9997;display:flex;align-items:center;justify-content:center}
 .auto-print-spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 
-/* --- IMPROVED MOBILE RESPONSIVE CSS --- */
 @media (max-width: 768px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .btn, .numpad-btn, .pos-key, .chip { min-height: 48px !important; font-size: 15px !important; }
-    body { font-size: 15px; }
-    .pos-layout { flex-direction: column; }
-    .pos-products { flex: 1; overflow-y: auto; padding-bottom: 55vh; }
-    .pos-cart { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-height: 50vh; overflow-y: auto; border-top: 2px solid var(--border); background: var(--bg2); border-radius: 16px 16px 0 0; }
-    .sidebar { display: none; }
-    
-    /* Horizontal scroll for tables on mobile */
-    .card { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
-    table { min-width: 600px; }
-    
-    /* Larger touch targets for inputs to prevent iOS zoom */
-    input, select, textarea { font-size: 16px !important; min-height: 44px !important; }
-    
-    /* Modal adjustments for small screens */
-    .modal { width: 95% !important; max-width: 95% !important; margin: 10px; padding: 16px !important; }
-    .modal-lg, .modal-xl { width: 95% !important; max-width: 95% !important; }
-}
-@media (max-width: 480px) {
-    .product-grid { grid-template-columns: 1fr !important; }
-    .form-row.cols2, .form-row.cols3 { grid-template-columns: 1fr !important; }
+  .product-grid { grid-template-columns: 1fr !important; }
+  .btn, .numpad-btn, .pos-key, .chip { min-height: 52px !important; font-size: 16px !important; }
+  body { font-size: 16px; }
+  .pos-layout { flex-direction: column; }
+  .pos-products { flex: 1; overflow-y: auto; padding-bottom: 50vh; }
+  .pos-cart { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-height: 45vh; overflow-y: auto; border-top: 2px solid var(--border); background: var(--bg2); }
+  .sidebar { display: none; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  th, td { padding: 12px 14px; font-size: 14px; }
+  .modal { max-width: 95vw !important; padding: 16px !important; }
+  .modal-lg, .modal-xl { max-width: 95vw !important; }
+  .form-row.cols2, .form-row.cols3 { grid-template-columns: 1fr !important; }
+  input, select, textarea { font-size: 16px !important; padding: 12px 14px !important; min-height: 48px; }
+  .pos-key { padding: 16px !important; min-height: 64px !important; }
+  .pos-key div { font-size: 14px !important; }
+  .search-box input { padding-left: 40px !important; }
+  .stat-card { padding: 16px !important; }
+  .stat-val { font-size: 22px !important; }
+  .card { padding: 14px !important; }
+  h2 { font-size: 18px !important; }
 }
 @media (min-width: 769px) and (max-width: 1024px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    body { font-size: 18px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  body { font-size: 16px; }
+  .btn, .numpad-btn, .pos-key, .chip { min-height: 50px !important; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
 }
 @media (min-width: 1025px) {
-    .product-grid { grid-template-columns: repeat(3, 1fr) !important; }
-    body { font-size: 20px; }
+  .product-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  body { font-size: 16px; }
 }
 @media (min-width: 1440px) {
-    .product-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  .product-grid { grid-template-columns: repeat(4, 1fr) !important; }
 }
 </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -249,101 +213,200 @@ var loading = document.getElementById('loading');
 if (loading) { loading.style.opacity = '0'; setTimeout(function(){loading.style.display='none';}, 300); }
 };
 </script>
+
 <script type="text/babel" data-presets="react">
 if (typeof ReactDOM !== 'undefined' && ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
 ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = true;
 }
 const {useState,useEffect,useRef,useCallback,useMemo,useReducer}=React;
+
 const SUPABASE_URL = 'https://your-project.supabase.co';
 const SUPABASE_ANON_KEY = 'your-anon-key';
 const supabaseClient = typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
 const SyncEngine = {
-isSyncing: false,
-async syncToSupabase() {
-if (!supabaseClient || !navigator.onLine || this.isSyncing) return;
-this.isSyncing = true;
-window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Syncing...' }));
-const queue = DB.get('offlineQueue', []);
-const pending = queue.filter(q => !q.synced);
-for (const item of pending) {
-try {
-if (item.type === 'transaction') {
-const { data: existing } = await supabaseClient.from('sales').select('id').eq('id', item.data.id).maybeSingle();
-if (!existing) {
-const saleData = {
-id: item.data.id,
-shift_id: item.data.shiftId,
-shift_number: item.data.shiftNumber,
-cashier_id: item.data.cashierId,
-cashier_name: item.data.cashierName,
-customer_name: item.data.customerName,
-subtotal: item.data.subtotal,
-discount: item.data.discount,
-total: item.data.total,
-pay_mode: item.data.payMode,
-cash_received: item.data.cashReceived,
-change: item.data.change,
-created_at: item.data.createdAt,
-sync_status: 'synced'
-};
-await supabaseClient.from('sales').insert(saleData);
-const itemsData = item.data.items.map(i => ({
-id: uid(),
-sale_id: item.data.id,
-product_id: i.id,
-name: i.name,
-qty: i.qty,
-weight_kg: i.weight_kg || null,
-unit_price: i.unitPrice,
-subtotal: i.subtotal
-}));
-if (itemsData.length > 0) {
-await supabaseClient.from('sale_items').insert(itemsData);
-}
-}
-} else if (item.type === 'product_update') {
-await supabaseClient.from('products').upsert(item.data);
-} else if (item.type === 'report') {
-await supabaseClient.from('reports').upsert(item.data);
-} else if (item.type === 'archive') {
-await supabaseClient.from('archives').upsert(item.data);
-}
-item.synced = true;
-} catch (e) {
-console.error('Supabase sync error for', item.id, e);
-item.sync_status = 'failed';
-}
-}
-DB.set('offlineQueue', queue);
-this.isSyncing = false;
-window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Synced' }));
-setTimeout(() => window.dispatchEvent(new CustomEvent('sync-status', { detail: '' })), 3000);
-},
-setupRealtime(onProductsUpdate) {
-if (!supabaseClient) return;
-const channel = supabaseClient.channel('public:products')
-.on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, payload => {
-const prods = DB.get('products', []);
-if (payload.eventType === 'DELETE') {
-const updated = prods.filter(p => p.id !== payload.old.id);
-DB.set('products', updated);
-if (onProductsUpdate) onProductsUpdate(updated);
-} else {
-const newProd = payload.new;
-const existingIdx = prods.findIndex(p => p.id === newProd.id);
-if (existingIdx >= 0) {
-prods[existingIdx] = newProd;
-} else {
-prods.push(newProd);
-}
-DB.set('products', prods);
-if (onProductsUpdate) onProductsUpdate(prods);
-}
-})
-.subscribe();
-return () => supabaseClient.removeChannel(channel);
-}
-};
+  isSyncing: false,
+  syncChannels: [],
+
+  async syncToSupabase() {
+    if (!supabaseClient || !navigator.onLine || this.isSyncing) return;
+    this.isSyncing = true;
+    window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Syncing...' }));
+
+    const queue = DB.get('offlineQueue', []);
+    const pending = queue.filter(q => !q.synced);
+
+    for (const item of pending) {
+      try {
+        if (item.type === 'transaction') {
+          const { data: existing } = await supabaseClient.from('sales').select('id').eq('id', item.data.id).maybeSingle();
+          if (!existing) {
+            const saleData = {
+              id: item.data.id,
+              shift_id: item.data.shiftId,
+              shift_number: item.data.shiftNumber,
+              cashier_id: item.data.cashierId,
+              cashier_name: item.data.cashierName,
+              customer_name: item.data.customerName,
+              subtotal: item.data.subtotal,
+              discount: item.data.discount,
+              total: item.data.total,
+              pay_mode: item.data.payMode,
+              cash_received: item.data.cashReceived,
+              change: item.data.change,
+              created_at: item.data.createdAt,
+              sync_status: 'synced'
+            };
+            await supabaseClient.from('sales').insert(saleData);
+
+            const itemsData = item.data.items.map(i => ({
+              id: uid(),
+              sale_id: item.data.id,
+              product_id: i.id,
+              name: i.name,
+              qty: i.qty,
+              weight_kg: i.weight_kg || null,
+              unit_price: i.unitPrice,
+              subtotal: i.subtotal
+            }));
+            if (itemsData.length > 0) {
+              await supabaseClient.from('sale_items').insert(itemsData);
+            }
+          }
+        } else if (item.type === 'product_update') {
+          await supabaseClient.from('products').upsert(item.data);
+        } else if (item.type === 'report') {
+          await supabaseClient.from('reports').upsert(item.data);
+        } else if (item.type === 'archive') {
+          await supabaseClient.from('archives').upsert(item.data);
+        } else if (item.type === 'expense') {
+          await supabaseClient.from('expenses').upsert(item.data);
+        } else if (item.type === 'shift') {
+          await supabaseClient.from('shifts').upsert(item.data);
+        }
+        item.synced = true;
+      } catch (e) {
+        console.error('Supabase sync error for', item.id, e);
+        item.sync_status = 'failed';
+      }
+    }
+
+    DB.set('offlineQueue', queue);
+    this.isSyncing = false;
+    window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Synced' }));
+    setTimeout(() => window.dispatchEvent(new CustomEvent('sync-status', { detail: '' })), 3000);
+  },
+
+  setupRealtime(onProductsUpdate, onCategoriesUpdate, onTransactionsUpdate) {
+    if (!supabaseClient) return function(){};
+
+    // Clean up existing channels
+    this.syncChannels.forEach(ch => { try { supabaseClient.removeChannel(ch); } catch(e) {} });
+    this.syncChannels = [];
+
+    // Products channel
+    const productsChannel = supabaseClient.channel('public:products')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, payload => {
+        const prods = DB.get('products', []);
+        if (payload.eventType === 'DELETE') {
+          const updated = prods.filter(p => p.id !== payload.old.id);
+          DB.set('products', updated);
+          if (onProductsUpdate) onProductsUpdate(updated);
+        } else {
+          const newProd = payload.new;
+          const existingIdx = prods.findIndex(p => p.id === newProd.id);
+          if (existingIdx >= 0) {
+            prods[existingIdx] = { ...prods[existingIdx], ...newProd };
+          } else {
+            prods.push(newProd);
+          }
+          DB.set('products', prods);
+          if (onProductsUpdate) onProductsUpdate(prods);
+        }
+      })
+      .subscribe();
+    this.syncChannels.push(productsChannel);
+
+    // Categories channel
+    const categoriesChannel = supabaseClient.channel('public:categories')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, payload => {
+        const cats = DB.get('categories', []);
+        if (payload.eventType === 'DELETE') {
+          const updated = cats.filter(c => c.id !== payload.old.id);
+          DB.set('categories', updated);
+          if (onCategoriesUpdate) onCategoriesUpdate(updated);
+        } else {
+          const newCat = payload.new;
+          const existingIdx = cats.findIndex(c => c.id === newCat.id);
+          if (existingIdx >= 0) {
+            cats[existingIdx] = { ...cats[existingIdx], ...newCat };
+          } else {
+            cats.push(newCat);
+          }
+          DB.set('categories', cats);
+          if (onCategoriesUpdate) onCategoriesUpdate(cats);
+        }
+      })
+      .subscribe();
+    this.syncChannels.push(categoriesChannel);
+
+    // Sales/Transactions channel (read-only from server)
+    const salesChannel = supabaseClient.channel('public:sales')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sales' }, payload => {
+        const txns = DB.get('transactions', []);
+        const exists = txns.find(t => t.id === payload.new.id);
+        if (!exists) {
+          txns.push(payload.new);
+          DB.set('transactions', txns);
+          if (onTransactionsUpdate) onTransactionsUpdate(txns);
+        }
+      })
+      .subscribe();
+    this.syncChannels.push(salesChannel);
+
+    return () => {
+      this.syncChannels.forEach(ch => { try { supabaseClient.removeChannel(ch); } catch(e) {} });
+      this.syncChannels = [];
+    };
+  },
+
+  async pullFromSupabase() {
+    if (!supabaseClient || !navigator.onLine) return;
+    try {
+      window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Pulling data...' }));
+
+      const { data: remoteProducts } = await supabaseClient.from('products').select('*');
+      if (remoteProducts && remoteProducts.length > 0) {
+        const localProds = DB.get('products', []);
+        const merged = [...localProds];
+        remoteProducts.forEach(rp => {
+          const idx = merged.findIndex(p => p.id === rp.id);
+          if (idx >= 0) {
+            const localUpdated = merged[idx].updatedAt || merged[idx].createdAt || '1970-01-01';
+            const remoteUpdated = rp.updated_at || rp.created_at || '1970-01-01';
+            if (new Date(remoteUpdated) >= new Date(localUpdated)) {
+              merged[idx] = { ...merged[idx], ...rp, updatedAt: rp.updated_at || now() };
+            }
+          } else {
+            merged.push(rp);
+          }
+        });
+        DB.set('products', merged);
+      }
+
+      const { data: remoteCats } = await supabaseClient.from('categories').select('*');
+      if (remoteCats && remoteCats.length > 0) {
+        DB.set('categories', remoteCats);
+      }
+
+      window.dispatchEvent(new CustomEvent('sync-status', { detail: 'Synced' }));
+      setTimeout(() => window.dispatchEvent(new CustomEvent('sync-status', { detail: '' })), 3000);
+    } catch (e) {
+      console.error('Pull from Supabase failed:', e);
+    }
+  }
+};;
+
 const IDB = {
 db: null, name: 'BranchPOS_DB', version: 2,
 async init() {
@@ -403,6 +466,7 @@ reject(req.error);
 });
 }
 };
+
 const DB = {
 offlineQueue: [], syncInProgress: false, lastSyncTime: null,
 _lsGet(k, def) {
@@ -436,9 +500,9 @@ await IDB.set(k, { id: k, _data: v });
 return true;
 },
 get(k, def) { return this._lsGet(k, def); },
-set(k, v) {
-this._lsSet(k, v);
-return true;
+set(k, v) { 
+  this._lsSet(k, v); 
+  return true; 
 },
 queueOffline(type, data) {
 const queue = this._lsGet('offlineQueue', []);
@@ -446,14 +510,14 @@ queue.push({ type, data, timestamp: Date.now(), id: uid(), synced: false, sync_s
 this._lsSet('offlineQueue', queue);
 this.offlineQueue = queue;
 if (navigator.onLine) {
-setTimeout(() => SyncEngine.syncToSupabase(), 1000);
+  setTimeout(() => SyncEngine.syncToSupabase(), 1000);
 }
 },
 async processOfflineQueue() {
 if (this.syncInProgress || !navigator.onLine) return;
 this.syncInProgress = true;
 await SyncEngine.syncToSupabase();
-this.lastSyncTime = Date.now();
+this.lastSyncTime = Date.now(); 
 this.syncInProgress = false;
 },
 async createBackup() {
@@ -489,37 +553,42 @@ this._lsSet('transactions', uniqueTxns);
 showToast('Data repaired', 'success'); return true;
 }
 };
+
 const useOfflineStatus = () => {
 const [isOnline, setIsOnline] = useState(navigator.onLine);
 const [syncStatus, setSyncStatus] = useState(navigator.onLine ? 'Online' : 'Offline');
+
 useEffect(() => {
-const handleOnline = () => {
-setIsOnline(true);
-setSyncStatus('Syncing...');
-showToast('Connection restored. Syncing...', 'info');
-DB.processOfflineQueue();
+const handleOnline = () => { 
+  setIsOnline(true); 
+  setSyncStatus('Syncing...');
+  showToast('Connection restored. Syncing...', 'info'); 
+  DB.processOfflineQueue(); 
 };
-const handleOffline = () => {
-setIsOnline(false);
-setSyncStatus('Offline');
-showToast('Working offline. Data will sync when connected.', 'warn');
+const handleOffline = () => { 
+  setIsOnline(false); 
+  setSyncStatus('Offline');
+  showToast('Working offline. Data will sync when connected.', 'warn'); 
 };
 window.addEventListener('online', handleOnline);
 window.addEventListener('offline', handleOffline);
+
 const handleSyncEvent = (e) => {
-setSyncStatus(e.detail);
+  setSyncStatus(e.detail);
 };
 window.addEventListener('sync-status', handleSyncEvent);
+
 const syncInterval = setInterval(() => { if (navigator.onLine) DB.processOfflineQueue(); }, 30000);
-return () => {
-window.removeEventListener('online', handleOnline);
-window.removeEventListener('offline', handleOffline);
-window.removeEventListener('sync-status', handleSyncEvent);
-clearInterval(syncInterval);
+return () => { 
+  window.removeEventListener('online', handleOnline); 
+  window.removeEventListener('offline', handleOffline); 
+  window.removeEventListener('sync-status', handleSyncEvent);
+  clearInterval(syncInterval); 
 };
 }, []);
 return { isOnline, syncStatus };
 };
+
 const fmt=(n,d=2)=>{try{return Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:d,maximumFractionDigits:d});}catch(e){return String(Number(n||0).toFixed(d));}};
 const fmtCur=(n)=>`₱${fmt(n)}`;
 const uid=()=>{try{return Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);}catch(e){return 'id_'+Date.now()+'_'+Math.floor(Math.random()*10000);}};
@@ -528,6 +597,7 @@ const fmtDate=(iso)=>{try{return new Date(iso).toLocaleDateString('en-PH',{year:
 const fmtTime=(iso)=>{try{return new Date(iso).toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});}catch(e){return String(iso);}};
 const fmtDateTime=(iso)=>fmtDate(iso)+' '+fmtTime(iso);
 const today=()=>new Date().toISOString().slice(0,10);
+
 const PrintEngine = {
 _lastPrintId: null,
 _printing: false,
@@ -628,6 +698,7 @@ html += '</body></html>';
 return html;
 }
 };
+
 const openCashDrawer = () => {
 try {
 const iframe = document.createElement('iframe');
@@ -654,6 +725,7 @@ console.error('Drawer open failed:', e);
 showToast('Failed to open cash drawer', 'error');
 }
 };
+
 var BarcodeEngine = {
 _buffer: '',
 _lastScan: 0,
@@ -686,6 +758,7 @@ BarcodeEngine._buffer += e.key;
 },
 clear: function() { this._buffer = ''; }
 };
+
 const Icon={
 pos:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>,
 products:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>,
@@ -718,6 +791,7 @@ maintenance:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWid
 wifi:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
 wifiOff:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
 };
+
 let toastCb=null;
 const Toast=({msg,type})=>{
 const colors={ success:'background:var(--green-dim);color:var(--green);border:1px solid #0a4d1e', error:'background:var(--red-dim);color:var(--red);border:1px solid #6a1515', warn:'background:var(--yellow-dim);color:var(--yellow);border:1px solid #6a5500', info:'background:var(--accent-dim);color:var(--accent2);border:1px solid var(--border2)' };
@@ -729,6 +803,7 @@ toastCb=useCallback((msg,type='info')=>{ setToast({msg,type}); setTimeout(()=>se
 return {toast,showToast:toastCb};
 };
 const showToast=(msg,type='info')=>{if(toastCb)toastCb(msg,type);};
+
 class ErrorBoundary extends React.Component {
 constructor(props) { super(props); this.state = { hasError: false, error: null }; }
 static getDerivedStateFromError(error) { return { hasError: true, error }; }
@@ -752,6 +827,7 @@ return (
 return this.props.children;
 }
 }
+
 const ConfirmModal=({msg,onYes,onNo})=>(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -767,6 +843,7 @@ const ConfirmModal=({msg,onYes,onNo})=>(
 </div>
 </div>
 );
+
 const OfflineIndicator = () => {
 const { isOnline, syncStatus } = useOfflineStatus();
 if (!isOnline) {
@@ -782,6 +859,7 @@ return (
 </div>
 );
 };
+
 const LoginPage=({onLogin})=>{
 const [username,setUsername]=useState('');
 const [password,setPassword]=useState('');
@@ -829,6 +907,7 @@ return(
 </div>
 );
 };
+
 const Sidebar=({page,setPage,user,onLogout,collapsed,setCollapsed})=>{
 const nav=[
 {id:'pos',label:'POS Terminal',icon:Icon.pos,roles:['admin','cashier']},
@@ -877,6 +956,7 @@ return(
 </div>
 );
 };
+
 const POSTerminal=({user})=>{
 const [products,setProducts]=useState(()=>DB.get('products',[]).filter(p=>p.active!==false));
 const [categories]=useState(()=>DB.get('categories',[]));
@@ -898,43 +978,57 @@ const [shiftInfo,setShiftInfo]=useState(()=>getOrCreateShift(user));
 const barcodeRef=useRef();
 const settings=DB.get('settings',{});
 const { isOnline } = useOfflineStatus();
+
 useEffect(function() {
 BarcodeEngine.init(function(code) {
 checkBarcode(code);
 });
 return function() { BarcodeEngine.clear(); };
 }, [products]);
+
 useEffect(() => {
-if (barcodeRef.current) {
-barcodeRef.current.focus();
-}
-const handleKeyDown = (e) => {
-if (e.key === 'F2') {
-e.preventDefault();
-barcodeRef.current?.focus();
-} else if (e.key === 'F4') {
-e.preventDefault();
-if (cart.length > 0 && !isProcessing) setShowPayModal(true);
-} else if (e.key === 'F8') {
-e.preventDefault();
-openCashDrawer();
-} else if (e.key === 'Escape') {
-e.preventDefault();
-if (showPayModal) setShowPayModal(false);
-else if (showWeightModal) { setShowWeightModal(null); setWeightInput(''); }
-else if (showReceipt) setShowReceipt(null);
-else if (cart.length > 0) setCart([]);
-}
-};
-window.addEventListener('keydown', handleKeyDown);
-return () => window.removeEventListener('keydown', handleKeyDown);
+  if (barcodeRef.current) {
+    barcodeRef.current.focus();
+  }
+  const handleKeyDown = (e) => {
+    if (e.key === 'F2') {
+      e.preventDefault();
+      barcodeRef.current?.focus();
+    } else if (e.key === 'F4') {
+      e.preventDefault();
+      if (cart.length > 0 && !isProcessing) setShowPayModal(true);
+    } else if (e.key === 'F8') {
+      e.preventDefault();
+      openCashDrawer();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      if (showPayModal) setShowPayModal(false);
+      else if (showWeightModal) { setShowWeightModal(null); setWeightInput(''); }
+      else if (showReceipt) setShowReceipt(null);
+      else if (cart.length > 0) setCart([]);
+    }
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
 }, [cart.length, isProcessing, showPayModal, showWeightModal, showReceipt]);
+
 useEffect(() => {
-const cleanup = SyncEngine.setupRealtime((updatedProds) => {
-setProducts(updatedProds.filter(p => p.active !== false));
-});
-return cleanup;
+  const cleanup = SyncEngine.setupRealtime(
+    (updatedProds) => {
+      setProducts(updatedProds.filter(p => p.active !== false));
+    },
+    (updatedCats) => {
+      // Categories updated from other device
+    },
+    (updatedTxns) => {
+      // Transactions updated from other device
+    }
+  );
+  // Pull initial data from Supabase on mount
+  SyncEngine.pullFromSupabase();
+  return cleanup;
 }, []);
+
 function getOrCreateShift(user){
 try {
 const activeShifts = DB.get('activeShifts',{});
@@ -956,10 +1050,12 @@ console.error('Shift creation error:', e);
 return { shiftId: 'SHIFT-'+Date.now(), shiftNumber: 1, cashierId: user.id, cashierName: user.name, startTime: now(), date: today(), status: 'active' };
 }
 }
+
 const subtotal=cart.reduce((s,i)=>s+i.subtotal,0);
 const discAmt=discountType==='percent'?subtotal*(Number(discount)||0)/100:Number(discount)||0;
 const total=Math.max(0,subtotal-discAmt);
 const change=Number(cashInput||0)-total;
+
 const filteredProducts=useMemo(()=>{
 var p=products;
 if(catFilter!=='all') p=p.filter(function(pr){ return pr.categoryId===catFilter; });
@@ -969,31 +1065,33 @@ p=p.filter(function(pr){ return pr.name.toLowerCase().includes(q)||(pr.sku||'').
 }
 return p;
 },[products,catFilter,search]);
+
 const handleAddKgProduct = (product, weight) => {
-const weightNum = Number(weight);
-if (weightNum <= 0) return;
-if (weightNum > (product.stock_kg || 0)) {
-showToast('Insufficient stock!', 'error');
-return;
-}
-const subtotal = weightNum * product.price_per_kg;
-setCart(prev => {
-const ex = prev.find(i => i.id === product.id);
-if (ex) {
-const newWeight = ex.weight_kg + weightNum;
-return prev.map(i => i.id === product.id ? { ...i, weight_kg: newWeight, qty: 1, subtotal: newWeight * i.price_per_kg } : i);
-}
-return [...prev, { ...product, weight_kg: weightNum, qty: 1, unitPrice: product.price_per_kg, price: product.price_per_kg, subtotal }];
-});
-setShowWeightModal(null);
-setWeightInput('');
-showToast(`Added ${weightNum}kg of ${product.name}`, 'success');
+  const weightNum = Number(weight);
+  if (weightNum <= 0) return;
+  if (weightNum > (product.stock_kg || 0)) {
+    showToast('Insufficient stock!', 'error');
+    return;
+  }
+  const subtotal = weightNum * product.price_per_kg;
+  setCart(prev => {
+    const ex = prev.find(i => i.id === product.id);
+    if (ex) {
+      const newWeight = ex.weight_kg + weightNum;
+      return prev.map(i => i.id === product.id ? { ...i, weight_kg: newWeight, qty: 1, subtotal: newWeight * i.price_per_kg } : i);
+    }
+    return [...prev, { ...product, weight_kg: weightNum, qty: 1, unitPrice: product.price_per_kg, price: product.price_per_kg, subtotal }];
+  });
+  setShowWeightModal(null);
+  setWeightInput('');
+  showToast(`Added ${weightNum}kg of ${product.name}`, 'success');
 };
+
 const addToCart=useCallback((product)=>{
 if(!product || (product.unit !== 'kg' && product.stock <= 0)){showToast('Out of stock!','error');return;}
 if(product.unit === 'kg') {
-setShowWeightModal(product);
-return;
+  setShowWeightModal(product);
+  return;
 }
 setCart(prev=>{
 const ex=prev.find(i=>i.id===product.id);
@@ -1004,35 +1102,38 @@ return prev.map(i=>i.id===product.id?{...i,qty:i.qty+1,subtotal:(i.qty+1)*i.pric
 return [...prev,{...product,qty:1,unitPrice:product.price,subtotal:product.price}];
 });
 },[]);
+
 const updateQty=useCallback((id,qty)=>{
 if(qty<=0){setCart(prev=>prev.filter(i=>i.id!==id));return;}
 const p=products.find(pr=>pr.id===id);
 if(p && p.unit !== 'kg' && qty>p.stock){showToast('Insufficient stock','error');return;}
 setCart(prev=>prev.map(i=>i.id===id?{...i,qty,subtotal:qty*i.price}:i));
 },[products]);
+
 const checkBarcode=useCallback((code)=>{
 if(!code) return;
 var cleanCode = code.trim().replace(/[^\u0020-\u007E]/g, '');
 if(!cleanCode) return;
 var p=products.find(function(pr){ return pr.barcode===cleanCode||pr.sku===cleanCode||(pr.barcode&&pr.barcode.includes(cleanCode))||(pr.sku&&pr.sku.includes(cleanCode)); });
 if(p){
-if (p.unit === 'kg') {
-setShowWeightModal(p);
-setBarcodeInput('');
-} else {
-addToCart(p);
-setBarcodeInput('');
-showToast('Scanned: '+p.name,'success');
-}
+  if (p.unit === 'kg') {
+    setShowWeightModal(p);
+    setBarcodeInput('');
+  } else {
+    addToCart(p);
+    setBarcodeInput('');
+    showToast('Scanned: '+p.name,'success');
+  }
 }
 else{
-showToast('Product not found: '+cleanCode,'error');
-setBarcodeInput('');
-setTimeout(() => {
-if (barcodeRef.current) barcodeRef.current.focus();
-}, 500);
+  showToast('Product not found: '+cleanCode,'error');
+  setBarcodeInput('');
+  setTimeout(() => {
+    if (barcodeRef.current) barcodeRef.current.focus();
+  }, 500);
 }
 },[products,addToCart]);
+
 const checkout=useCallback(async ()=>{
 if(!cart.length || isProcessing){showToast('Cart is empty or processing','error');return;}
 if(payMode==='cash'&&Number(cashInput)<total){showToast('Insufficient cash','error');return;}
@@ -1041,6 +1142,7 @@ try {
 const activeShifts = DB.get('activeShifts',{});
 const currentShift = activeShifts[user.id];
 if(!currentShift){showToast('No active shift found. Please login again.','error');setIsProcessing(false);return;}
+
 const txnId = 'TXN' + Date.now() + '_' + uid();
 const txn={
 id: txnId, shiftId: currentShift.shiftId, shiftNumber: currentShift.shiftNumber,
@@ -1050,44 +1152,51 @@ subtotal, discount:discAmt, discountInput:discount, discountType,
 total, payMode, cashReceived:payMode==='cash'?Number(cashInput):total,
 change:payMode==='cash'?change:0, createdAt:now(), date:today(), sync_status: 'pending'
 };
+
 const txns=DB.get('transactions',[]);
 if(txns.find(t=>t.id===txn.id)){showToast('Transaction already exists','error');setIsProcessing(false);return;}
 txns.push(txn); DB.set('transactions',txns);
 DB.setAsync('transactions',txns).catch(function(e){ console.warn('IDB sync failed:',e); });
+
 const prods=DB.get('products',[]);
 const updatedProds = prods.map(p => {
-const ci = cart.find(i => i.id === p.id);
-if (ci) {
-let newStock = p.stock;
-let newStockKg = p.stock_kg;
-if (p.unit === 'kg') {
-newStockKg = Math.max(0, (p.stock_kg || 0) - ci.weight_kg);
-} else {
-newStock = Math.max(0, (p.stock || 0) - ci.qty);
-}
-return { ...p, stock: newStock, stock_kg: newStockKg };
-}
-return p;
+  const ci = cart.find(i => i.id === p.id);
+  if (ci) {
+    let newStock = p.stock;
+    let newStockKg = p.stock_kg;
+    if (p.unit === 'kg') {
+      newStockKg = Math.max(0, (p.stock_kg || 0) - ci.weight_kg);
+    } else {
+      newStock = Math.max(0, (p.stock || 0) - ci.qty);
+    }
+    return { ...p, stock: newStock, stock_kg: newStockKg };
+  }
+  return p;
 });
+
 const sharedStockMap = {};
 cart.forEach(ci => {
-const p = updatedProds.find(prod => prod.id === ci.id);
-if (p && p.unit === 'kg' && p.shared_stock_id) {
-sharedStockMap[p.shared_stock_id] = p.stock_kg;
-}
+  const p = updatedProds.find(prod => prod.id === ci.id);
+  if (p && p.unit === 'kg' && p.shared_stock_id) {
+    sharedStockMap[p.shared_stock_id] = p.stock_kg;
+  }
 });
+
 const finalProds = updatedProds.map(p => {
-if (p.shared_stock_id && sharedStockMap[p.shared_stock_id] !== undefined) {
-return { ...p, stock_kg: sharedStockMap[p.shared_stock_id] };
-}
-return p;
+  if (p.shared_stock_id && sharedStockMap[p.shared_stock_id] !== undefined) {
+    return { ...p, stock_kg: sharedStockMap[p.shared_stock_id] };
+  }
+  return p;
 });
+
 DB.set('products', finalProds);
 setProducts(finalProds.filter(p => p.active !== false));
 DB.setAsync('products', finalProds).catch(function(e){ console.warn('IDB sync failed:',e); });
+
 if (navigator.onLine && supabaseClient) {
-DB.queueOffline('transaction', txn);
+  DB.queueOffline('transaction', txn);
 }
+
 const shiftTxns = txns.filter(t=>t.shiftId===currentShift.shiftId);
 currentShift.totalSales = shiftTxns.reduce((s,t)=>s+t.total,0);
 currentShift.totalTransactions = shiftTxns.length;
@@ -1096,13 +1205,17 @@ currentShift.gcashSales = shiftTxns.filter(t=>t.payMode==='gcash').reduce((s,t)=
 currentShift.cardSales = shiftTxns.filter(t=>t.payMode==='card').reduce((s,t)=>s+t.total,0);
 activeShifts[user.id] = currentShift;
 DB.set('activeShifts',activeShifts);
+
 DB.createBackup();
+
 if (payMode === 'cash') {
-openCashDrawer();
+  openCashDrawer();
 }
+
 try {
-PrintEngine.printReceipt(txn, settings);
+  PrintEngine.printReceipt(txn, settings);
 } catch (e) { console.warn('Auto-print failed:', e); }
+
 setShowReceipt(txn);
 setCart([]);setCashInput('');setDiscount('');setCustomerName('');setPayMode('cash');
 showToast('Transaction complete!','success');
@@ -1114,6 +1227,7 @@ showToast('Checkout failed. Please try again.','error');
 setIsProcessing(false);
 }
 },[cart,payMode,cashInput,total,change,user,discAmt,discount,discountType,customerName,isProcessing]);
+
 const cats=[{id:'all',name:'All',color:'#4f8ef7'},...categories];
 return(
 <div style={{display:'flex',height:'calc(100vh - 0px)',overflow:'hidden'}} className="pos-layout">
@@ -1144,10 +1258,10 @@ placeholder="Scan barcode (F2)..." style={{width:180}}/>
 <div style={{fontSize:11,color:'var(--text3)',marginBottom:2}}>{categories.find(c=>c.id===p.categoryId)?.name||''} {p.variant?`(${p.variant})`:''}</div>
 <div style={{fontSize:13,fontWeight:600,lineHeight:1.3,marginBottom:6}}>{p.name}</div>
 <div style={{fontSize:15,fontWeight:700,color:'var(--accent)',fontFamily:'var(--mono)'}}>
-{p.unit === 'kg' ? `${fmtCur(p.price_per_kg)}/kg` : fmtCur(p.price)}
+  {p.unit === 'kg' ? `${fmtCur(p.price_per_kg)}/kg` : fmtCur(p.price)}
 </div>
 <div style={{fontSize:11,color:'var(--text3)',marginTop:2}}>
-{p.unit === 'kg' ? `Stock: ${p.stock_kg}kg` : `Stock: ${p.stock}`}
+  {p.unit === 'kg' ? `Stock: ${p.stock_kg}kg` : `Stock: ${p.stock}`}
 </div>
 </div>
 ))}
@@ -1158,8 +1272,8 @@ placeholder="Scan barcode (F2)..." style={{width:180}}/>
 <div style={{padding:'14px 16px',borderBottom:'1px solid var(--border)',fontWeight:600,fontSize:15,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 <span>Order Cart</span>
 <div style={{display:'flex',gap:8}}>
-<button className="btn btn-ghost btn-sm" onClick={openCashDrawer} title="Open Cash Drawer (F8)">{Icon.cash}</button>
-{cart.length>0&&<button className="btn btn-ghost btn-sm" onClick={()=>setCart([])}>Clear</button>}
+  <button className="btn btn-ghost btn-sm" onClick={openCashDrawer} title="Open Cash Drawer (F8)">{Icon.cash}</button>
+  {cart.length>0&&<button className="btn btn-ghost btn-sm" onClick={()=>setCart([])}>Clear</button>}
 </div>
 </div>
 <div style={{flex:1,overflowY:'auto',padding:'8px 12px'}}>
@@ -1169,8 +1283,8 @@ cart.map(item=>(
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontSize:13,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</div>
 {item.unit !== 'kg' && <input type="number" value={item.price} onChange={e=>{
-const newPrice = Number(e.target.value)||0;
-setCart(prev=>prev.map(i=>i.id===item.id?{...i,price:newPrice,unitPrice:newPrice,subtotal:newPrice*i.qty}:i));
+  const newPrice = Number(e.target.value)||0;
+  setCart(prev=>prev.map(i=>i.id===item.id?{...i,price:newPrice,unitPrice:newPrice,subtotal:newPrice*i.qty}:i));
 }} style={{width:'100%',marginTop:4,padding:'3px 7px',fontSize:12}}/>}
 </div>
 <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
@@ -1233,54 +1347,71 @@ setCart(prev=>prev.map(i=>i.id===item.id?{...i,price:newPrice,unitPrice:newPrice
 </button>
 </div>
 </div>
+
 {showWeightModal && (
-<div className="modal-overlay">
-<div className="modal" style={{maxWidth: 400}}>
-<h3 style={{marginBottom: 16}}>{showWeightModal.name} {showWeightModal.variant ? `(${showWeightModal.variant})` : ''}</h3>
-<div style={{textAlign: 'center', fontSize: 28, fontWeight: 700, color: 'var(--accent)', marginBottom: 20, fontFamily: 'var(--mono)'}}>
-{fmtCur((Number(weightInput) || 0) * showWeightModal.price_per_kg)}
-</div>
-<input
-type="number"
-step="0.01"
-value={weightInput}
-onChange={e => setWeightInput(e.target.value)}
-placeholder="Weight in kg"
-style={{width: '100%', fontSize: 24, textAlign: 'center', padding: 12, marginBottom: 20}}
-autoFocus
-/>
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
-{[0.25, 0.5, 1, 2].map(w => (
-<button key={w} className="btn btn-primary" style={{height: 48, fontSize: 18}} onClick={() => setWeightInput(w)}>{w} kg</button>
-))}
-</div>
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
-{['7','8','9','⌫','4','5','6','Clear','1','2','3','.','0','00',''].map((key, idx) => {
-if (key === '') return <div key={idx}></div>;
-return (
-<button key={key} className="numpad-btn" onClick={() => {
-if (key === '⌫') setWeightInput(prev => prev.slice(0, -1));
-else if (key === 'Clear') setWeightInput('');
-else setWeightInput(prev => prev + key);
-}}>{key}</button>
-);
-})}
-</div>
-<div style={{display: 'flex', gap: 10}}>
-<button className="btn btn-ghost" style={{flex: 1, height: 48}} onClick={() => { setShowWeightModal(null); setWeightInput(''); }}>Cancel (ESC)</button>
-<button className="btn btn-success" style={{flex: 1, height: 48}} onClick={() => {
-const w = Number(weightInput);
-if (w > 0) {
-handleAddKgProduct(showWeightModal, w);
-} else {
-showToast('Please enter a valid weight', 'error');
-setTimeout(() => { if(barcodeRef.current) barcodeRef.current.focus(); }, 500);
-}
-}}>Add to Cart</button>
-</div>
-</div>
-</div>
+  <div className="modal-overlay">
+    <div className="modal" style={{maxWidth: 400}}>
+      <h3 style={{marginBottom: 16}}>{showWeightModal.name} {showWeightModal.variant ? `(${showWeightModal.variant})` : ''}</h3>
+      <div style={{textAlign: 'center', fontSize: 28, fontWeight: 700, color: 'var(--accent)', marginBottom: 20, fontFamily: 'var(--mono)'}}>
+        {fmtCur((Number(weightInput) || 0) * showWeightModal.price_per_kg)}
+      </div>
+      <input 
+        type="number" 
+        step="0.01"
+        value={weightInput} 
+        onChange={e => setWeightInput(e.target.value)} 
+        placeholder="Weight in kg" 
+        style={{width: '100%', fontSize: 24, textAlign: 'center', padding: 12, marginBottom: 20}}
+        autoFocus
+      />
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
+        {[0.25, 0.5, 1, 2].map(w => (
+          <button key={w} className="btn btn-primary" style={{height: 48, fontSize: 18}} onClick={() => setWeightInput(w)}>{w} kg</button>
+        ))}
+      </div>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20}}>
+        {[
+          {label: '7', value: '7'}, {label: '8', value: '8'}, {label: '9', value: '9'}, {label: '⌫', value: 'backspace'},
+          {label: '4', value: '4'}, {label: '5', value: '5'}, {label: '6', value: '6'}, {label: 'Clear', value: 'clear'},
+          {label: '1', value: '1'}, {label: '2', value: '2'}, {label: '3', value: '3'}, {label: '.', value: 'dot'},
+          {label: '0', value: '0'}, {label: '00', value: '00'}, {label: '', value: 'empty'}
+        ].map((btn) => {
+          if (btn.value === 'empty') return <div key="empty-slot"></div>;
+          return (
+            <button key={btn.value} className="numpad-btn" onClick={() => {
+              if (btn.value === 'backspace') {
+                setWeightInput(prev => String(prev || '').slice(0, -1));
+              } else if (btn.value === 'clear') {
+                setWeightInput('');
+              } else if (btn.value === 'dot') {
+                setWeightInput(prev => {
+                  const current = String(prev || '');
+                  if (current.indexOf('.') === -1) return current + '.';
+                  return current;
+                });
+              } else {
+                setWeightInput(prev => String(prev || '') + btn.value);
+              }
+            }}>{btn.label}</button>
+          );
+        })}
+      </div>
+      <div style={{display: 'flex', gap: 10}}>
+        <button className="btn btn-ghost" style={{flex: 1, height: 48}} onClick={() => { setShowWeightModal(null); setWeightInput(''); }}>Cancel (ESC)</button>
+        <button className="btn btn-success" style={{flex: 1, height: 48}} onClick={() => {
+          const w = Number(weightInput);
+          if (w > 0) {
+            handleAddKgProduct(showWeightModal, w);
+          } else {
+            showToast('Please enter a valid weight', 'error');
+            setTimeout(() => { if(barcodeRef.current) barcodeRef.current.focus(); }, 500);
+          }
+        }}>Add to Cart</button>
+      </div>
+    </div>
+  </div>
 )}
+
 {showPayModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -1304,6 +1435,7 @@ setTimeout(() => { if(barcodeRef.current) barcodeRef.current.focus(); }, 500);
 </div>
 </div>
 )}
+
 {showReceipt&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -1349,6 +1481,7 @@ setTimeout(() => { if(barcodeRef.current) barcodeRef.current.focus(); }, 500);
 </div>
 );
 };
+
 const ProductsPage=({user})=>{
 const [products,setProducts]=useState(()=>DB.get('products',[]));
 const [categories,setCategories]=useState(()=>DB.get('categories',[]));
@@ -1362,55 +1495,23 @@ const imgRef=useRef();
 const empty={name:'',sku:'',categoryId:'',unit:'pcs',price:'',price_per_kg:'',cost:'',stock:'',stock_kg:'',variant:'',shared_stock_id:'',lowStockAlert:'10',barcode:'',image:null,active:true};
 const [form,setForm]=useState(empty);
 
-// FIX 1: Added Realtime Sync for Products Page
-useEffect(() => {
-    const cleanup = SyncEngine.setupRealtime((updatedProds) => {
-        setProducts(updatedProds);
-    });
-    return cleanup;
-}, []);
-
 const save=useCallback(function(){
-// FIX 2: Fixed validation logic to check price_per_kg for kg units, and safe parseFloat/Number parsing
-const hasValidPrice = form.unit === 'kg' ? (Number(form.price_per_kg) > 0) : (Number(form.price) > 0);
-if(!form.name || !hasValidPrice){showToast('Name and valid price required','error');return;}
+const isKg = form.unit === 'kg';
+if(!form.name || (!isKg && !form.price) || (isKg && !form.price_per_kg)){showToast('Name and price required','error');return;}
 try {
 var prods=DB.get('products',[]);
 var updated;
 if(editing){
-updated=prods.map(function(p){ 
-return p.id===editing ? {
-...p,
-...form,
-price: Number(form.price) || 0,
-price_per_kg: Number(form.price_per_kg) || 0,
-cost: Number(form.cost) || 0,
-stock: Number(form.stock) || 0,
-stock_kg: Number(form.stock_kg) || 0,
-lowStockAlert: Number(form.lowStockAlert) || 10,
-updatedAt: now()
-} : p; 
-});
+updated=prods.map(function(p){ return p.id===editing?{...p,...form,price:Number(form.price)||0,price_per_kg:parseFloat(form.price_per_kg)||0,cost:Number(form.cost)||0,stock:parseInt(form.stock)||0,stock_kg:parseFloat(form.stock_kg)||0,lowStockAlert:Number(form.lowStockAlert)||10,updatedAt:now()}:p; });
 DB.set('products',updated);setProducts(updated);
 if(navigator.onLine && supabaseClient) {
-DB.queueOffline('product_update', updated.find(p=>p.id===editing));
+  DB.queueOffline('product_update', updated.find(p=>p.id===editing));
 }
 }else{
-var np={
-...form,
-id: uid(),
-sku: form.sku || 'SKU'+Date.now(),
-price: Number(form.price) || 0,
-price_per_kg: Number(form.price_per_kg) || 0,
-cost: Number(form.cost) || 0,
-stock: Number(form.stock) || 0,
-stock_kg: Number(form.stock_kg) || 0,
-lowStockAlert: Number(form.lowStockAlert) || 10,
-createdAt: now()
-};
+var np={...form,id:uid(),sku:form.sku||'SKU'+Date.now(),price:Number(form.price)||0,price_per_kg:parseFloat(form.price_per_kg)||0,cost:Number(form.cost)||0,stock:parseInt(form.stock)||0,stock_kg:parseFloat(form.stock_kg)||0,lowStockAlert:Number(form.lowStockAlert)||10,createdAt:now()};
 updated=[...prods,np];DB.set('products',updated);setProducts(updated);
 if(navigator.onLine && supabaseClient) {
-DB.queueOffline('product_update', np);
+  DB.queueOffline('product_update', np);
 }
 }
 DB.createBackup();
@@ -1418,6 +1519,7 @@ showToast(editing?'Product updated':'Product added','success');
 setShowModal(false);setEditing(null);setForm(empty);
 } catch (e) { showToast('Save failed','error'); console.error(e); }
 },[form,editing,empty]);
+
 const del=useCallback((id)=>{
 try {
 const updated=products.map(p=>p.id===id?{...p,active:false}:p);
@@ -1425,19 +1527,23 @@ DB.set('products',updated);setProducts(updated);showToast('Product deactivated',
 DB.createBackup();
 } catch (e) { showToast('Delete failed','error'); }
 },[products]);
+
 const handleImg=useCallback((e)=>{
 const f=e.target.files[0];if(!f)return;
 const r=new FileReader();
 r.onload=ev=>setForm(pr=>({...pr,image:ev.target.result}));
 r.readAsDataURL(f);
 },[]);
+
 const filtered=useMemo(()=>{
 let p=products.filter(pr=>pr.active!==false);
 if(catFilter!=='all')p=p.filter(pr=>pr.categoryId===catFilter);
 if(search)p=p.filter(pr=>pr.name.toLowerCase().includes(search.toLowerCase())||pr.sku?.includes(search));
 return p;
 },[products,catFilter,search]);
+
 const openEdit=useCallback((p)=>{setForm({...p,price:String(p.price),price_per_kg:String(p.price_per_kg||''),cost:String(p.cost),stock:String(p.stock),stock_kg:String(p.stock_kg||''),lowStockAlert:String(p.lowStockAlert||10)});setEditing(p.id);setShowModal(true);},[]);
+
 const [catForm,setCatForm]=useState({name:'',color:'#4f8ef7'});
 const saveCat=useCallback(()=>{
 if(!catForm.name)return;
@@ -1447,7 +1553,9 @@ DB.set('categories',cats);setCategories(cats);setCatForm({name:'',color:'#4f8ef7
 DB.createBackup();
 } catch (e) { showToast('Failed to add category','error'); }
 },[catForm,categories]);
+
 const delCat=useCallback((id)=>{ const cats=categories.filter(c=>c.id!==id);DB.set('categories',cats);setCategories(cats); },[categories]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -1481,7 +1589,7 @@ return(
 <td><span className="badge badge-blue">{p.unit}</span></td>
 <td style={{fontFamily:'var(--mono)',fontWeight:600,color:'var(--accent)'}}>{p.unit==='kg'?fmtCur(p.price_per_kg)+'/kg':fmtCur(p.price)}</td>
 <td><span className={`badge ${p.unit==='kg'?(Number(p.stock_kg||0)<=0?'badge-red':Number(p.stock_kg||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green'):(Number(p.stock||0)<=0?'badge-red':Number(p.stock||0)<=Number(p.lowStockAlert||0)?'badge-yellow':'badge-green')}`}>
-{p.unit==='kg'?p.stock_kg+'kg':p.stock}
+  {p.unit==='kg'?p.stock_kg+'kg':p.stock}
 </span></td>
 <td><span className="badge badge-green">Active</span></td>
 <td><div style={{display:'flex',gap:6}}>
@@ -1494,6 +1602,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal modal-lg">
@@ -1566,6 +1675,7 @@ return(
 </div>
 </div>
 )}
+
 {showCatModal&&(
 <div className="modal-overlay">
 <div className="modal">
@@ -1594,6 +1704,7 @@ return(
 </div>
 );
 };
+
 const InventoryPage=({user})=>{
 const [products,setProducts]=useState(()=>DB.get('products',[]));
 const [restocks,setRestocks]=useState(()=>DB.get('restocks',[]));
@@ -1604,39 +1715,35 @@ const [search,setSearch]=useState('');
 const categories=DB.get('categories',[]);
 const lowStock=products.filter(p=>p.active!==false&&Number(p.unit==='kg'?(p.stock_kg||0):(p.stock||0))<=Number(p.lowStockAlert||0));
 
-// FIX 3: Added Realtime Sync for Inventory Page
-useEffect(() => {
-    const cleanup = SyncEngine.setupRealtime((updatedProds) => {
-        setProducts(updatedProds);
-    });
-    return cleanup;
-}, []);
-
 const addRestock=useCallback(function(){
 if(!form.productId||!form.qty){showToast('Select product and quantity','error');return;}
 try {
 var rec={id:uid(),...form,qty:Number(form.qty),cost:Number(form.cost||0),addedBy:user.name,createdAt:now()};
 var updRest=[...restocks,rec];DB.set('restocks',updRest);setRestocks(updRest);
+
 var prods=DB.get('products',[]);
 var target = prods.find(p => p.id === form.productId);
 var upd;
 if (target && target.unit === 'kg') {
-const newStockKg = Number(target.stock_kg || 0) + Number(form.qty || 0);
-if (target.shared_stock_id) {
-upd = prods.map(p => p.shared_stock_id === target.shared_stock_id ? {...p, stock_kg: newStockKg} : p);
+  const newStockKg = Number(target.stock_kg || 0) + Number(form.qty || 0);
+  if (target.shared_stock_id) {
+    upd = prods.map(p => p.shared_stock_id === target.shared_stock_id ? {...p, stock_kg: newStockKg} : p);
+  } else {
+    upd = prods.map(p => p.id === form.productId ? {...p, stock_kg: newStockKg} : p);
+  }
 } else {
-upd = prods.map(p => p.id === form.productId ? {...p, stock_kg: newStockKg} : p);
+  upd = prods.map(p => p.id === form.productId ? {...p, stock: Number(p.stock || 0) + Number(form.qty || 0)} : p);
 }
-} else {
-upd = prods.map(p => p.id === form.productId ? {...p, stock: Number(p.stock || 0) + Number(form.qty || 0)} : p);
-}
+
 DB.set('products',upd);setProducts(upd);
 setForm({productId:'',qty:'',supplier:'',notes:'',cost:''});
 setShowModal(false);showToast('Stock updated successfully','success');
 DB.createBackup();
 } catch (e) { showToast('Restock failed','error'); }
 },[form,user,restocks]);
+
 const filtered=products.filter(p=>p.active!==false&&(search?p.name.toLowerCase().includes(search.toLowerCase()):true));
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -1733,6 +1840,7 @@ return(
 </div>
 );
 };
+
 const SalesPage=({user})=>{
 const [,forceUpdate]=useReducer(x=>x+1,0);
 const transactions = DB.get('transactions',[]);
@@ -1745,15 +1853,18 @@ const [reprintTxn,setReprintTxn]=useState(null);
 const [showPrintReport,setShowPrintReport]=useState(false);
 const [endedShiftData,setEndedShiftData]=useState(null);
 const settings=DB.get('settings',{});
+
 const activeShift = useMemo(()=>{
 const activeShifts = DB.get('activeShifts',{});
 return activeShifts[user.id] || null;
 },[user.id,transactions.length,dateFilter,showShiftModal]);
+
 const filtered = useMemo(()=>{
 if(!activeShift) return [];
 let txns = transactions.filter(t=>t.shiftId === activeShift.shiftId && t.cashierId === user.id);
 return txns.reverse();
 },[transactions,activeShift,user.id]);
+
 const totalSales=filtered.reduce((s,t)=>s+t.total,0);
 const cashSales=filtered.filter(t=>t.payMode==='cash').reduce((s,t)=>s+t.total,0);
 const gcashSales=filtered.filter(t=>t.payMode==='gcash').reduce((s,t)=>s+t.total,0);
@@ -1761,6 +1872,7 @@ const cardSales=filtered.filter(t=>t.payMode==='card').reduce((s,t)=>s+t.total,0
 const totalTransactions=filtered.length;
 const expenses=DB.get('expenses',[]).filter(e=>e.date===dateFilter && e.encodedBy === user.name).reduce((s,e)=>s+Number(e.amount),0);
 const net=totalSales-expenses;
+
 const endShift=useCallback(()=>{
 if(!activeShift){showToast('No active shift found','error');return;}
 try {
@@ -1788,6 +1900,7 @@ DB.set('adminSalesHistory',newHistory);
 DB.setAsync('adminSalesHistory',newHistory).catch(function(e){ console.warn('IDB sync failed:',e); });
 }
 if(!navigator.onLine){ DB.queueOffline('shift', shiftData); }
+
 const activeShifts = DB.get('activeShifts',{});
 delete activeShifts[user.id];
 DB.set('activeShifts',activeShifts);
@@ -1799,8 +1912,10 @@ setShowShiftModal(false);setCashOnHand('');setCashFund('');
 forceUpdate();
 } catch (e) { showToast('End shift failed','error'); console.error(e); }
 },[activeShift,user,cashOnHand,cashFund,cashSales,expenses,totalSales,totalTransactions,net,filtered]);
+
 const printReceipt = useCallback((txn) => { setReprintTxn(txn); setTimeout(() => window.print(), 100); },[]);
 const printShiftReport = useCallback(() => { setTimeout(() => window.print(), 100); },[]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -1854,6 +1969,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showShiftModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -1890,6 +2006,7 @@ return(
 </div>
 </div>
 )}
+
 {selectedTxn&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -1916,6 +2033,7 @@ return(
 </div>
 </div>
 )}
+
 {reprintTxn && (
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:380}}>
@@ -1958,6 +2076,7 @@ return(
 </div>
 </div>
 )}
+
 {showPrintReport && endedShiftData && (
 <div className="modal-overlay">
 <div className="modal modal-lg">
@@ -2023,6 +2142,7 @@ Report generated on {fmtDateTime(endedShiftData.endTime)}
 </div>
 );
 };
+
 const ExpensesPage=({user})=>{
 const [expenses,setExpenses]=useState(()=>DB.get('expenses',[]));
 const [showModal,setShowModal]=useState(false);
@@ -2030,6 +2150,7 @@ const [dateFilter,setDateFilter]=useState(today());
 const [form,setForm]=useState({amount:'',category:'',notes:'',receivedBy:''});
 const [confirm,setConfirm]=useState(null);
 const expCats=['Supplies','Utilities','Salary/Wages','Maintenance','Food/Snacks','Transport','Miscellaneous'];
+
 const add=useCallback(function(){
 if(!form.amount||!form.category){showToast('Amount and category required','error');return;}
 try {
@@ -2042,12 +2163,15 @@ if(!navigator.onLine){ DB.queueOffline('expense', exp); }
 DB.createBackup();
 } catch (e) { showToast('Failed to record expense','error'); }
 },[form,user,expenses]);
+
 const del=useCallback((id)=>{
 try { const updated=expenses.filter(e=>e.id!==id);DB.set('expenses',updated);setExpenses(updated); }
 catch (e) { showToast('Delete failed','error'); }
 },[expenses]);
+
 const filtered=[...expenses].filter(e=>e.date===dateFilter).reverse();
 const total=filtered.reduce((s,e)=>s+e.amount,0);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -2083,6 +2207,7 @@ return(
 </tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2110,6 +2235,7 @@ return(
 </div>
 );
 };
+
 const ReportsPage=()=>{
 const [range,setRange]=useState('daily');
 const [dateFrom,setDateFrom]=useState(today());
@@ -2117,6 +2243,7 @@ const [dateTo,setDateTo]=useState(today());
 const salesChartRef=useRef(null);
 const expChartRef=useRef(null);
 const chartInst=useRef([]);
+
 const getRange=useCallback(()=>{
 const txns=DB.get('transactions',[]);
 const exps=DB.get('expenses',[]);
@@ -2129,20 +2256,24 @@ const ft=txns.filter(t=>t.date>=from&&t.date<=to);
 const fe=exps.filter(e=>e.date>=from&&e.date<=to);
 return{txns:ft,exps:fe,from,to};
 },[range,dateFrom,dateTo]);
+
 const {txns,exps,from,to}=getRange();
 const totalSales=txns.reduce((s,t)=>s+t.total,0);
 const totalExp=exps.reduce((s,e)=>s+e.amount,0);
 const netProfit=totalSales-totalExp;
 const totalTransactions=txns.length;
+
 const productSales={};
 txns.forEach(t=>t.items.forEach(i=>{
 if(!productSales[i.id])productSales[i.id]={name:i.name,qty:0,revenue:0};
 productSales[i.id].qty+=i.qty;productSales[i.id].revenue+=i.subtotal;
 }));
 const topProducts=Object.values(productSales).sort((a,b)=>b.revenue-a.revenue).slice(0,8);
+
 const dayMap={}; txns.forEach(t=>{dayMap[t.date]=(dayMap[t.date]||0)+t.total;});
 const expDayMap={}; exps.forEach(e=>{expDayMap[e.date]=(expDayMap[e.date]||0)+e.amount;});
 const allDates=[...new Set([...Object.keys(dayMap),...Object.keys(expDayMap)])].sort();
+
 useEffect(function(){
 chartInst.current.forEach(function(c){ try { c.destroy(); } catch(e) {} });
 chartInst.current=[];
@@ -2175,29 +2306,40 @@ chartInst.current.push(inst);
 }
 return()=>{chartInst.current.forEach(c=>c.destroy());chartInst.current=[];};
 },[range,dateFrom,dateTo,txns.length]);
+
 const saveReport = useCallback(async () => {
-try {
-const reportData = {
-id: 'RPT_' + uid(),
-type: range,
-date_from: from,
-date_to: to,
-total_sales: totalSales,
-total_expenses: totalExp,
-net_profit: netProfit,
-total_transactions: totalTransactions,
-created_at: now(),
-sync_status: 'pending'
-};
-const reports = DB.get('reports', []);
-reports.push(reportData);
-DB.set('reports', reports);
-DB.queueOffline('report', reportData);
-showToast('Report saved to Archive', 'success');
-} catch (e) {
-showToast('Failed to save report', 'error');
-}
+  try {
+    const reportData = {
+      id: 'RPT_' + uid(),
+      type: range,
+      date_from: from,
+      date_to: to,
+      total_sales: totalSales,
+      total_expenses: totalExp,
+      net_profit: netProfit,
+      total_transactions: totalTransactions,
+      created_at: now(),
+      sync_status: 'pending'
+    };
+    // Save to archives (this is what AdminArchivePage reads)
+    const archives = DB.get('archives', []);
+    archives.push(reportData);
+    DB.set('archives', archives);
+    DB.setAsync('archives', archives).catch(function(e){ console.warn('IDB sync failed:',e); });
+    // Also save to reports for backward compatibility
+    const reports = DB.get('reports', []);
+    reports.push(reportData);
+    DB.set('reports', reports);
+    DB.setAsync('reports', reports).catch(function(e){ console.warn('IDB sync failed:',e); });
+    if (navigator.onLine && supabaseClient) {
+      DB.queueOffline('archive', reportData);
+    }
+    showToast('Report saved to Archive', 'success');
+  } catch (e) {
+    showToast('Failed to save report', 'error');
+  }
 }, [range, from, to, totalSales, totalExp, netProfit, totalTransactions]);
+
 const exportCSV=useCallback(()=>{
 try {
 const rows=[['Date','TXN#','Customer','Total','Payment','Cashier'],...txns.map(t=>[t.date,t.id,t.customerName,t.total,t.payMode,t.cashierName])];
@@ -2206,6 +2348,7 @@ const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encode
 a.download='sales_report.csv';a.click();
 } catch (e) { showToast('Export failed','error'); }
 },[txns]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -2272,32 +2415,37 @@ return (
 </div>
 );
 };
+
 const AdminArchivePage=()=>{
 const [archive,setArchive]=useState(()=>DB.get('archives',[]));
 const [searchDate,setSearchDate]=useState('');
 const [searchType,setSearchType]=useState('');
 const [confirm,setConfirm]=useState(null);
 const [refreshTick,setRefreshTick]=useState(0);
+
 useEffect(function(){
 var data = DB.get('archives',[]);
 setArchive(data);
 },[refreshTick]);
+
 const filtered = useMemo(()=>{
 let data = [...archive].reverse();
 if(searchDate) data = data.filter(s=>s.date === searchDate || (s.date_from && s.date_from <= searchDate && s.date_to >= searchDate));
 if(searchType) data = data.filter(s=>s.type === searchType);
 return data;
 },[archive,searchDate,searchType]);
+
 const deleteArchive = useCallback((id) => {
-try {
-const updated = archive.filter(a => a.id !== id);
-DB.set('archives', updated);
-setArchive(updated);
-showToast('Archive deleted', 'success');
-} catch (e) {
-showToast('Delete failed', 'error');
-}
+  try {
+    const updated = archive.filter(a => a.id !== id);
+    DB.set('archives', updated);
+    setArchive(updated);
+    showToast('Archive deleted', 'success');
+  } catch (e) {
+    showToast('Delete failed', 'error');
+  }
 }, [archive]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -2312,11 +2460,11 @@ return(
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>
 <div className="search-box">{Icon.search}<input type="date" value={searchDate} onChange={e=>setSearchDate(e.target.value)} placeholder="Search by date" style={{width:'100%'}}/></div>
 <div className="search-box">{Icon.search}<select value={searchType} onChange={e=>setSearchType(e.target.value)} style={{width:'100%'}}>
-<option value="">All Types</option>
-<option value="daily">Daily</option>
-<option value="weekly">Weekly</option>
-<option value="monthly">Monthly</option>
-<option value="shift">Shift</option>
+  <option value="">All Types</option>
+  <option value="daily">Daily</option>
+  <option value="weekly">Weekly</option>
+  <option value="monthly">Monthly</option>
+  <option value="shift">Shift</option>
 </select></div>
 </div>
 <div className="card" style={{padding:0,overflow:'hidden'}}>
@@ -2349,6 +2497,7 @@ return (
 </div>
 );
 };
+
 const UsersPage=({currentUser})=>{
 const [users,setUsers]=useState(()=>DB.get('users',[]));
 const [showModal,setShowModal]=useState(false);
@@ -2357,6 +2506,7 @@ const [confirm,setConfirm]=useState(null);
 const empty={name:'',username:'',password:'',role:'cashier',pin:'',active:true};
 const [form,setForm]=useState(empty);
 const sessions=DB.get('sessions',[]);
+
 const save=useCallback(()=>{
 if(!form.name||!form.username||(!editing&&!form.password)){showToast('Name, username and password required','error');return;}
 try {
@@ -2374,16 +2524,19 @@ showToast(editing?'User updated':'User added','success');
 setShowModal(false);setEditing(null);setForm(empty);
 } catch (e) { showToast('Save failed','error'); }
 },[form,editing,empty]);
+
 const toggle=useCallback((id)=>{
 try { const upd=users.map(u=>u.id===id?{...u,active:!u.active}:u);DB.set('users',upd);setUsers(upd); }
 catch (e) { showToast('Toggle failed','error'); }
 },[users]);
+
 const getLastLogin=useCallback((uid2)=>{
 try {
 const s=[...sessions].filter(s=>s.userId===uid2).pop();
 return s?fmtDateTime(s.loginAt):'Never';
 } catch (e) { return 'Never'; }
 },[sessions]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -2408,6 +2561,7 @@ return(
 ))}</tbody>
 </table>
 </div>
+
 {showModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2437,17 +2591,21 @@ return(
 </div>
 );
 };
+
 const SettingsPage=()=>{
 const [settings,setSettings]=useState(()=>DB.get('settings',{}));
 const [maintenanceLogs,setMaintenanceLogs]=useState(()=>DB.get('maintenanceLogs',[]));
 const [showMaintModal,setShowMaintModal]=useState(false);
 const [maintNotes,setMaintNotes]=useState('');
 const bgRef=useRef();
+
 const save=useCallback(()=>{DB.set('settings',settings);showToast('Settings saved','success');DB.createBackup();},[settings]);
+
 const handleBgUpload=useCallback((e)=>{
 const f=e.target.files[0];if(!f)return;
 const r=new FileReader();r.onload=ev=>setSettings(p=>({...p,loginBg:ev.target.result}));r.readAsDataURL(f);
 },[]);
+
 const recordMaint=useCallback(()=>{
 const log = { id: uid(), date: now(), notes: maintNotes, performedBy: 'System' };
 const logs = [...maintenanceLogs, log];
@@ -2457,6 +2615,7 @@ setMaintenanceLogs(logs);
 setShowMaintModal(false);setMaintNotes('');
 showToast('Maintenance recorded','success');
 },[maintNotes,maintenanceLogs]);
+
 return(
 <div style={{padding:'20px',flex:1,overflow:'auto'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -2492,6 +2651,7 @@ return(
 </div>
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>Data Management</div>
 <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
@@ -2513,6 +2673,7 @@ showToast('Data cleared','info');
 <button className="btn btn-ghost btn-sm" onClick={()=>{DB.recoverFromBackup();window.location.reload();}}>↩️ Recover from Backup</button>
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>Maintenance History</div>
 <div style={{maxHeight:200,overflow:'auto'}}>
@@ -2529,6 +2690,7 @@ return (
 }
 </div>
 </div>
+
 <div className="card" style={{marginTop:16}}>
 <div style={{fontWeight:600,marginBottom:14,fontSize:15}}>About Branch POS</div>
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
@@ -2543,6 +2705,7 @@ return (
 })}
 </div>
 </div>
+
 {showMaintModal&&(
 <div className="modal-overlay">
 <div className="modal" style={{maxWidth:420}}>
@@ -2558,6 +2721,7 @@ return (
 </div>
 );
 };
+
 const App=()=>{
 const [user,setUser]=useState(()=>{
 try{var u=sessionStorage.getItem('bpos_user');return u?JSON.parse(u):null;}catch(e){return null;}
@@ -2567,6 +2731,7 @@ const [page,setPage]=useState('pos');
 const [collapsed,setCollapsed]=useState(false);
 const {toast,showToast:_}=useToast();
 const [systemReady, setSystemReady] = useState(false);
+
 useEffect(function(){
 if (navigator.storage && navigator.storage.persist) {
 navigator.storage.persist().then(function(granted) {
@@ -2575,6 +2740,7 @@ else console.warn('Persistent storage denied - data may be cleared by browser');
 });
 }
 },[]);
+
 useEffect(function(){
 var init = async function() {
 try {
@@ -2592,12 +2758,14 @@ setSystemReady(true);
 };
 init();
 },[]);
+
 useEffect(function(){
 var backupInterval = setInterval(function(){
 if(user) { DB.createBackup(); }
 }, 300000);
 return function() { clearInterval(backupInterval); };
 },[user]);
+
 const login=useCallback(function(u,sid){
 setUser(u);setSessionId(sid);
 sessionStorage.setItem('bpos_user',JSON.stringify(u));
@@ -2610,6 +2778,7 @@ var data = DB.get(s, null);
 if (data !== null) DB.setAsync(s, data);
 });
 },[]);
+
 const logout=useCallback(()=>{
 try {
 if(sessionId){
@@ -2627,6 +2796,7 @@ DB.set('activeShifts',activeShifts);
 setUser(null);setSessionId(null);
 sessionStorage.clear();
 },[sessionId,user]);
+
 useEffect(function(){
 var handleBeforeUnload = function() { DB.createBackup(); };
 window.addEventListener('beforeunload', handleBeforeUnload);
@@ -2639,7 +2809,9 @@ window.removeEventListener('beforeunload', handleBeforeUnload);
 document.removeEventListener('visibilitychange', handleVisibility);
 };
 },[]);
+
 if(!user)return<><LoginPage onLogin={login}/>{toast&&<Toast msg={toast.msg} type={toast.type}/>}</>;
+
 const pages={
 pos:<POSTerminal user={user}/>,
 products:<ProductsPage user={user}/>,
@@ -2651,6 +2823,7 @@ archive:<AdminArchivePage/>,
 users:<UsersPage currentUser={user}/>,
 settings:<SettingsPage/>,
 };
+
 return(
 <ErrorBoundary>
 <div style={{display:'flex',height:'100vh',overflow:'hidden'}}>
@@ -2674,6 +2847,7 @@ return(
 </ErrorBoundary>
 );
 };
+
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 setTimeout(function(){ if(window.hideLoading) window.hideLoading(); }, 500);
 </script>
