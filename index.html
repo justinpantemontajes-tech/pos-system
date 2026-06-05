@@ -438,17 +438,17 @@ req.onerror = () => reject(req.error);
 },
 async set(store, data) {
   await this.init();
-  
-  // 1. Save pa din sa IndexedDB para may offline
-  const tx = this.db.transaction(store, 'readwrite');
-  const obj = tx.objectStore(store);
-  
-  if (Array.isArray(data)) {
-    obj.clear();
-    data.forEach(item => { if(item && item.id) obj.put(item); });
-  } else if (data && data.id) {
-    obj.put(data);
-  }
+  return new Promise((resolve, reject) => {
+    const tx = this.db.transaction(store, 'readwrite');
+    const obj = tx.objectStore(store);
+    if (Array.isArray(data)) {
+      obj.clear();
+      data.forEach(item => { if(item && item.id) obj.put(item); });
+    } else if (data && data.id) {
+      obj.put(data);
+    }
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
   });
 },
   await new Promise((resolve, reject) => {
