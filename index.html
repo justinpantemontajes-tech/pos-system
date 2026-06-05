@@ -449,7 +449,8 @@ async set(store, data) {
   } else if (data && data.id) {
     obj.put(data);
   }
-  
+  });
+},
   await new Promise((resolve, reject) => {
     tx.oncomplete = () => resolve(true);
     tx.onerror = () => reject(tx.error);
